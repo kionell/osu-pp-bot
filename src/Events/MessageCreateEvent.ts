@@ -16,6 +16,8 @@ export class MessageCreateEvent extends MessageEvent {
     try {
       const channel = await MessageEvent.getDatabaseDiscordChannel(msg);
 
+      if (!channel) return;
+
       await MessageEvent.updateLastBeatmapId(msg, channel);
 
       if (!MessageEvent.validateMessage(msg)) return;

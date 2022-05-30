@@ -22,7 +22,13 @@ export abstract class MessageEvent extends BotEvent {
     return !(msg.author.bot || (!msg.content && !msg.embeds && !msg.attachments));
   }
 
-  static async getDatabaseDiscordChannel(msg: Message): Promise<IDiscordChannelResponse> {
+  static async getDatabaseDiscordChannel(msg: Message): Promise<IDiscordChannelResponse | null> {
+    /**
+     * If REST API is currently unavailable then we should 
+     * disable all bot messages until it became available again.
+     */
+    if (!RESTClient.isAvailable && msg.author.bot) return null;
+    
     const found = await RESTClient.findDiscordChannel(msg.channelId);
 
     if (found) return found;

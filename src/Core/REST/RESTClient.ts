@@ -1,8 +1,18 @@
-import { APIClient, IAPIResponse } from '@kionell/osu-api';
+import { APIClient, IAPIResponse, RequestConfig } from '@kionell/osu-api';
 import { IBeatmapOptionsDto, IScoreOptionsDto, IDiscordChannelDto } from './DTO';
 import { IBeatmapResponse, IScoreResponse, IDiscordChannelResponse } from './Interfaces';
 
 class RESTClient extends APIClient {
+  /**
+   * If this REST API client is online at the moment.
+   */
+  isOnline = true;
+
+  /**
+   * Time of the last connection attempt.
+   */
+  lastAttempt = 0;
+  
   /**
    * Calculates a beatmap by beatmap options.
    * @param options Beatmap options.
@@ -109,9 +119,37 @@ class RESTClient extends APIClient {
       url,
     });
 
-    this._handleError(response);
-
     return response.data;
+  }
+
+  protected async _request(config: RequestConfig): Promise<IAPIResponse> {
+    /**
+     * If this REST API is not available we will allow 
+     * to retry connection only once every 30 seconds. 
+     */
+    if (!this.isAvailable) {
+      throw new Error('Bot API is currently offline or not available!');
+    }
+
+    const response = await super._request(config);
+
+    const lostConnection = response.error === 'read ECONNRESET';
+    const notAvailable = response.error === 'Can\'t connect to API!';
+
+    if (lostConnection || notAvailable) {
+      this.isOnline = false;
+      this.lastAttempt = Date.now();
+      
+      this._handleError(response);
+    }
+
+    if (!this.isOnline) this.isOnline = true;
+
+    return response;
+  }
+
+  get isAvailable(): boolean {
+    return this.isOnline || Date.now() - this.lastAttempt >= 30000;
   }
 
   private _handleError(response: IAPIResponse): void {
