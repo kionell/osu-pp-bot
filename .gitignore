@@ -1,0 +1,16 @@
+/**
+!/src
+!/src/**
+!/tests
+!/tests/**
+!.eslintignore
+!.eslintrc.json
+!.gitignore
+!LICENSE
+!package-lock.json
+!package.json
+!README.md
+!rollup.config.js
+!jest.config.js
+!tsconfig.json
+!Procfile
