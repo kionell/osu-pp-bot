@@ -1,3 +1,4 @@
+import { Permissions } from 'discord.js';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -17,6 +18,11 @@ export abstract class BotCommand extends Command implements IHasFlags {
    * Example usage of this command.
    */
   examples: string[] = [];
+
+  /**
+   * Required permissions to use this command
+   */
+  permissions: Readonly<Permissions | null> = null;
 
   /**
    * Flags of this bot command.
