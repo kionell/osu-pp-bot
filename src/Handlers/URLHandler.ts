@@ -16,8 +16,6 @@ export abstract class URLHandler extends MessageCommandHandler {
   }
 
   protected _preprocessArg(arg: string): string {
-    arg = super._preprocessArg(arg);
-
     const serverName = getServerName(arg);
     const scanner = APIFactory.createURLScanner(serverName);
 
@@ -25,7 +23,11 @@ export abstract class URLHandler extends MessageCommandHandler {
       return this._convertURL(arg);
     }
 
-    return arg;
+    if (arg.startsWith('+')) {
+      return this._convertMods(arg);
+    }
+
+    return '';
   }
 
   /**
@@ -42,7 +44,7 @@ export abstract class URLHandler extends MessageCommandHandler {
   /**
    * @param url Target URL
    * @param scanner URL scanner for specific server.
-   * @returns If this url is valid for this handler?
+   * @returns If this URL is valid for this handler?
    */
   protected abstract _isValidURL(url: string, scanner: URLScanner): boolean;
 
