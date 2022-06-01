@@ -10,6 +10,7 @@ import { IDiscordChannelResponse } from '@Core/REST';
 import { Bot } from '@Core/Bot';
 import { ModsFlag } from '@Flags';
 import { Handler } from './Handler';
+import { BotCommand } from '../Core/Commands';
 
 export class MessageCommandHandler extends Handler {
   async handleMessage(msg: Message, channel: IDiscordChannelResponse): Promise<boolean> {
@@ -17,10 +18,17 @@ export class MessageCommandHandler extends Handler {
     const prefix = channel.server?.prefix ?? process.env.DEFAULT_PREFIX;
 
     const data = await this._getCommandData(bot.commands, msg, prefix);
+    const last = data.tree.last as BotCommand;
 
+    if (!data.isValid || !this.checkPermissions(msg, last)) return false;
+
+    /**
+     * Simulate message typing if command is valid... 
+     */
+    await msg.channel.sendTyping();
     await data.execute?.({ data, msg, bot, channel });
 
-    return data.isValid;
+    return true;
   }
 
   protected async _getCommandData(commands: Map<string, ICommand>, msg: Message, prefix?: string): Promise<CommandData> {
@@ -53,7 +61,7 @@ export class MessageCommandHandler extends Handler {
    * @param mods Raw mods started with '+' sign.
    * @returns Stringified mods flag.
    */
-  private _convertMods(mods: string): string {
+  protected _convertMods(mods: string): string {
     const acronyms = mods.substring(1);
     const targetMods = acronyms;
 
