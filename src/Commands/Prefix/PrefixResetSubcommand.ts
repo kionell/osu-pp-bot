@@ -1,4 +1,3 @@
-import { Permissions } from 'discord.js';
 import { BotCommand, ICommandOptions } from '@Core/Commands';
 import { RESTClient } from '@Core/REST';
 
@@ -8,11 +7,6 @@ export class PrefixResetSubcommand extends BotCommand {
   title = 'Prefix reset command';
 
   description = 'Resets custom prefix on a server.';
-
-  /**
-   * This command requires admin permissions.
-   */
-  permissions = new Permissions(Permissions.FLAGS.ADMINISTRATOR);
 
   async execute({ channel, msg }: ICommandOptions): Promise<void> {
     if (!channel.server) {

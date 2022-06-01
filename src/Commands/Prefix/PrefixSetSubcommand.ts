@@ -1,4 +1,3 @@
-import { Permissions } from 'discord.js';
 import { Argument, IHasArgument } from 'cli-processor';
 import { BotCommand, ICommandOptions } from '@Core/Commands';
 import { RESTClient } from '@Core/REST';
@@ -15,11 +14,6 @@ export class PrefixSetSubcommand extends BotCommand implements IHasArgument {
     isRequired: true,
     minLength: 1,
   });
-
-  /**
-   * This command requires admin permissions.
-   */
-  permissions = new Permissions(Permissions.FLAGS.ADMINISTRATOR);
 
   async execute({ channel, msg }: ICommandOptions): Promise<void> {
     const prefix = this.getValue(this.arg) as string;

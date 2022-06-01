@@ -1,3 +1,4 @@
+import { Permissions } from 'discord.js';
 import { BotCommand } from '@Core/Commands';
 import { PrefixSetSubcommand } from './PrefixSetSubcommand';
 import { PrefixResetSubcommand } from './PrefixResetSubcommand';
@@ -12,6 +13,11 @@ export class PrefixCommand extends BotCommand {
     'Supports only one prefix per server.',
     'If you forgot what is your custom prefix on the server, you can use slash commands to reset it.',
   ].join(' ');
+
+  /**
+   * This command requires admin permissions.
+   */
+  permissions = new Permissions(Permissions.FLAGS.ADMINISTRATOR);
 
   constructor() {
     super();
