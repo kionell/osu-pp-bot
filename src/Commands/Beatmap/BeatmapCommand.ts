@@ -150,11 +150,12 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments, IHasA
     const targetBeatmap = this.getValue(this.arg);
     const targetRuleset = this.getFlagValue(RulesetFlag);
 
-    const raw = targetRuleset && Number(targetRuleset);
     const scanned = scanner.getRulesetIdFromURL(targetBeatmap);
+    const input = Number(targetRuleset) || targetRuleset || scanned;
 
-    if (typeof raw === 'number') return getRulesetId(raw);
-    if (typeof scanned === 'number') return getRulesetId(scanned);
+    if (typeof input === 'number' || typeof input === 'string') {
+      return getRulesetId(input);
+    }
 
     return null;
   }
