@@ -5,6 +5,7 @@
  */
 import { ClientOptions, Intents } from 'discord.js';
 import { DebugBot, ReleaseBot } from './Clients';
+import 'dotenv/config';
 
 /* Create a new discord bot */
 const options: ClientOptions = {

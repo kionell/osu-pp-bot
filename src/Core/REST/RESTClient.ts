@@ -12,7 +12,7 @@ class RESTClient extends APIClient {
    * Time of the last connection attempt.
    */
   lastAttempt = 0;
-  
+
   /**
    * Calculates a beatmap by beatmap options.
    * @param options Beatmap options.
@@ -139,7 +139,7 @@ class RESTClient extends APIClient {
     if (lostConnection || notAvailable) {
       this.isOnline = false;
       this.lastAttempt = Date.now();
-      
+
       this._handleError(response);
     }
 
