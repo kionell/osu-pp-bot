@@ -10,7 +10,6 @@ import { IDiscordChannelResponse } from '@Core/REST';
 import { Bot } from '@Core/Bot';
 import { ModsFlag } from '@Flags';
 import { Handler } from './Handler';
-import { BotCommand } from '../Core/Commands';
 
 export class MessageCommandHandler extends Handler {
   async handleMessage(msg: Message, channel: IDiscordChannelResponse): Promise<boolean> {
@@ -18,9 +17,12 @@ export class MessageCommandHandler extends Handler {
     const prefix = channel.server?.prefix ?? process.env.DEFAULT_PREFIX;
 
     const data = await this._getCommandData(bot.commands, msg, prefix);
-    const last = data.tree.last as BotCommand;
 
-    if (!data.isValid || !this.checkPermissions(msg, last)) return false;
+    if (!data.isValid) return false;
+
+    if (data.isValid && !this.checkPermissions(msg, data.tree)) {
+      throw new Error('You don\'t have enough permissions for this command!');
+    }
 
     /**
      * Simulate message typing if command is valid... 
