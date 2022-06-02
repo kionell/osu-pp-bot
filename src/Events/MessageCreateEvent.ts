@@ -22,11 +22,11 @@ export class MessageCreateEvent extends MessageEvent {
 
       if (!MessageEvent.validateMessage(msg)) return;
 
-      if (await new BeatmapURLHandler().handleMessage(msg, channel)) return;
-      if (await new ScoreURLHandler().handleMessage(msg, channel)) return;
       if (await new ScoreAttachmentHandler().handleMessage(msg, channel)) return;
       if (await new BeatmapAttachmentHandler().handleMessage(msg, channel)) return;
       if (await new MessageCommandHandler().handleMessage(msg, channel)) return;
+      if (await new BeatmapURLHandler().handleMessage(msg, channel)) return;
+      if (await new ScoreURLHandler().handleMessage(msg, channel)) return;
     }
     catch (err: unknown) {
       const isTimedOut = msg.guild?.me?.isCommunicationDisabled() ?? false;
