@@ -1,13 +1,13 @@
-import type { CommandData, ICommand } from 'cli-processor';
+import type { CommandData } from 'cli-processor';
 import { GameMode, URLGenerator } from '@kionell/osu-api';
+import { IBeatmapResponse, IScoreResponse } from '@Core/REST';
+import { ICommandOptions } from '@Core/Commands';
 
 import {
   ButtonSystem,
   ButtonSystemType,
   EmbedWithPages,
 } from '@Core/Embeds';
-
-import { IBeatmapResponse, IScoreResponse } from '@Core/REST';
 
 import {
   AlertButtonSystem,
@@ -53,8 +53,8 @@ export class EmbedFactory {
     throw new Error('Unknown button system type!');
   }
 
-  createGeneralHelpEmbed(commands: Map<string, ICommand>): GeneralHelpEmbed {
-    return new GeneralHelpEmbed(commands);
+  createGeneralHelpEmbed(options: ICommandOptions): GeneralHelpEmbed {
+    return new GeneralHelpEmbed(options);
   }
 
   createCommandHelpEmbed(data: CommandData): CommandHelpEmbed {

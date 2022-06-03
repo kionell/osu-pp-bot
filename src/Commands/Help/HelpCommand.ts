@@ -13,7 +13,7 @@ import {
 } from '@Core/Commands';
 
 import { EmbedShipment, ExtendedEmbed } from '@Core/Embeds';
-import { EmbedFactory } from '@Embeds';
+import { EmbedFactory, GeneralHelpEmbed } from '@Embeds';
 
 export class HelpCommand extends BotCommand implements IHasArgument {
   name = 'help';
@@ -42,13 +42,9 @@ export class HelpCommand extends BotCommand implements IHasArgument {
   async execute(options: ICommandOptions): Promise<void> {
     const targetCommand = this.getValue(this.arg);
 
-    if (!targetCommand) {
-      await this._getGeneralHelpEmbed(options);
-    }
-
     const embed = targetCommand
       ? this._getCommandHelpEmbed(targetCommand, options)
-      : null;
+      : this._getGeneralHelpEmbed(options);
 
     const shipment = new EmbedShipment(options.msg);
 
@@ -82,10 +78,7 @@ export class HelpCommand extends BotCommand implements IHasArgument {
     return EmbedFactory.createCommandHelpEmbed(data);
   }
 
-  protected async _getGeneralHelpEmbed(options: ICommandOptions): Promise<void> {
-    // TODO: Finish this embed.
-    await options.msg.channel.send('Add this embed already, omg... <@206094794395484160> <:Bonk:979419291705286657>');
-
-    // return EmbedFactory.createGeneralHelpEmbed(options.bot.commands);
+  protected _getGeneralHelpEmbed(options: ICommandOptions): GeneralHelpEmbed {
+    return EmbedFactory.createGeneralHelpEmbed(options);
   }
 }
