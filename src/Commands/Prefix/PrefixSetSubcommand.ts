@@ -1,5 +1,5 @@
 import { Argument, IHasArgument } from 'cli-processor';
-import { BotCommand, ICommandOptions } from '@Core/Commands';
+import { BotCommand, Category, ICommandOptions } from '@Core/Commands';
 import { RESTClient } from '@Core/REST';
 
 export class PrefixSetSubcommand extends BotCommand implements IHasArgument {
@@ -14,6 +14,8 @@ export class PrefixSetSubcommand extends BotCommand implements IHasArgument {
     isRequired: true,
     minLength: 1,
   });
+
+  category = Category.Utility;
 
   async execute({ channel, msg }: ICommandOptions): Promise<void> {
     const prefix = this.getValue(this.arg) as string;

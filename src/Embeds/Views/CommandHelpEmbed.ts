@@ -1,7 +1,7 @@
 import { CommandData, IArgument, ICommand, IFlag, IHasArgument } from 'cli-processor';
-import { EmbedField } from 'discord.js';
+import { EmbedField, MessageEmbedAuthor } from 'discord.js';
+import { ExtendedEmbed, getCategoryIconURL } from '@Core/Embeds';
 import { BotCommand } from '@Core/Commands';
-import { ExtendedEmbed } from '@Core/Embeds';
 
 export class CommandHelpEmbed extends ExtendedEmbed {
   protected _commandData: CommandData;
@@ -14,8 +14,13 @@ export class CommandHelpEmbed extends ExtendedEmbed {
     this._command = commandData.tree.last as BotCommand;
   }
 
-  protected _createEmbedTitle(): string | null {
-    return this._command?.title ?? null;
+  protected _createEmbedAuthor(): MessageEmbedAuthor | null {
+    if (!this._command) return null;
+
+    return {
+      name: this._command.title,
+      iconURL: getCategoryIconURL(this._command.category),
+    };
   }
 
   protected _createEmbedDescription(): string | null {

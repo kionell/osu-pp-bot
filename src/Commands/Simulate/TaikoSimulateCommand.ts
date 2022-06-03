@@ -1,6 +1,6 @@
 import { GameMode } from '@kionell/osu-api';
 import { IScoreOptionsDto } from '@Core/REST';
-import { ICommandOptions } from '@Core/Commands';
+import { Category, ICommandOptions } from '@Core/Commands';
 import { SimulateCommand } from './SimulateCommand';
 
 import {
@@ -17,6 +17,8 @@ export class TaikoSimulateCommand extends SimulateCommand {
   aliases = [ 'taikosim' ];
 
   title = 'Simulate command (osu!taiko)';
+
+  category = Category.Taiko;
 
   constructor() {
     super();

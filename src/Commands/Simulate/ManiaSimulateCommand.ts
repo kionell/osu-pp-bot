@@ -1,6 +1,6 @@
 import { GameMode } from '@kionell/osu-api';
 import { IScoreOptionsDto } from '@Core/REST';
-import { ICommandOptions } from '@Core/Commands';
+import { Category, ICommandOptions } from '@Core/Commands';
 import { SimulateCommand } from './SimulateCommand';
 import { ScoreFlag } from '@Flags';
 
@@ -10,6 +10,8 @@ export class ManiaSimulateCommand extends SimulateCommand {
   aliases = [ 'maniasim' ];
 
   title = 'Simulate command (osu!mania)';
+
+  category = Category.Mania;
 
   constructor() {
     super();

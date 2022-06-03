@@ -1,6 +1,6 @@
 import { GameMode } from '@kionell/osu-api';
 import { IScoreOptionsDto } from '@Core/REST';
-import { ICommandOptions } from '@Core/Commands';
+import { Category, ICommandOptions } from '@Core/Commands';
 import { SimulateCommand } from './SimulateCommand';
 
 import {
@@ -25,6 +25,8 @@ export class CatchSimulateCommand extends SimulateCommand {
     `${this.name} --${PercentComboFlag.examples[1]} --${DropletFlag.examples[1]}`,
     `${this.name} https://osu.ppy.sh/beatmapsets/773801#osu/1626530`,
   ];
+
+  category = Category.Fruits;
 
   constructor() {
     super();

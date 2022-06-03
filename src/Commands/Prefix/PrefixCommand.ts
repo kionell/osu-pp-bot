@@ -1,5 +1,5 @@
 import { Permissions } from 'discord.js';
-import { BotCommand } from '@Core/Commands';
+import { BotCommand, Category } from '@Core/Commands';
 import { PrefixSetSubcommand } from './PrefixSetSubcommand';
 import { PrefixResetSubcommand } from './PrefixResetSubcommand';
 
@@ -18,6 +18,11 @@ export class PrefixCommand extends BotCommand {
    * This command requires admin permissions.
    */
   permissions = new Permissions(Permissions.FLAGS.ADMINISTRATOR);
+
+  /**
+   * This is utility command.
+   */
+  category = Category.Utility;
 
   constructor() {
     super();

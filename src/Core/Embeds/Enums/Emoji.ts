@@ -14,7 +14,8 @@ export const enum Emoji {
   Holdable = '<:Holdable:940278198959222844>',
   BPM = '<:BPM:938995859792723998>',
   Time = '<:Time:938995859658530836>',
-  Osu = '<:Osu:939001601711026236>',
+  Osu = '<:Osu:982298869708783697>',
+  Standard = '<:Standard:939001601711026236>',
   Taiko = '<:Taiko:939001601769738371>',
   Fruits = '<:Fruits:939001601874624562>',
   Mania = '<:Mania:939001601685852180>',
@@ -26,4 +27,6 @@ export const enum Emoji {
   Previous = '<:Previous:962515133882581012>',
   Next = '<:Next:962515164089974784>',
   Last = '<:Last:962515180296753202>',
+  Information = '<:Information:982298845616668702>',
+  Utility = '<:Utility:982288301585203260>',
 }

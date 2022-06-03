@@ -1,4 +1,4 @@
-import { BotCommand, ICommandOptions } from '@Core/Commands';
+import { BotCommand, Category, ICommandOptions } from '@Core/Commands';
 import { RESTClient } from '@Core/REST';
 
 export class PrefixResetSubcommand extends BotCommand {
@@ -7,6 +7,8 @@ export class PrefixResetSubcommand extends BotCommand {
   title = 'Prefix reset command';
 
   description = 'Resets custom prefix on a server.';
+
+  category = Category.Utility;
 
   async execute({ channel, msg }: ICommandOptions): Promise<void> {
     if (!channel.server) {

@@ -1,7 +1,7 @@
 import { MessageAttachment } from 'discord.js';
 import { Argument, IHasArgument } from 'cli-processor';
 import { APIFactory, getRulesetId, getServerName, URLScanner } from '@kionell/osu-api';
-import { BotCommand, CommandAttachments, AttachmentType, ICommandOptions, IHasAttachments } from '@Core/Commands';
+import { BotCommand, CommandAttachments, AttachmentType, ICommandOptions, IHasAttachments, Category } from '@Core/Commands';
 import { IBeatmapOptionsDto, RESTClient } from '@Core/REST';
 import { EmbedShipment } from '@Core/Embeds';
 import { getBeatmapIdFromMessage } from '@Core/Utils';
@@ -41,6 +41,8 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments, IHasA
     isRequired: false,
     minLength: 1,
   });
+
+  category = Category.Osu;
 
   /**
    * Attachments of this command.

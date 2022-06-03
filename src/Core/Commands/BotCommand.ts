@@ -10,6 +10,8 @@ import {
   IHasArgument,
 } from 'cli-processor';
 
+import { Category } from './Enums';
+
 /**
  * A bot command.
  */
@@ -23,6 +25,11 @@ export abstract class BotCommand extends Command implements IHasFlags {
    * Required permissions to use this command
    */
   permissions: Readonly<Permissions | null> = null;
+
+  /**
+   * Command category.
+   */
+  abstract category: Category;
 
   /**
    * Flags of this bot command.

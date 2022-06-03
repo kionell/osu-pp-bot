@@ -9,6 +9,7 @@ import {
 import {
   type ICommandOptions,
   BotCommand,
+  Category,
 } from '@Core/Commands';
 
 import { EmbedShipment, ExtendedEmbed } from '@Core/Embeds';
@@ -35,6 +36,8 @@ export class HelpCommand extends BotCommand implements IHasArgument {
     isRequired: false,
     maxLength: Infinity,
   });
+
+  category = Category.Information;
 
   async execute(options: ICommandOptions): Promise<void> {
     const targetCommand = this.getValue(this.arg);

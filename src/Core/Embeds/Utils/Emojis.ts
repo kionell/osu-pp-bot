@@ -1,6 +1,7 @@
 import { GameMode, RankStatus } from '@kionell/osu-api';
 import { ScoreRank } from 'osu-classes';
 import { Emoji } from '../Enums';
+import { Category } from '../../Commands';
 
 export function getRankStatusEmoji(status: RankStatus): Emoji {
   switch (status) {
@@ -30,7 +31,26 @@ export function getRulesetEmoji(mode: GameMode): Emoji {
       return Emoji.Mania;
   }
 
-  return Emoji.Osu;
+  return Emoji.Standard;
+}
+
+export function getCategoryIconURL(category: Category): string {
+  const emoji = getCategoryEmoji(category);
+  const emojiId = emoji.replace(/\D+/g, '');
+
+  return `https://cdn.discordapp.com/emojis/${emojiId}.png`;
+}
+
+export function getCategoryEmoji(category: Category): Emoji {
+  switch (category) {
+    case Category.Information: return Emoji.Information;
+    case Category.Utility: return Emoji.Utility;
+    case Category.Osu: return Emoji.Osu;
+    case Category.Standard: return Emoji.Standard;
+    case Category.Taiko: return Emoji.Taiko;
+    case Category.Fruits: return Emoji.Fruits;
+    case Category.Mania: return Emoji.Mania;
+  }
 }
 
 export function getRulesetIconURL(mode: GameMode): string {

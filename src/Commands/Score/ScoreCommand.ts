@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
 import { Argument, IHasArgument } from 'cli-processor';
 import { APIFactory, getRulesetId, getServerName, URLScanner } from '@kionell/osu-api';
-import { BotCommand, CommandAttachments, AttachmentType, ICommandOptions, IHasAttachments } from '@Core/Commands';
+import { BotCommand, CommandAttachments, AttachmentType, ICommandOptions, IHasAttachments, Category } from '@Core/Commands';
 import { IScoreOptionsDto, RESTClient } from '@Core/REST';
 import { EmbedShipment } from '@Core/Embeds';
 import { getScoreIdFromMessage } from '@Core/Utils';
@@ -20,6 +20,8 @@ export class ScoreCommand extends BotCommand implements IHasAttachments, IHasArg
     isRequired: false,
     minLength: 1,
   });
+
+  category = Category.Osu;
 
   /**
    * Attachments of this command.

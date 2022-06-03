@@ -1,5 +1,18 @@
 import { GameMode } from '@kionell/osu-api';
+import { Category } from '../../Commands';
 import { IHitStatistics } from '../../REST';
+
+export function formatCategoryName(category: Category): string {
+  switch (category) {
+    case Category.Information: return 'Information';
+    case Category.Utility: return 'Utility';
+    case Category.Osu: return 'All osu! modes';
+    case Category.Standard: return 'osu!standard';
+    case Category.Taiko: return 'osu!taiko';
+    case Category.Fruits: return 'osu!catch';
+    case Category.Mania: return 'osu!mania';
+  }
+}
 
 export function formatBPM(bpmMin: number, bpmMax: number, bpmMode: number): string {
   bpmMin = Math.round(bpmMin);

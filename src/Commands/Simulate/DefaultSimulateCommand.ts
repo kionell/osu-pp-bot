@@ -1,5 +1,5 @@
 import { GameMode } from '@kionell/osu-api';
-import { ICommandOptions } from '@Core/Commands';
+import { Category, ICommandOptions } from '@Core/Commands';
 import { IScoreOptionsDto } from '@Core/REST';
 import { SimulateCommand } from './SimulateCommand';
 
@@ -19,6 +19,8 @@ export class DefaultSimulateCommand extends SimulateCommand {
   aliases = [ 'sim', 's' ];
 
   title = 'Simulate command';
+
+  category = Category.Osu;
 
   constructor() {
     super();
