@@ -1,5 +1,6 @@
-import { Interaction } from 'discord.js';
+import { CommandInteraction, Interaction, Message } from 'discord.js';
 import { BotEvent } from './BotEvent';
+import { MessageEvent } from './MessageEvent';
 
 import {
   RESTClient,
@@ -38,5 +39,11 @@ export abstract class InteractionEvent extends BotEvent {
     }
 
     return await RESTClient.upsertDiscordChannel(channelData);
+  }
+
+  static async updateLastBeatmapId(interaction: CommandInteraction, cachedChannel: IDiscordChannelResponse): Promise<boolean> {
+    const msg = await interaction.fetchReply() as Message;
+
+    return MessageEvent.updateLastBeatmapId(msg, cachedChannel);
   }
 }

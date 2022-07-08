@@ -44,7 +44,7 @@ export abstract class MessageEvent extends BotEvent {
     return await RESTClient.upsertDiscordChannel(channelData);
   }
 
-  static async updateLastBeatmapId(msg: Message, channel: IDiscordChannelResponse): Promise<boolean> {
+  static async updateLastBeatmapId(msg: Message, cachedChannel: IDiscordChannelResponse): Promise<boolean> {
     const serverName = getServerNameFromMessage(msg);
 
     if (!serverName) return false;
@@ -52,11 +52,11 @@ export abstract class MessageEvent extends BotEvent {
     const scanner = APIFactory.createURLScanner(serverName);
     const beatmapId = getBeatmapIdFromMessage(scanner, msg, false);
 
-    if (!beatmapId || channel.beatmapId === beatmapId) return false;
+    if (!beatmapId || cachedChannel.beatmapId === beatmapId) return false;
 
-    channel.beatmapId = beatmapId;
+    cachedChannel.beatmapId = beatmapId;
 
-    await RESTClient.upsertDiscordChannel(channel);
+    await RESTClient.upsertDiscordChannel(cachedChannel);
 
     return true;
   }

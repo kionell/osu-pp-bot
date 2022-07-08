@@ -15,16 +15,17 @@ export class InteractionCreateEvent extends InteractionEvent {
 
       if (!cachedChannel) return;
 
-      if (interaction.isCommand()) {
-        const handler = new ApplicationCommandHandler();
+      if (interaction.isButton()) {
+        const handler = new MessageComponentHandler();
 
         return await handler.handleInteraction(interaction, cachedChannel);
       }
 
-      if (interaction.isButton()) {
-        const handler = new MessageComponentHandler();
+      if (interaction.isCommand()) {
+        const handler = new ApplicationCommandHandler();
 
         await handler.handleInteraction(interaction, cachedChannel);
+        await InteractionEvent.updateLastBeatmapId(interaction, cachedChannel);
       }
     }
     catch (err: unknown) {
