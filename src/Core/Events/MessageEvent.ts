@@ -28,7 +28,7 @@ export abstract class MessageEvent extends BotEvent {
      * disable all bot messages until it became available again.
      */
     if (!RESTClient.isAvailable && msg.author.bot) return null;
-    
+
     const found = await RESTClient.findDiscordChannel(msg.channelId);
 
     if (found) return found;

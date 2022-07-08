@@ -32,9 +32,9 @@ export class MessageCreateEvent extends MessageEvent {
       const isTimedOut = msg.guild?.me?.isCommunicationDisabled() ?? false;
       const hasPermissions = msg.guild?.me?.permissions.has('SEND_MESSAGES') ?? true;
 
-      if (err && !isTimedOut && hasPermissions) {
-        msg.channel.send((err as Error).message ?? err);
-      }
+      if (!err || isTimedOut || !hasPermissions) return;
+
+      msg.channel.send((err as Error).message ?? err);
     }
   }
 }

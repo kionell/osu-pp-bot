@@ -1,14 +1,15 @@
-import { Message } from 'discord.js';
+import { Guild, GuildMember } from 'discord.js';
 import { BotCommand } from '@Core/Commands';
 import { CommandTree } from 'cli-processor';
 
 export abstract class Handler {
   /**
-   * @param msg Current message.
+   * @param guild Current guild.
+   * @param member Current member.
    * @param tree Command tree.
    * @returns If message author has all required permissions.
    */
-  checkPermissions(msg: Message, tree: CommandTree): boolean {
+  checkPermissions(guild: Guild | null, member: GuildMember | null, tree: CommandTree): boolean {
     for (const command of tree) {
       /**
        * Skip commands that aren't supported by this bot.
@@ -19,10 +20,10 @@ export abstract class Handler {
       /**
        * We need to check permissions only if this bot is used on a server.
        */
-      if (!msg.guild || !msg.member) continue;
+      if (!guild || !member) continue;
 
       const required = command.permissions;
-      const existing = msg.member.permissions;
+      const existing = member.permissions;
 
       return existing.missing(required.bitfield).length === 0;
     }

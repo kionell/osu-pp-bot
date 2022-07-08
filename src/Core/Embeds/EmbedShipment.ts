@@ -3,6 +3,8 @@ import {
   Message,
   MessageAttachment,
   MessageEmbed,
+  CommandInteraction,
+  Snowflake,
 } from 'discord.js';
 
 import { ButtonSystem } from './ButtonSystem';
@@ -11,15 +13,24 @@ export class EmbedShipment {
   private readonly MIN_TRACKING_TIME = 5000;
   private readonly MAX_TRACKING_TIME = 600000;
 
-  private _originalMessage: Message;
+  private _msg?: Message;
+  private _interaction?: CommandInteraction;
   private _buttonSystem?: ButtonSystem;
   private _embeds?: MessageEmbed[];
   private _attachments?: MessageAttachment[];
   private _trackingTime = 60000;
   private _autoDelete = false;
 
-  constructor(message: Message) {
-    this._originalMessage = message;
+  message(msg: Message): this {
+    this._msg = msg;
+
+    return this;
+  }
+
+  interaction(interaction: CommandInteraction): this {
+    this._interaction = interaction;
+
+    return this;
   }
 
   embeds(embeds: MessageEmbed | MessageEmbed[] | null): this {
@@ -59,40 +70,68 @@ export class EmbedShipment {
     return this;
   }
 
-  async send(): Promise<Message> {
+  async send(): Promise<Message | null> {
+    const reply = await this._getReplyMessage();
+
+    if (!reply) return null;
+
+    if (this._buttonSystem) {
+      this._executeButtonSystem(reply);
+    }
+
+    return reply;
+  }
+
+  private async _getReplyMessage(): Promise<Message | null> {
+    if (!this._msg && !this._interaction) return null;
+
     const firstEmbed = this._embeds?.[0] ?? null;
     const embeds = [];
 
     if (firstEmbed) embeds.push(firstEmbed);
 
-    const response = await this._originalMessage.channel.send({
+    const payload = {
       content: embeds.length ? '\u200b' : null,
       components: this._buttonSystem?.actionRows ?? [],
       files: this._attachments,
       embeds,
-    });
+    };
 
-    if (this._buttonSystem) {
-      await this._executeButtonSystem(response);
+    if (this._msg) {
+      return await this._msg.channel.send(payload);
     }
 
-    return response;
+    const interaction = this._interaction as CommandInteraction;
+
+    /**
+     * Assume that we already defered our reply.
+     */
+    await interaction.editReply(payload);
+
+    return await interaction.fetchReply() as Message;
   }
 
-  async _executeButtonSystem(message: Message): Promise<void> {
+  private _executeButtonSystem(message: Message): void {
     const filter = async(interaction: ButtonInteraction): Promise<boolean> => {
       await interaction.deferUpdate();
 
-      return interaction.user.id === this._originalMessage.author.id;
+      return interaction.user.id === this._getAuthorId();
     };
 
-    const collector = await message.createMessageComponentCollector({
+    const collector = message.createMessageComponentCollector({
       idle: this._trackingTime,
       componentType: 'BUTTON',
       dispose: true,
       filter,
     });
 
-    await this._buttonSystem?.execute(message, collector, this._autoDelete);
+    this._buttonSystem?.execute(message, collector, this._autoDelete);
+  }
+
+  private _getAuthorId(): Snowflake | null {
+    if (this._msg) return this._msg.author.id;
+    if (this._interaction) return this._interaction.user.id;
+
+    return null;
   }
 }

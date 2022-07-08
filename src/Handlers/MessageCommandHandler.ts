@@ -8,19 +8,22 @@ import {
 
 import { IDiscordChannelResponse } from '@Core/REST';
 import { Bot } from '@Core/Bot';
-import { ModsFlag } from '@Flags';
+import { ModsFlag } from '@Options';
 import { Handler } from './Handler';
 
 export class MessageCommandHandler extends Handler {
-  async handleMessage(msg: Message, channel: IDiscordChannelResponse): Promise<boolean> {
+  async handleMessage(msg: Message, cachedChannel: IDiscordChannelResponse): Promise<boolean> {
     const bot = msg.client as Bot;
-    const prefix = channel.server?.prefix ?? process.env.DEFAULT_PREFIX;
+    const guild = msg.guild;
+    const member = msg.member;
+
+    const prefix = cachedChannel.server?.prefix ?? process.env.DEFAULT_PREFIX;
 
     const data = await this._getCommandData(bot.commands, msg, prefix);
 
     if (!data.isValid) return false;
 
-    if (data.isValid && !this.checkPermissions(msg, data.tree)) {
+    if (data.isValid && !this.checkPermissions(guild, member, data.tree)) {
       throw new Error('You don\'t have enough permissions for this command!');
     }
 
@@ -28,7 +31,7 @@ export class MessageCommandHandler extends Handler {
      * Simulate message typing if command is valid... 
      */
     await msg.channel.sendTyping();
-    await data.execute?.({ data, msg, bot, channel });
+    await data.execute?.({ data, msg, bot, cachedChannel });
 
     return true;
   }
@@ -69,6 +72,8 @@ export class MessageCommandHandler extends Handler {
 
     if (targetMods === null) return '';
 
-    return `--${ModsFlag.globalName} ${targetMods}`;
+    const flag = new ModsFlag();
+
+    return `${flag.prefix}${flag.name} ${targetMods}`;
   }
 }

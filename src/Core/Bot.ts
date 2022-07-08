@@ -1,9 +1,17 @@
-import glob from 'fast-glob';
-import { Client, Collection } from 'discord.js';
-import { BotCommand } from './Commands';
-import { BotEvent } from './Events';
 import { fileURLToPath } from 'url';
 import { dirname, relative } from 'path';
+
+import {
+  Client,
+  Collection,
+  ApplicationCommandOptionData,
+  ApplicationCommandDataResolvable,
+} from 'discord.js';
+
+import glob from 'fast-glob';
+import { DataType, ICommand, IOption } from 'cli-processor';
+import { BotCommand } from './Commands';
+import { BotEvent } from './Events';
 
 /**
  * A discord bot.
@@ -30,13 +38,13 @@ export abstract class Bot extends Client {
   abstract eventsPath: string;
 
   async init(): Promise<void> {
-    await this._setCommands();
-    await this._setEvents();
+    await this.registerCommands();
+    await this.registerEvents();
 
     this.login(this.token).catch(console.error);
   }
 
-  private async _setEvents(): Promise<void> {
+  async registerEvents(): Promise<void> {
     const paths = await this._getRelativeFilePaths(this.eventsPath);
     const classes = await this._getClassesFromPaths(paths);
 
@@ -50,7 +58,10 @@ export abstract class Bot extends Client {
     });
   }
 
-  private async _setCommands(): Promise<void> {
+  /**
+   * Registering default commands.
+   */
+  async registerCommands(): Promise<void> {
     const paths = await this._getRelativeFilePaths(this.commandsPath);
     const classes = await this._getClassesFromPaths(paths);
 
@@ -60,6 +71,67 @@ export abstract class Bot extends Client {
 
       this.commands.set(command.name, command);
     });
+  }
+
+  /**
+   * Registering slash commands.
+   */
+  async registerSlashCommands(): Promise<void> {
+    const getDataType = (type: DataType) => {
+      switch (type) {
+        case DataType.Integer: return 'INTEGER';
+        case DataType.Float: return 'NUMBER';
+        case DataType.Boolean: return 'BOOLEAN';
+        case DataType.String: return 'STRING';
+        case DataType.Object: return 'ATTACHMENT';
+      }
+    };
+
+    const createChoice = (choice: any) => {
+      return {
+        name: choice,
+        value: choice,
+      };
+    };
+
+    const createOption = (option: IOption) => {
+      return {
+        name: option.name,
+        description: option.shortDescription || option.description,
+        choices: option.choices.map(createChoice),
+        type: getDataType(option.dataType),
+      } as ApplicationCommandOptionData;
+    };
+
+    const createSubcommand = (command: ICommand) => {
+      return {
+        name: command.name,
+        description: command.shortDescription || command.description,
+        options: command.options.map(createOption),
+        type: 'SUB_COMMAND',
+      } as ApplicationCommandOptionData;
+    };
+
+    const createCommand = (command: ICommand) => {
+      const subcommands = [];
+
+      for (const subcommand of command.subcommands.values()) {
+        subcommands.push(createSubcommand(subcommand));
+      }
+
+      return {
+        name: command.name,
+        description: command.shortDescription || command.description,
+        options: [
+          ...subcommands,
+          ...command.options.map(createOption),
+        ],
+      } as ApplicationCommandDataResolvable;
+    };
+
+    for (const command of this.commands.values()) {
+      await this.application?.commands.create(createCommand(command));
+    }
   }
 
   private async _getClassesFromPaths(paths: string[]): Promise<(new () => unknown)[]> {

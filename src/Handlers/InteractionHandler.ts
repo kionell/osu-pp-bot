@@ -1,6 +1,7 @@
-import { MessageInteraction } from 'discord.js';
+import { Interaction } from 'discord.js';
+import { IDiscordChannelResponse } from '@Core/REST';
 import { Handler } from './Handler';
 
 export abstract class InteractionHandler extends Handler {
-  abstract handleInteraction(interaction: MessageInteraction): any;
+  abstract handleInteraction(interaction: Interaction, channel: IDiscordChannelResponse): any;
 }
