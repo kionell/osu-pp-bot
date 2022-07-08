@@ -1,5 +1,5 @@
 import { GameMode } from '@kionell/osu-api';
-import { Category } from '../../Commands';
+import { Category } from '../../Commands/Enums';
 import { IHitStatistics } from '../../REST';
 
 export function formatCategoryName(category: Category): string {

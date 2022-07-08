@@ -47,7 +47,7 @@ export class GeneralHelpEmbed extends ExtendedEmbed {
   }
 
   protected _createEmbedFooter(): MessageEmbedFooter {
-    const { server } = this._options.channel;
+    const { server } = this._options.cachedChannel;
 
     const prefix = server?.prefix ?? process.env.DEFAULT_PREFIX ?? '';
     const example = `\`${prefix}help <command>\``;

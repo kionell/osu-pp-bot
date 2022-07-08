@@ -1,13 +1,11 @@
-import { Argument, IHasArgument } from 'cli-processor';
 import { APIFactory, GameMode, URLScanner } from '@kionell/osu-api';
 import { AttachmentType, BotCommand, CommandAttachments, ICommandOptions, IHasAttachments } from '@Core/Commands';
-import { EmbedShipment } from '@Core/Embeds';
 import { IScoreOptionsDto, RESTClient } from '@Core/REST';
 import { getBeatmapIdFromMessage } from '@Core/Utils';
 import { EmbedFactory } from '@Embeds';
-import { ModsFlag, SearchFlag } from '@Flags';
+import { BeatmapArgument, ModsFlag, SearchFlag } from '@Options';
 
-export abstract class SimulateCommand extends BotCommand implements IHasAttachments, IHasArgument {
+export abstract class SimulateCommand extends BotCommand implements IHasAttachments {
   description = [
     'Allows you to simulate osu! scores.',
     'Non-submitted beatmaps are also supported.',
@@ -19,11 +17,7 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
     '\n\t**5. Channel history** - this bot can use embeds of __almost all popular osu! bots__ to save beatmap ID.',
   ].join(' ');
 
-  arg = new Argument<string>({
-    description: 'Beatmap ID or URL',
-    isRequired: false,
-    minLength: 1,
-  });
+  shortDescription = 'Allows you to simulate osu! scores.';
 
   /**
    * Attachments of this command.
@@ -33,8 +27,9 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
   constructor() {
     super();
 
-    this.registerFlag(new ModsFlag());
-    this.registerFlag(new SearchFlag());
+    this.addOption(new BeatmapArgument());
+    this.addOption(new ModsFlag());
+    this.addOption(new SearchFlag());
   }
 
   async execute(options: ICommandOptions): Promise<void> {
@@ -45,9 +40,11 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
 
     const embed = EmbedFactory.createScoreEmbed(score, urlGenerator);
 
-    const shipment = new EmbedShipment(options.msg);
+    if (!embed) return;
 
-    await shipment.embeds(await embed.build()).send();
+    await this._getEmbedShipment(options)
+      .embeds(await embed.build())
+      .send();
   }
 
   protected _getScoreDto(options: ICommandOptions): IScoreOptionsDto {
@@ -60,7 +57,7 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
       dto.beatmapId = targetBeatmap;
     }
 
-    const targetSearch = this.getFlagValue(SearchFlag);
+    const targetSearch = this.getValue(SearchFlag);
 
     if (typeof targetSearch === 'string') {
       dto.search = targetSearch;
@@ -92,7 +89,7 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
       dto.rulesetId = targetRuleset;
     }
 
-    const targetMods = this.getFlagValueOrDefault(ModsFlag);
+    const targetMods = this.getValueOrDefault(ModsFlag);
     const modsNumber = Number(targetMods);
 
     dto.mods = !isNaN(modsNumber) ? modsNumber : targetMods;
@@ -101,12 +98,13 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
   }
 
   protected _getTargetBeatmap(scanner: URLScanner, options: ICommandOptions): number | null {
-    const targetBeatmap = this.getValue(this.arg);
+    const targetBeatmap = this.getValue(BeatmapArgument);
 
-    const raw = targetBeatmap?.length ? Number(targetBeatmap) : null;
-    const scanned = getBeatmapIdFromMessage(scanner, options.msg);
+    const raw = Number(targetBeatmap);
+    const url = scanner.getBeatmapIdFromURL(targetBeatmap);
+    const reference = options.msg ? getBeatmapIdFromMessage(scanner, options.msg) : 0;
 
-    return raw || scanned || options.channel.beatmapId;
+    return raw || url || reference || options.cachedChannel.beatmapId;
   }
 
   protected abstract _getRulesetId(): GameMode | null;

@@ -10,8 +10,8 @@ import {
   ComboFlag,
   PercentComboFlag,
   AccuracyFlag,
-  ScoreFlag,
-} from '@Flags';
+  TotalScoreFlag,
+} from 'src/Options';
 
 export class DefaultSimulateCommand extends SimulateCommand {
   name = 'simulate';
@@ -25,13 +25,13 @@ export class DefaultSimulateCommand extends SimulateCommand {
   constructor() {
     super();
 
-    this.registerFlag(new MissFlag());
-    this.registerFlag(new MehFlag());
-    this.registerFlag(new GoodFlag());
-    this.registerFlag(new ComboFlag());
-    this.registerFlag(new PercentComboFlag());
-    this.registerFlag(new AccuracyFlag());
-    this.registerFlag(new ScoreFlag());
+    this.addOption(new MissFlag());
+    this.addOption(new MehFlag());
+    this.addOption(new GoodFlag());
+    this.addOption(new ComboFlag());
+    this.addOption(new PercentComboFlag());
+    this.addOption(new AccuracyFlag());
+    this.addOption(new TotalScoreFlag());
   }
 
   protected _getRulesetId(): GameMode | null {
@@ -41,21 +41,13 @@ export class DefaultSimulateCommand extends SimulateCommand {
   protected _getScoreDto(options: ICommandOptions): IScoreOptionsDto {
     const dto = super._getScoreDto(options);
 
-    const countMiss = this.getFlagValue(MissFlag);
-    const count50 = this.getFlagValue(MehFlag);
-    const count100 = this.getFlagValue(GoodFlag);
-    const maxCombo = this.getFlagValue(ComboFlag);
-    const percentCombo = this.getFlagValue(PercentComboFlag);
-    const accuracy = this.getFlagValue(AccuracyFlag);
-    const totalScore = this.getFlagValue(ScoreFlag);
-
-    if (countMiss) dto.countMiss = countMiss;
-    if (count50) dto.count50 = count50;
-    if (count100) dto.count100 = count100;
-    if (maxCombo) dto.maxCombo = maxCombo;
-    if (percentCombo) dto.percentCombo = percentCombo;
-    if (accuracy) dto.accuracy = accuracy;
-    if (totalScore) dto.totalScore = totalScore;
+    dto.countMiss = this.getValue(MissFlag) ?? dto.countMiss;
+    dto.count50 = this.getValue(MehFlag) ?? dto.count50;
+    dto.count100 = this.getValue(GoodFlag) ?? dto.count100;
+    dto.maxCombo = this.getValue(ComboFlag) ?? dto.maxCombo;
+    dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
+    dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
+    dto.totalScore = this.getValue(TotalScoreFlag) ?? dto.totalScore;
 
     return dto;
   }

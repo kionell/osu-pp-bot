@@ -2,7 +2,7 @@ import { GameMode } from '@kionell/osu-api';
 import { IScoreOptionsDto } from '@Core/REST';
 import { Category, ICommandOptions } from '@Core/Commands';
 import { SimulateCommand } from './SimulateCommand';
-import { ScoreFlag } from '@Flags';
+import { TotalScoreFlag } from '@Options';
 
 export class ManiaSimulateCommand extends SimulateCommand {
   name = 'maniasimulate';
@@ -16,7 +16,7 @@ export class ManiaSimulateCommand extends SimulateCommand {
   constructor() {
     super();
 
-    this.registerFlag(new ScoreFlag());
+    this.addOption(new TotalScoreFlag());
   }
 
   protected _getRulesetId(): GameMode | null {
@@ -26,9 +26,7 @@ export class ManiaSimulateCommand extends SimulateCommand {
   protected _getScoreDto(options: ICommandOptions): IScoreOptionsDto {
     const dto = super._getScoreDto(options);
 
-    const totalScore = this.getFlagValue(ScoreFlag);
-
-    if (totalScore) dto.totalScore = totalScore;
+    dto.totalScore = this.getValue(TotalScoreFlag) ?? dto.totalScore;
 
     return dto;
   }

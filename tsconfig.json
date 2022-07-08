@@ -18,7 +18,7 @@
       "@Core/*": ["src/Core/*"],
       "@Embeds": ["src/Embeds"],
       "@Events": ["src/Events"],
-      "@Flags": ["src/Flags"],
+      "@Options": ["src/Options"],
       "@Handlers": ["src/Handlers"]
     },
   },

@@ -1,56 +1,49 @@
 import {
-  Argument,
   CommandParser,
-  type IHasArgument,
-  type ICommand,
-  type IHasFlags,
+  ICommand,
 } from 'cli-processor';
 
 import {
-  type ICommandOptions,
+  ICommandOptions,
   BotCommand,
   Category,
 } from '@Core/Commands';
 
-import { EmbedShipment, ExtendedEmbed } from '@Core/Embeds';
+import { ExtendedEmbed } from '@Core/Embeds';
 import { EmbedFactory, GeneralHelpEmbed } from '@Embeds';
+import { CommandArgument } from '@Options';
 
-export class HelpCommand extends BotCommand implements IHasArgument {
+export class HelpCommand extends BotCommand {
   name = 'help';
 
   aliases = [
     'h',
   ];
 
-  examples = [
-    `${this.name} beatmap`,
-    `${this.name} score`,
-  ];
-
   title = 'Help command';
 
   description = 'Gives you information about a command or subcommand';
 
-  arg = new Argument<string>({
-    description: 'command line',
-    isRequired: false,
-    maxLength: Infinity,
-  });
-
   category = Category.Information;
 
+  constructor() {
+    super();
+
+    this.addOption(new CommandArgument());
+  }
+
   async execute(options: ICommandOptions): Promise<void> {
-    const targetCommand = this.getValue(this.arg);
+    const targetCommand = this.getValue(CommandArgument);
 
     const embed = targetCommand
       ? this._getCommandHelpEmbed(targetCommand, options)
       : this._getGeneralHelpEmbed(options);
 
-    const shipment = new EmbedShipment(options.msg);
+    if (!embed) return;
 
-    if (embed) {
-      await shipment.embeds(await embed.build()).send();
-    }
+    await this._getEmbedShipment(options)
+      .embeds(await embed.build())
+      .send();
   }
 
   protected _getCommandHelpEmbed(target: string, options: ICommandOptions): ExtendedEmbed {
@@ -62,17 +55,17 @@ export class HelpCommand extends BotCommand implements IHasArgument {
     });
 
     const data = parser.parse(target);
-    const last = data.tree.last as ICommand & IHasFlags;
+    const last = data.tree.last as ICommand;
 
     /**
      * When command parser builds a command tree, it creates a copy 
      * of a command and replaces original flags with parsed flags.
      * We need to get original flags to display them on embed. 
      */
-    if (last?.flags) {
+    if (last?.options) {
       const Command = last.constructor as new () => typeof last;
 
-      last.flags = new Command().flags;
+      last.options = new Command().options;
     }
 
     return EmbedFactory.createCommandHelpEmbed(data);

@@ -1,26 +1,16 @@
 import { MessageAttachment } from 'discord.js';
-import { Argument, IHasArgument } from 'cli-processor';
 import { APIFactory, getRulesetId, getServerName, URLScanner } from '@kionell/osu-api';
 import { BotCommand, CommandAttachments, AttachmentType, ICommandOptions, IHasAttachments, Category } from '@Core/Commands';
 import { IBeatmapOptionsDto, RESTClient } from '@Core/REST';
-import { EmbedShipment } from '@Core/Embeds';
 import { getBeatmapIdFromMessage } from '@Core/Utils';
-import { ModsFlag, RulesetFlag, SearchFlag, ServerFlag } from '@Flags';
+import { BeatmapArgument, ModsFlag, RulesetFlag, SearchFlag, ServerFlag } from 'src/Options';
 import { EmbedFactory } from '@Embeds';
 
-export class BeatmapCommand extends BotCommand implements IHasAttachments, IHasArgument {
+export class BeatmapCommand extends BotCommand implements IHasAttachments {
   name = 'beatmap';
 
   aliases = [
     'map', 'm', 'b',
-  ];
-
-  examples = [
-    `${this.name} 1626530 --${ModsFlag.examples[0]} --${RulesetFlag.examples[0]}`,
-    `${this.name} --${RulesetFlag.examples[3]} +ezhtnf`,
-    `${this.name} --${SearchFlag.examples[2]}`,
-    `${this.name} https://osu.ppy.sh/beatmapsets/773801#osu/1626530`,
-    'https://old.ppy.sh/b/3456523?m=3 +dt',
   ];
 
   title = 'Beatmap command';
@@ -36,11 +26,7 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments, IHasA
     '\n**5. Channel history** - this bot can use embeds of __almost all popular osu! bots__ to save beatmap ID.',
   ].join(' ');
 
-  arg = new Argument<string>({
-    description: 'ID or URL',
-    isRequired: false,
-    minLength: 1,
-  });
+  shortDescription = 'Gives you information about a beatmap.';
 
   category = Category.Osu;
 
@@ -52,10 +38,11 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments, IHasA
   constructor() {
     super();
 
-    this.registerFlag(new ModsFlag());
-    this.registerFlag(new RulesetFlag());
-    this.registerFlag(new SearchFlag());
-    this.registerFlag(new ServerFlag());
+    this.addOption(new BeatmapArgument());
+    this.addOption(new ModsFlag());
+    this.addOption(new RulesetFlag());
+    this.addOption(new SearchFlag());
+    this.addOption(new ServerFlag());
   }
 
   async execute(options: ICommandOptions): Promise<void> {
@@ -69,9 +56,7 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments, IHasA
 
     const embed = EmbedFactory.createBeatmapEmbed(beatmap, generator);
 
-    const shipment = new EmbedShipment(options.msg);
-
-    await shipment
+    await this._getEmbedShipment(options)
       .embeds(await embed.build())
       .attachments(graphAttachment)
       .send();
@@ -99,7 +84,7 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments, IHasA
       dto.rulesetId = targetRuleset;
     }
 
-    const targetSearch = this.getFlagValue(SearchFlag);
+    const targetSearch = this.getValue(SearchFlag);
 
     if (typeof targetSearch === 'string') {
       dto.search = targetSearch;
@@ -125,7 +110,7 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments, IHasA
       dto.replayURL = replayAttachment.url;
     }
 
-    const targetMods = this.getFlagValueOrDefault(ModsFlag);
+    const targetMods = this.getValueOrDefault(ModsFlag);
     const modsNumber = Number(targetMods);
 
     dto.mods = !isNaN(modsNumber) ? modsNumber : targetMods;
@@ -134,23 +119,24 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments, IHasA
   }
 
   protected _getTargetBeatmap(scanner: URLScanner, options: ICommandOptions): number | null {
-    const targetBeatmap = this.getValue(this.arg);
+    const targetBeatmap = this.getValue(BeatmapArgument);
 
-    const raw = targetBeatmap?.length ? Number(targetBeatmap) : null;
-    const scanned = getBeatmapIdFromMessage(scanner, options.msg);
+    const raw = Number(targetBeatmap);
+    const url = scanner.getBeatmapIdFromURL(targetBeatmap);
+    const reference = options.msg ? getBeatmapIdFromMessage(scanner, options.msg) : 0;
 
-    return raw || scanned || options.channel.beatmapId;
+    return raw || url || reference || options.cachedChannel.beatmapId;
   }
 
   protected _getTargetServer(): ReturnType<typeof getServerName> {
-    const targetBeatmap = this.getValue(this.arg);
+    const targetBeatmap = this.getValue(BeatmapArgument);
 
-    return this.getFlagValue(ServerFlag) ?? getServerName(targetBeatmap);
+    return this.getValue(ServerFlag) ?? getServerName(targetBeatmap);
   }
 
   protected _getTargetRuleset(scanner: URLScanner): number | null {
-    const targetBeatmap = this.getValue(this.arg);
-    const targetRuleset = this.getFlagValue(RulesetFlag);
+    const targetBeatmap = this.getValue(BeatmapArgument);
+    const targetRuleset = this.getValue(RulesetFlag);
 
     const scanned = scanner.getRulesetIdFromURL(targetBeatmap);
     const input = Number(targetRuleset) || targetRuleset || scanned;

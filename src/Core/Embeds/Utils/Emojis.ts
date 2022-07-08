@@ -1,7 +1,7 @@
 import { GameMode, RankStatus } from '@kionell/osu-api';
 import { ScoreRank } from 'osu-classes';
 import { Emoji } from '../Enums';
-import { Category } from '../../Commands';
+import { Category } from '../../Commands/Enums';
 
 export function getRankStatusEmoji(status: RankStatus): Emoji {
   switch (status) {

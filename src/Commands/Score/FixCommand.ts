@@ -1,5 +1,5 @@
-import { Message } from 'discord.js';
 import { IScoreOptionsDto } from '@Core/REST';
+import { ICommandOptions } from '@Core/Commands';
 import { ScoreCommand } from './ScoreCommand';
 
 export class FixCommand extends ScoreCommand {
@@ -9,8 +9,8 @@ export class FixCommand extends ScoreCommand {
 
   description = 'Allows you to unchoke a specific score';
 
-  protected _getScoreDto(msg: Message): IScoreOptionsDto {
-    const dto = super._getScoreDto(msg);
+  protected _getScoreDto(options: ICommandOptions): IScoreOptionsDto {
+    const dto = super._getScoreDto(options);
 
     dto.fix = true;
 

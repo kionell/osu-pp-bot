@@ -9,7 +9,7 @@ import {
   ComboFlag,
   PercentComboFlag,
   AccuracyFlag,
-} from '@Flags';
+} from 'src/Options';
 
 export class TaikoSimulateCommand extends SimulateCommand {
   name = 'taikosimulate';
@@ -23,11 +23,11 @@ export class TaikoSimulateCommand extends SimulateCommand {
   constructor() {
     super();
 
-    this.registerFlag(new MissFlag());
-    this.registerFlag(new GoodFlag());
-    this.registerFlag(new ComboFlag());
-    this.registerFlag(new PercentComboFlag());
-    this.registerFlag(new AccuracyFlag());
+    this.addOption(new MissFlag());
+    this.addOption(new GoodFlag());
+    this.addOption(new ComboFlag());
+    this.addOption(new PercentComboFlag());
+    this.addOption(new AccuracyFlag());
   }
 
   protected _getRulesetId(): GameMode | null {
@@ -37,17 +37,11 @@ export class TaikoSimulateCommand extends SimulateCommand {
   protected _getScoreDto(options: ICommandOptions): IScoreOptionsDto {
     const dto = super._getScoreDto(options);
 
-    const countMiss = this.getFlagValue(MissFlag);
-    const count100 = this.getFlagValue(GoodFlag);
-    const maxCombo = this.getFlagValue(ComboFlag);
-    const percentCombo = this.getFlagValue(PercentComboFlag);
-    const accuracy = this.getFlagValue(AccuracyFlag);
-
-    if (countMiss) dto.countMiss = countMiss;
-    if (count100) dto.count100 = count100;
-    if (maxCombo) dto.maxCombo = maxCombo;
-    if (percentCombo) dto.percentCombo = percentCombo;
-    if (accuracy) dto.accuracy = accuracy;
+    dto.countMiss = this.getValue(MissFlag) ?? dto.countMiss;
+    dto.count100 = this.getValue(GoodFlag) ?? dto.count100;
+    dto.maxCombo = this.getValue(ComboFlag) ?? dto.maxCombo;
+    dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
+    dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
 
     return dto;
   }

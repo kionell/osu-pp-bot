@@ -1,25 +1,16 @@
-import { Message } from 'discord.js';
-import { Argument, IHasArgument } from 'cli-processor';
 import { APIFactory, getRulesetId, getServerName, URLScanner } from '@kionell/osu-api';
 import { BotCommand, CommandAttachments, AttachmentType, ICommandOptions, IHasAttachments, Category } from '@Core/Commands';
 import { IScoreOptionsDto, RESTClient } from '@Core/REST';
-import { EmbedShipment } from '@Core/Embeds';
 import { getScoreIdFromMessage } from '@Core/Utils';
-import { ServerFlag } from '@Flags';
+import { ScoreArgument, ServerFlag } from 'src/Options';
 import { EmbedFactory } from '@Embeds';
 
-export class ScoreCommand extends BotCommand implements IHasAttachments, IHasArgument {
+export class ScoreCommand extends BotCommand implements IHasAttachments {
   name = 'score';
 
   title = 'Score command';
 
   description = 'Gives you information about a score';
-
-  arg = new Argument<string>({
-    description: 'Score URL',
-    isRequired: false,
-    minLength: 1,
-  });
 
   category = Category.Osu;
 
@@ -31,26 +22,25 @@ export class ScoreCommand extends BotCommand implements IHasAttachments, IHasArg
   constructor(params?: Partial<ScoreCommand>) {
     super(params);
 
-    this.registerFlag(new ServerFlag());
+    this.addOption(new ScoreArgument());
+    this.addOption(new ServerFlag());
   }
 
-  async execute({ msg }: ICommandOptions): Promise<void> {
+  async execute(options: ICommandOptions): Promise<void> {
     const targetServer = this._getTargetServer();
     const generator = APIFactory.createURLGenerator(targetServer);
 
-    const dto = this._getScoreDto(msg);
+    const dto = this._getScoreDto(options);
     const score = await RESTClient.calculateScore(dto);
 
     const embed = EmbedFactory.createScoreEmbed(score, generator);
 
-    const shipment = new EmbedShipment(msg);
-
-    await shipment
+    await this._getEmbedShipment(options)
       .embeds(await embed.build())
       .send();
   }
 
-  protected _getScoreDto(msg: Message): IScoreOptionsDto {
+  protected _getScoreDto(options: ICommandOptions): IScoreOptionsDto {
     const dto: IScoreOptionsDto = {};
 
     const targetServer = this._getTargetServer();
@@ -60,7 +50,7 @@ export class ScoreCommand extends BotCommand implements IHasAttachments, IHasArg
       dto.server = targetServer;
     }
 
-    const targetScore = this._getTargetScore(scanner, msg);
+    const targetScore = this._getTargetScore(scanner, options);
 
     if (typeof targetScore === 'number') {
       dto.scoreId = targetScore;
@@ -88,17 +78,22 @@ export class ScoreCommand extends BotCommand implements IHasAttachments, IHasArg
   }
 
   protected _getTargetServer(): ReturnType<typeof getServerName> {
-    const targetBeatmap = this.getValue(this.arg);
+    const targetScore = this.getValue(ScoreArgument);
 
-    return this.getFlagValue(ServerFlag) ?? getServerName(targetBeatmap);
+    return this.getValue(ServerFlag) ?? getServerName(targetScore);
   }
 
-  protected _getTargetScore(scanner: URLScanner, msg: Message): number | null {
-    return getScoreIdFromMessage(scanner, msg) || null;
+  protected _getTargetScore(scanner: URLScanner, options: ICommandOptions): number | null {
+    const targetScore = this.getValue(ScoreArgument);
+
+    const url = scanner.getScoreIdFromURL(targetScore);
+    const reference = options.msg ? getScoreIdFromMessage(scanner, options.msg) : 0;
+
+    return url || reference || null;
   }
 
   protected _getTargetRuleset(scanner: URLScanner): number | null {
-    const targetScore = this.getValue(this.arg);
+    const targetScore = this.getValue(ScoreArgument);
     const scanned = scanner.getRulesetIdFromURL(targetScore);
 
     return scanned !== null ? getRulesetId(scanned) : null;

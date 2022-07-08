@@ -10,7 +10,7 @@ import {
   ComboFlag,
   AccuracyFlag,
   PercentComboFlag,
-} from '@Flags';
+} from 'src/Options';
 
 export class CatchSimulateCommand extends SimulateCommand {
   name = 'catchsimulate';
@@ -19,24 +19,17 @@ export class CatchSimulateCommand extends SimulateCommand {
 
   title = 'Simulate command (osu!catch)';
 
-  examples = [
-    `${this.name} 1626530 --${MissFlag.examples[0]} --${DropletFlag.examples[0]}`,
-    `${this.name} --${AccuracyFlag.examples[1]} --${ComboFlag.examples[1]}`,
-    `${this.name} --${PercentComboFlag.examples[1]} --${DropletFlag.examples[1]}`,
-    `${this.name} https://osu.ppy.sh/beatmapsets/773801#osu/1626530`,
-  ];
-
   category = Category.Fruits;
 
   constructor() {
     super();
 
-    this.registerFlag(new MissFlag());
-    this.registerFlag(new TinyDropletFlag());
-    this.registerFlag(new DropletFlag());
-    this.registerFlag(new ComboFlag());
-    this.registerFlag(new PercentComboFlag());
-    this.registerFlag(new AccuracyFlag());
+    this.addOption(new MissFlag());
+    this.addOption(new TinyDropletFlag());
+    this.addOption(new DropletFlag());
+    this.addOption(new ComboFlag());
+    this.addOption(new PercentComboFlag());
+    this.addOption(new AccuracyFlag());
   }
 
   protected _getRulesetId(): GameMode | null {
@@ -46,19 +39,12 @@ export class CatchSimulateCommand extends SimulateCommand {
   protected _getScoreDto(options: ICommandOptions): IScoreOptionsDto {
     const dto = super._getScoreDto(options);
 
-    const countMiss = this.getFlagValue(MissFlag);
-    const countTinyDroplet = this.getFlagValue(TinyDropletFlag);
-    const countDroplet = this.getFlagValue(DropletFlag);
-    const maxCombo = this.getFlagValue(ComboFlag);
-    const percentCombo = this.getFlagValue(PercentComboFlag);
-    const accuracy = this.getFlagValue(AccuracyFlag);
-
-    if (countMiss) dto.countMiss = countMiss;
-    if (countTinyDroplet) dto.count50 = countTinyDroplet;
-    if (countDroplet) dto.count100 = countDroplet;
-    if (maxCombo) dto.maxCombo = maxCombo;
-    if (percentCombo) dto.percentCombo = percentCombo;
-    if (accuracy) dto.accuracy = accuracy;
+    dto.countMiss = this.getValue(MissFlag) ?? dto.countMiss;
+    dto.count50 = this.getValue(TinyDropletFlag) ?? dto.count50;
+    dto.count100 = this.getValue(DropletFlag) ?? dto.count100;
+    dto.maxCombo = this.getValue(ComboFlag) ?? dto.maxCombo;
+    dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
+    dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
 
     return dto;
   }

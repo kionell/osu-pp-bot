@@ -10,15 +10,17 @@ export class PrefixResetSubcommand extends BotCommand {
 
   category = Category.Utility;
 
-  async execute({ channel, msg }: ICommandOptions): Promise<void> {
-    if (!channel.server) {
+  async execute({ cachedChannel, msg, interaction }: ICommandOptions): Promise<void> {
+    if (!cachedChannel.server) {
       throw new Error('Prefixes are not supported in direct messages!');
     }
 
-    channel.server.prefix = null;
+    cachedChannel.server.prefix = null;
 
-    await RESTClient.upsertDiscordChannel(channel);
+    await RESTClient.upsertDiscordChannel(cachedChannel);
 
-    await msg.channel.send('Prefix on the server has been reset to default.');
+    const answer = msg?.channel.send ?? interaction?.followUp;
+
+    await answer?.('Prefix on the server has been reset to default.');
   }
 }

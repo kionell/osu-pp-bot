@@ -1,4 +1,4 @@
-import { CommandData, IArgument, ICommand, IFlag, IHasArgument } from 'cli-processor';
+import { CommandData, ICommand, IFlag, IOption, OptionType } from 'cli-processor';
 import { EmbedField, MessageEmbedAuthor } from 'discord.js';
 import { ExtendedEmbed, getCategoryIconURL } from '@Core/Embeds';
 import { BotCommand } from '@Core/Commands';
@@ -28,16 +28,19 @@ export class CommandHelpEmbed extends ExtendedEmbed {
   }
 
   protected _createEmbedFields(): EmbedField[] {
+    const args = this._command?.options.filter((o) => o.type === OptionType.Argument);
+    const flags = this._command?.options?.filter((o) => o.type === OptionType.Flag);
+
     const fields = [
-      this._createUsageField(),
+      this._createUsageField(args as IOption[]),
     ];
 
     if (this._command?.subcommands.size) {
       fields.push(this._createSubcommandsField());
     }
 
-    if (this._command?.flags.size) {
-      fields.push(this._createFlagsField());
+    if (typeof flags !== 'undefined' && flags.length) {
+      fields.push(this._createFlagsField(flags as IFlag[]));
     }
 
     if (this._command?.examples.length) {
@@ -51,7 +54,7 @@ export class CommandHelpEmbed extends ExtendedEmbed {
     return fields;
   }
 
-  protected _createUsageField(): EmbedField {
+  protected _createUsageField(args: IOption[]): EmbedField {
     const template = [
       this._command?.name ?? '',
     ];
@@ -60,7 +63,9 @@ export class CommandHelpEmbed extends ExtendedEmbed {
       template.push('<subcommand>');
     }
 
-    template.push(this._stringifyArg(this._commandData.arg));
+    args?.forEach((arg) => {
+      template.push(this._stringifyArg(arg));
+    });
 
     const usage = '```' + template.join(' ') + '```';
 
@@ -77,14 +82,14 @@ export class CommandHelpEmbed extends ExtendedEmbed {
     return this._createField('**[Subcommands]**', subcommands.join('\n'));
   }
 
-  protected _createFlagsField(): EmbedField {
-    const flags: string[] = [];
+  protected _createFlagsField(flags: IFlag[]): EmbedField {
+    const template: string[] = [];
 
-    this._command?.flags.forEach((flag) => {
-      flags.push(this._stringifyFlag(flag));
+    flags.forEach((flag) => {
+      template.push(this._stringifyFlag(flag));
     });
 
-    return this._createField('**[Flags]**', flags.join('\n'));
+    return this._createField('**[Flags]**', template.join('\n'));
   }
 
   protected _createExamplesField(): EmbedField {
@@ -104,21 +109,17 @@ export class CommandHelpEmbed extends ExtendedEmbed {
   }
 
   protected _stringifyFlag(flag: IFlag): string {
-    const flagWithArg = flag as IFlag & IHasArgument;
-
     const short = flag.shortPrefix + flag.shortName;
     const full = flag.prefix + flag.name;
-    const arg = this._stringifyArg(flagWithArg.arg);
+    const arg = this._stringifyArg(flag);
 
     return `\`${short}|${full} ${arg}\` - ${flag.description}`;
   }
 
-  protected _stringifyArg(arg: IArgument | null): string {
-    if (!arg) return '';
-
+  protected _stringifyArg(arg: IOption): string {
     return [
       arg.isRequired ? '<' : '[',
-      arg.description,
+      arg.expected,
       arg.isRequired ? '>' : ']',
     ].join('');
   }
