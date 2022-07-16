@@ -141,7 +141,7 @@ export abstract class BeatmapEmbed extends ExtendedEmbed {
   }
 
   protected _getPerformanceTitles(): string[] {
-    return ['Acc', '95%', '97%', '99%', '100%'];
+    return ['Acc', '95%', '99%', '100%'];
   }
 
   protected _getPerformanceValues(): string[][] {

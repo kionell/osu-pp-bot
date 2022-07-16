@@ -18,7 +18,7 @@ export class ManiaBeatmapEmbed extends BeatmapEmbed {
   protected _getPerformanceTitles(): string[] {
     const difficulty = this._beatmap.difficulty as IManiaDifficulty;
 
-    const values = [ 7e5, 8e5, 9e5, 1e6 ].map((totalScore) => {
+    const values = [ 8e5, 9e5, 1e6 ].map((totalScore) => {
       return formatTotalScore(totalScore, difficulty.scoreMultiplier);
     });
 
