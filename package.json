@@ -19,7 +19,7 @@
     "dotenv": "^16.0.1",
     "fast-glob": "^3.2.10",
     "markdown-table": "^3.0.2",
-    "osu-classes": "^0.8.0",
+    "osu-classes": "^0.9.1",
     "string-width": "^5.1.0"
   },
   "devDependencies": {
