@@ -1,9 +1,9 @@
 /**
- * Discord server data.
+ * Chat server data.
  */
-export interface IDiscordServerDto {
+export interface IChatServerDto {
   /**
-   * Discord server ID.
+   * Chat server ID.
    */
   id: string | number;
 

@@ -1,11 +1,11 @@
 import { GuildMember, CommandInteraction, CommandInteractionOption } from 'discord.js';
 import { CommandData, CommandParser, ICommand } from 'cli-processor';
 import { InteractionHandler } from './InteractionHandler';
-import { IDiscordChannelResponse } from '@Core/REST';
+import { IChatChannelResponse } from '@Core/REST';
 import { Bot } from '@Core/Bot';
 
 export class ApplicationCommandHandler extends InteractionHandler {
-  async handleInteraction(interaction: CommandInteraction, cachedChannel: IDiscordChannelResponse): Promise<any> {
+  async handleInteraction(interaction: CommandInteraction, cachedChannel: IChatChannelResponse): Promise<any> {
     await interaction.deferReply();
 
     const bot = interaction.client as Bot;

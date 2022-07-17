@@ -1,9 +1,9 @@
 /**
- * Nested discord server object.
+ * Nested chat server object.
  */
-export interface IDiscordServer {
+export interface IChatServer {
   /**
-   * Discord server ID.
+   * Chat server ID.
    */
   id: string;
 

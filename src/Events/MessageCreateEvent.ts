@@ -14,19 +14,19 @@ export class MessageCreateEvent extends MessageEvent {
 
   async handle(msg: Message): Promise<void> {
     try {
-      const channel = await MessageEvent.getDatabaseDiscordChannel(msg);
+      const cachedChannel = await MessageEvent.getDatabaseChatChannel(msg);
 
-      if (!channel) return;
+      if (!cachedChannel) return;
 
-      await MessageEvent.updateLastBeatmapId(msg, channel);
+      await MessageEvent.updateLastBeatmapId(msg, cachedChannel);
 
       if (!MessageEvent.validateMessage(msg)) return;
 
-      if (await new ScoreAttachmentHandler().handleMessage(msg, channel)) return;
-      if (await new BeatmapAttachmentHandler().handleMessage(msg, channel)) return;
-      if (await new MessageCommandHandler().handleMessage(msg, channel)) return;
-      if (await new BeatmapURLHandler().handleMessage(msg, channel)) return;
-      if (await new ScoreURLHandler().handleMessage(msg, channel)) return;
+      if (await new ScoreAttachmentHandler().handleMessage(msg, cachedChannel)) return;
+      if (await new BeatmapAttachmentHandler().handleMessage(msg, cachedChannel)) return;
+      if (await new MessageCommandHandler().handleMessage(msg, cachedChannel)) return;
+      if (await new BeatmapURLHandler().handleMessage(msg, cachedChannel)) return;
+      if (await new ScoreURLHandler().handleMessage(msg, cachedChannel)) return;
     }
     catch (err: unknown) {
       const isTimedOut = msg.guild?.me?.isCommunicationDisabled() ?? false;

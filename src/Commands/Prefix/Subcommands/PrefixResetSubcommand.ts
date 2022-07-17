@@ -17,7 +17,7 @@ export class PrefixResetSubcommand extends BotCommand {
 
     cachedChannel.server.prefix = null;
 
-    await RESTClient.upsertDiscordChannel(cachedChannel);
+    await RESTClient.upsertChatChannel(cachedChannel);
 
     const answer = msg?.channel.send ?? interaction?.followUp;
 

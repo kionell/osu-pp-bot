@@ -11,7 +11,7 @@ export class InteractionCreateEvent extends InteractionEvent {
 
   async handle(interaction: Interaction): Promise<void> {
     try {
-      const cachedChannel = await InteractionEvent.getDatabaseDiscordChannel(interaction);
+      const cachedChannel = await InteractionEvent.getDatabaseChatChannel(interaction);
 
       if (!cachedChannel) return;
 

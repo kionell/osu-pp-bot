@@ -1,6 +1,6 @@
 import { APIClient, IAPIResponse, RequestConfig } from '@kionell/osu-api';
-import { IBeatmapOptionsDto, IScoreOptionsDto, IDiscordChannelDto } from './DTO';
-import { IBeatmapResponse, IScoreResponse, IDiscordChannelResponse } from './Interfaces';
+import { IBeatmapOptionsDto, IScoreOptionsDto, IChatChannelDto } from './DTO';
+import { IBeatmapResponse, IChatChannelResponse, IScoreResponse } from './Interfaces';
 
 class RESTClient extends APIClient {
   /**
@@ -90,12 +90,12 @@ class RESTClient extends APIClient {
   }
 
   /**
-   * Finds a discord channel in the database.
-   * @param channelId Discord channel ID.
-   * @returns Discord channel response or null.
+   * Finds a chat channel in the database.
+   * @param channelId Chat channel ID.
+   * @returns Chat channel response or null.
    */
-  async findDiscordChannel(channelId: string | number): Promise<IDiscordChannelResponse | null> {
-    const url = `${process.env.API_ROOT as string}/discord/channels/${channelId}`;
+  async findChatChannel(channelId: string | number): Promise<IChatChannelResponse | null> {
+    const url = `${process.env.API_ROOT as string}/chat/channels/${channelId}`;
     const response = await this._request({
       method: 'GET',
       url,
@@ -107,12 +107,12 @@ class RESTClient extends APIClient {
   }
 
   /**
-   * Upserts a new discord channel in the database.
-   * @param channelDto Discord channel data.
-   * @returns Discord channel response.
+   * Upserts a new chat channel in the database.
+   * @param channelDto Chat channel data.
+   * @returns Chat channel response.
    */
-  async upsertDiscordChannel(options: Partial<IDiscordChannelDto>): Promise<IDiscordChannelResponse> {
-    const url = `${process.env.API_ROOT as string}/discord/channels`;
+  async upsertChatChannel(options: Partial<IChatChannelDto>): Promise<IChatChannelResponse> {
+    const url = `${process.env.API_ROOT as string}/chat/channels`;
     const response = await this._request({
       method: 'POST',
       data: options,

@@ -1,7 +1,7 @@
 import { Interaction } from 'discord.js';
-import { IDiscordChannelResponse } from '@Core/REST';
+import { IChatChannelResponse } from '@Core/REST';
 import { Handler } from './Handler';
 
 export abstract class InteractionHandler extends Handler {
-  abstract handleInteraction(interaction: Interaction, channel: IDiscordChannelResponse): any;
+  abstract handleInteraction(interaction: Interaction, channel: IChatChannelResponse): any;
 }

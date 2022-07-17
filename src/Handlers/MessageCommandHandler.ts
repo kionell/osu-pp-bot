@@ -6,13 +6,13 @@ import {
   ICommand,
 } from 'cli-processor';
 
-import { IDiscordChannelResponse } from '@Core/REST';
+import { IChatChannelResponse } from '@Core/REST';
 import { Bot } from '@Core/Bot';
 import { ModsFlag } from '@Options';
 import { Handler } from './Handler';
 
 export class MessageCommandHandler extends Handler {
-  async handleMessage(msg: Message, cachedChannel: IDiscordChannelResponse): Promise<boolean> {
+  async handleMessage(msg: Message, cachedChannel: IChatChannelResponse): Promise<boolean> {
     const bot = msg.client as Bot;
     const guild = msg.guild;
     const member = msg.member;

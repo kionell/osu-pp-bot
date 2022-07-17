@@ -30,7 +30,7 @@ export class PrefixSetSubcommand extends BotCommand {
 
     cachedChannel.server.prefix = prefix;
 
-    await RESTClient.upsertDiscordChannel(cachedChannel);
+    await RESTClient.upsertChatChannel(cachedChannel);
 
     const answer = msg?.channel.send ?? interaction?.followUp;
 

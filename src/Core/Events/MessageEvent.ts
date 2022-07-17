@@ -4,8 +4,8 @@ import { BotEvent } from './BotEvent';
 
 import {
   RESTClient,
-  IDiscordChannelResponse,
-  IDiscordChannelDto,
+  IChatChannelResponse,
+  IChatChannelDto,
 } from '../REST';
 
 import {
@@ -22,18 +22,18 @@ export abstract class MessageEvent extends BotEvent {
     return !(msg.author.bot || (!msg.content && !msg.embeds && !msg.attachments));
   }
 
-  static async getDatabaseDiscordChannel(msg: Message): Promise<IDiscordChannelResponse | null> {
+  static async getDatabaseChatChannel(msg: Message): Promise<IChatChannelResponse | null> {
     /**
      * If REST API is currently unavailable then we should 
      * disable all bot messages until it became available again.
      */
     if (!RESTClient.isAvailable && msg.author.bot) return null;
 
-    const found = await RESTClient.findDiscordChannel(msg.channelId);
+    const found = await RESTClient.findChatChannel(msg.channelId);
 
     if (found) return found;
 
-    const channelData: Partial<IDiscordChannelDto> = {
+    const channelData: Partial<IChatChannelDto> = {
       id: msg.channelId,
     };
 
@@ -41,10 +41,10 @@ export abstract class MessageEvent extends BotEvent {
       channelData.server = { id: msg.guildId };
     }
 
-    return await RESTClient.upsertDiscordChannel(channelData);
+    return await RESTClient.upsertChatChannel(channelData);
   }
 
-  static async updateLastBeatmapId(msg: Message, cachedChannel: IDiscordChannelResponse): Promise<boolean> {
+  static async updateLastBeatmapId(msg: Message, cachedChannel: IChatChannelResponse): Promise<boolean> {
     const serverName = getServerNameFromMessage(msg);
 
     if (!serverName) return false;
@@ -56,7 +56,7 @@ export abstract class MessageEvent extends BotEvent {
 
     cachedChannel.beatmapId = beatmapId;
 
-    await RESTClient.upsertDiscordChannel(cachedChannel);
+    await RESTClient.upsertChatChannel(cachedChannel);
 
     return true;
   }
