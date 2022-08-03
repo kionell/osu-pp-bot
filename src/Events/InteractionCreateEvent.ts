@@ -36,8 +36,10 @@ export class InteractionCreateEvent extends InteractionEvent {
 
       if (interaction.isCommand()) {
         const commandInteraction = interaction as CommandInteraction;
+        const message = (err as Error).message ?? err;
 
-        commandInteraction.editReply((err as Error).message ?? err);
+        commandInteraction.editReply(message);
+        console.warn(message);
       }
     }
   }

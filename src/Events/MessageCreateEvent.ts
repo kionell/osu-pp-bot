@@ -34,7 +34,10 @@ export class MessageCreateEvent extends MessageEvent {
 
       if (!err || isTimedOut || !hasPermissions) return;
 
-      msg.channel.send((err as Error).message ?? err);
+      const message = (err as Error).message ?? err;
+
+      msg.channel.send(message);
+      console.warn(message);
     }
   }
 }
