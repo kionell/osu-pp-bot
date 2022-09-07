@@ -15,7 +15,7 @@ export abstract class URLHandler extends MessageCommandHandler {
     return commandParser.parse(this._simulateCommandLine(msg));
   }
 
-  protected _preprocessArg(arg: string): string {
+  protected _preprocessArg = (arg: string): string => {
     const serverName = getServerName(arg);
     const scanner = APIFactory.createURLScanner(serverName);
 
@@ -28,7 +28,7 @@ export abstract class URLHandler extends MessageCommandHandler {
     }
 
     return '';
-  }
+  };
 
   /**
    * Converts URL to a part of command line.

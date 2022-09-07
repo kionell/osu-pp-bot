@@ -11,6 +11,8 @@ import { Bot } from '@Core/Bot';
 import { ModsFlag } from '@Options';
 import { Handler } from './Handler';
 
+type ArgPreprocessorFn = (arg: string, i: number, args: string[]) => string;
+
 export class MessageCommandHandler extends Handler {
   async handleMessage(msg: Message, cachedChannel: IChatChannelResponse): Promise<boolean> {
     const bot = msg.client as Bot;
@@ -49,18 +51,18 @@ export class MessageCommandHandler extends Handler {
   protected _simulateCommandLine(msg: Message): string {
     return msg.content
       .split(' ')
-      .map((arg) => this._preprocessArg(arg))
+      .map(this._preprocessArg)
       .filter((x) => x)
       .join(' ');
   }
 
-  protected _preprocessArg(arg: string): string {
+  protected _preprocessArg: ArgPreprocessorFn = (arg: string): string => {
     if (arg.startsWith('+')) {
       return this._convertMods(arg);
     }
 
     return arg;
-  }
+  };
 
   /**
    * Converts mods to a flag.
