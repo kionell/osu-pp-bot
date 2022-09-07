@@ -2,7 +2,7 @@ import { Flag, DataType } from 'cli-processor';
 
 export class ComboFlag extends Flag<number> {
   name = 'combo';
-  shortName = 'c';
+  shortName = 'C';
   title = 'Combo flag';
   description = 'Max combo of a score.';
   expected = 'number';
