@@ -23,14 +23,15 @@ export class MessageCommandHandler extends Handler {
 
     if (!data.isValid) return false;
 
-    if (data.isValid && !this.checkPermissions(guild, member, data.tree)) {
-      throw new Error('You don\'t have enough permissions for this command!');
-    }
-
     /**
      * Simulate message typing if command is valid... 
      */
     await msg.channel.sendTyping();
+
+    if (data.isValid && !this.checkPermissions(guild, member, data.tree)) {
+      throw new Error('You don\'t have enough permissions for this command!');
+    }
+
     await data.execute?.({ data, msg, bot, cachedChannel });
 
     return true;
