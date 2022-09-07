@@ -15,11 +15,12 @@ export abstract class URLHandler extends MessageCommandHandler {
     return commandParser.parse(this._simulateCommandLine(msg));
   }
 
-  protected _preprocessArg = (arg: string): string => {
+  protected _preprocessArg = (arg: string, i: number): string => {
     const serverName = getServerName(arg);
     const scanner = APIFactory.createURLScanner(serverName);
 
-    if (this._isValidURL(arg, scanner)) {
+    // Parse URL only if it's the first argument of a message.
+    if (this._isValidURL(arg, scanner) && i === 0) {
       return this._convertURL(arg);
     }
 
