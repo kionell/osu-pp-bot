@@ -5,6 +5,9 @@ export class RulesetFlag extends Flag<keyof typeof GameMode> {
   name = 'ruleset';
   shortName = 'r';
   title = 'Ruleset flag';
+  prefixAliases = [''];
+  shortPrefixAliases = [''];
+  separatorAliases = ['='];
 
   description = [
     'Used to specify target ruleset ID (`0|1|2|3`) or shortname (`osu|taiko|fruits|catch|mania`).',

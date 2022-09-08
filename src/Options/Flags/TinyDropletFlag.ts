@@ -3,6 +3,9 @@ import { Flag, DataType } from 'cli-processor';
 export class TinyDropletFlag extends Flag<number> {
   name = 'tiny-droplets';
   shortName = 'T';
+  prefixAliases = [''];
+  shortPrefixAliases = [''];
+  separatorAliases = ['='];
   title = 'Tiny droplets flag';
   description = 'The number of tiny droplets of an osu!catch score.';
   expected = 'number';

@@ -5,6 +5,9 @@ export class ServerFlag extends Flag<keyof typeof Server> {
   name = 'server';
   shortName = 's';
   title = 'Server flag';
+  prefixAliases = [''];
+  shortPrefixAliases = [''];
+  separatorAliases = ['='];
 
   description = [
     'Allows you to choose a game server (`Bancho|Gatari|Akatsuki|Ripple`).',

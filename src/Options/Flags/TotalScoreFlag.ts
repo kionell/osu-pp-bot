@@ -3,6 +3,9 @@ import { Flag, DataType } from 'cli-processor';
 export class TotalScoreFlag extends Flag<number> {
   name = 'score';
   shortName = 's';
+  prefixAliases = [''];
+  shortPrefixAliases = [''];
+  separatorAliases = ['='];
   title = 'Total score flag';
   description = 'Total score value of a play.';
   expected = 'number';

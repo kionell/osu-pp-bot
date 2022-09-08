@@ -3,6 +3,9 @@ import { Flag, DataType } from 'cli-processor';
 export class DropletFlag extends Flag<number> {
   name = 'droplets';
   shortName = 'D';
+  prefixAliases = [''];
+  shortPrefixAliases = [''];
+  separatorAliases = ['='];
   title = 'Droplets flag';
   description = 'The number of droplets of an osu!catch score.';
   expected = 'number';

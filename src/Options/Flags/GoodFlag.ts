@@ -3,6 +3,10 @@ import { Flag, DataType } from 'cli-processor';
 export class GoodFlag extends Flag<number> {
   name = 'goods';
   shortName = 'G';
+  aliases = ['n100'];
+  prefixAliases = [''];
+  shortPrefixAliases = [''];
+  separatorAliases = ['='];
   title = 'Goods flag';
   description = 'The number of 100\'s of a score.';
   expected = 'number';

@@ -3,6 +3,10 @@ import { Flag, DataType } from 'cli-processor';
 export class MissFlag extends Flag<number> {
   name = 'misses';
   shortName = 'X';
+  aliases = ['miss'];
+  prefixAliases = [''];
+  shortPrefixAliases = [''];
+  separatorAliases = ['='];
   title = 'Misses flag';
   description = 'The number of misses of a score.';
   expected = 'number';
