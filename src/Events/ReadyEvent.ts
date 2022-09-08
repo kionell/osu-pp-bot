@@ -7,8 +7,11 @@ export class ReadyEvent extends BotEvent {
   once = true;
 
   async handle(bot: Bot): Promise<void> {
+    console.log('Bot is running!');
+    console.log('Registering slash commands...');
+
     await bot.registerSlashCommands();
 
-    console.log('Bot is running!');
+    console.log('Successfuly registered slash commands!');
   }
 }
