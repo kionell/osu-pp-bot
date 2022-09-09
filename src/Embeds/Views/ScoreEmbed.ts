@@ -87,8 +87,8 @@ export abstract class ScoreEmbed extends ExtendedEmbed {
   }
 
   protected _getPerformanceDetails(): string {
-    const performance = formatPerformance(this._score.performance.totalPerformance);
+    const performance = this._score.performance;
 
-    return `${performance} pp`;
+    return formatPerformance(performance.totalPerformance, true);
   }
 }

@@ -1,4 +1,5 @@
-import { formatCombo } from '@Core/Embeds';
+import { IManiaPerformance } from '@Core/REST';
+import { formatCombo, formatPerformance } from '@Core/Embeds';
 import { ScoreEmbed } from './ScoreEmbed';
 
 export class ManiaScoreEmbed extends ScoreEmbed {
@@ -17,5 +18,18 @@ export class ManiaScoreEmbed extends ScoreEmbed {
     }
 
     return combo;
+  }
+
+  protected _getPerformanceDetails(): string {
+    const performance = this._score.performance as IManiaPerformance;
+
+    const base = super._getPerformanceDetails();
+
+    const separated = [
+      `**Strain:** ${formatPerformance(performance.strainPerformance, true)}`,
+      `**Acc:** ${formatPerformance(performance.accuracyPerformance, true)}`,
+    ];
+
+    return `${base} (${separated.join(', ')})`;
   }
 }
