@@ -4,6 +4,7 @@ import { IScoreOptionsDto, RESTClient } from '@Core/REST';
 import { getScoreIdFromMessage } from '@Core/Utils';
 import { ScoreArgument, ServerFlag } from 'src/Options';
 import { EmbedFactory } from '@Embeds';
+import { MessageAttachment } from 'discord.js';
 
 export class ScoreCommand extends BotCommand implements IHasAttachments {
   name = 'score';
@@ -32,12 +33,25 @@ export class ScoreCommand extends BotCommand implements IHasAttachments {
 
     const dto = this._getScoreDto(options);
     const score = await RESTClient.calculateScore(dto);
+    const replayGraph = await RESTClient.getReplayGraph(score.graphFile);
 
     const embed = EmbedFactory.createScoreEmbed(score, generator);
+    const embedShipment = this._getEmbedShipment(options);
 
-    await this._getEmbedShipment(options)
-      .embeds(await embed.build())
-      .send();
+    if (replayGraph) {
+      const graphAttachment = this._createGraphAttachment(replayGraph);
+
+      embed.setCustomImageURL('attachment://lifebar.png');
+
+      embedShipment.attachments(graphAttachment);
+    }
+    else {
+      embed.setCustomImageURL(
+        generator.generateBeatmapCoverURL(score.beatmap.metadata.beatmapsetId),
+      );
+    }
+
+    await embedShipment.embeds(await embed.build()).send();
   }
 
   protected _getScoreDto(options: ICommandOptions): IScoreOptionsDto {
@@ -72,6 +86,7 @@ export class ScoreCommand extends BotCommand implements IHasAttachments {
 
     if (replayAttachment !== null) {
       dto.replayURL = replayAttachment.url;
+      dto.drawGraph = true;
     }
 
     return dto;
@@ -97,5 +112,11 @@ export class ScoreCommand extends BotCommand implements IHasAttachments {
     const scanned = scanner.getRulesetIdFromURL(targetScore);
 
     return scanned !== null ? getRulesetId(scanned) : null;
+  }
+
+  protected _createGraphAttachment(strainGraph: Buffer | null): MessageAttachment | null {
+    if (!strainGraph) return null;
+
+    return new MessageAttachment(strainGraph, 'lifebar.png');
   }
 }

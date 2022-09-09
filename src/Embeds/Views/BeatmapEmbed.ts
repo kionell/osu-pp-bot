@@ -6,7 +6,6 @@ import {
   HexColorString,
   MessageEmbedAuthor,
   MessageEmbedFooter,
-  MessageEmbedImage,
 } from 'discord.js';
 
 import {
@@ -38,12 +37,6 @@ export abstract class BeatmapEmbed extends ExtendedEmbed {
       name: `${artist} - ${title} [${version}]`,
       iconURL: getRulesetIconURL(rulesetId),
       url: this._urlGenerator.generateBeatmapURL(id, rulesetId),
-    };
-  }
-
-  protected _createEmbedImage(): MessageEmbedImage {
-    return {
-      url: 'attachment://strains.png',
     };
   }
 

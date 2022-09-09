@@ -1,4 +1,4 @@
-import { MessageEmbedAuthor, MessageEmbedImage } from 'discord.js';
+import { MessageEmbedAuthor } from 'discord.js';
 import { URLGenerator } from '@kionell/osu-api';
 
 import {
@@ -31,14 +31,6 @@ export abstract class ScoreEmbed extends ExtendedEmbed {
       name: `${artist} - ${title} [${version}]`,
       url: this._urlGenerator.generateBeatmapURL(id),
       iconURL: getRulesetIconURL(rulesetId),
-    };
-  }
-
-  protected _createEmbedImage(): MessageEmbedImage {
-    const { beatmapsetId } = this._score.beatmap.metadata;
-
-    return {
-      url: this._urlGenerator.generateBeatmapCoverURL(beatmapsetId),
     };
   }
 

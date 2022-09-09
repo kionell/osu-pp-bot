@@ -54,6 +54,28 @@ class RESTClient extends APIClient {
   }
 
   /**
+   * Gets replay life bar graph from the server based on its file name.
+   * @param fileName File name of the replay life bar graph.
+   * @returns URL to the replay life bar graph.
+   */
+  async getReplayGraph(fileName?: string): Promise<Buffer | null> {
+    if (!fileName) return null;
+
+    const url = `${process.env.SERVER_ROOT as string}/lifebars/${fileName}`;
+    const response = await this._request({
+      responseType: 'arraybuffer',
+      headers: {
+        'Content-Type': 'image/png',
+      },
+      url,
+    });
+
+    if (response.error) return null;
+
+    return response.data;
+  }
+
+  /**
    * Calculates a score by score options.
    * @param options Score options.
    * @returns Score response from REST API.

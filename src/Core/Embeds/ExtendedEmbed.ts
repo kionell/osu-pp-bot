@@ -11,6 +11,8 @@ import {
 import { Color } from './Enums';
 
 export abstract class ExtendedEmbed extends MessageEmbed {
+  protected _imageURL?: string;
+
   async build(): Promise<this> {
     this.title = this._createEmbedTitle();
     this.url = this._createEmbedURL();
@@ -23,6 +25,10 @@ export abstract class ExtendedEmbed extends MessageEmbed {
     this.color = this._getEmbedColor();
 
     return this;
+  }
+
+  setCustomImageURL(url?: string): void {
+    this._imageURL = url;
   }
 
   protected _getEmbedColor(): number {
@@ -56,7 +62,11 @@ export abstract class ExtendedEmbed extends MessageEmbed {
   }
 
   protected _createEmbedImage(): MessageEmbedImage | null {
-    return null;
+    if (!this._imageURL) return null;
+
+    return {
+      url: this._imageURL,
+    };
   }
 
   protected _createEmbedFooter(): MessageEmbedFooter | null {

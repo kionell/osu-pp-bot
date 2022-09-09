@@ -86,4 +86,9 @@ export interface IScoreResponse {
    * Performance attributes of a score.
    */
   performance: IPerformanceAttributes;
+
+  /**
+   * Replay graph file name.
+   */
+  graphFile?: string;
 }

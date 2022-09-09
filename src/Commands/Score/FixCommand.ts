@@ -14,6 +14,9 @@ export class FixCommand extends ScoreCommand {
 
     dto.fix = true;
 
+    // Don't draw graph for simulated score.
+    dto.drawGraph = false;
+
     return dto;
   }
 }

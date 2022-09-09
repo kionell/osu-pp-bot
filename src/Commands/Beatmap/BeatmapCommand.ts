@@ -52,14 +52,24 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     const dto = this._getBeatmapDto(options);
     const beatmap = await RESTClient.calculateBeatmap(dto);
     const strainGraph = await RESTClient.getBeatmapGraph(beatmap.graphFile);
-    const graphAttachment = this._createGraphAttachment(strainGraph);
 
     const embed = EmbedFactory.createBeatmapEmbed(beatmap, generator);
+    const embedShipment = this._getEmbedShipment(options);
 
-    await this._getEmbedShipment(options)
-      .embeds(await embed.build())
-      .attachments(graphAttachment)
-      .send();
+    if (strainGraph) {
+      const graphAttachment = this._createGraphAttachment(strainGraph);
+
+      embed.setCustomImageURL('attachment://strains.png');
+
+      embedShipment.attachments(graphAttachment);
+    }
+    else {
+      embed.setCustomImageURL(
+        generator.generateBeatmapCoverURL(beatmap.metadata.beatmapsetId),
+      );
+    }
+
+    await embedShipment.embeds(await embed.build()).send();
   }
 
   protected _getBeatmapDto(options: ICommandOptions): IBeatmapOptionsDto {

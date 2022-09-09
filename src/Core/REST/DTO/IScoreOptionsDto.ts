@@ -88,4 +88,9 @@ export interface IScoreOptionsDto {
    * Should this score be fixed to FC?
    */
   fix?: boolean;
+
+  /**
+   * Draw life bar graph?
+   */
+  drawGraph?: boolean;
 }
