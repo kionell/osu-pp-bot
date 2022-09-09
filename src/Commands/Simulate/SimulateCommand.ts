@@ -42,6 +42,10 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
 
     if (!embed) return;
 
+    embed.setCustomImageURL(
+      urlGenerator.generateBeatmapCoverURL(score.beatmap.metadata.beatmapsetId),
+    );
+
     await this._getEmbedShipment(options)
       .embeds(await embed.build())
       .send();
