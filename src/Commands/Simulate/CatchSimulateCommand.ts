@@ -32,7 +32,7 @@ export class CatchSimulateCommand extends SimulateCommand {
     this.addOption(new AccuracyFlag());
   }
 
-  protected _getRulesetId(): GameMode | null {
+  protected _getDefaultRulesetId(): GameMode | null {
     return GameMode.Fruits;
   }
 

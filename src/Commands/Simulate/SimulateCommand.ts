@@ -83,7 +83,7 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
       dto.replayURL = replayAttachment.url;
     }
 
-    const targetRuleset = this._getRulesetId();
+    const targetRuleset = this._getDefaultRulesetId();
 
     if (targetRuleset !== null) {
       dto.rulesetId = targetRuleset;
@@ -107,5 +107,5 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
     return raw || url || reference || options.cachedChannel.beatmapId;
   }
 
-  protected abstract _getRulesetId(): GameMode | null;
+  protected abstract _getDefaultRulesetId(): GameMode | null;
 }

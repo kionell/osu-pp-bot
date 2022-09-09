@@ -1,4 +1,4 @@
-import { GameMode } from '@kionell/osu-api';
+import { GameMode, getRulesetId } from '@kionell/osu-api';
 import { Category, ICommandOptions } from '@Core/Commands';
 import { IScoreOptionsDto } from '@Core/REST';
 import { SimulateCommand } from './SimulateCommand';
@@ -11,6 +11,7 @@ import {
   PercentComboFlag,
   AccuracyFlag,
   TotalScoreFlag,
+  RulesetFlag,
 } from 'src/Options';
 
 export class DefaultSimulateCommand extends SimulateCommand {
@@ -31,10 +32,11 @@ export class DefaultSimulateCommand extends SimulateCommand {
     this.addOption(new ComboFlag());
     this.addOption(new PercentComboFlag());
     this.addOption(new AccuracyFlag());
+    this.addOption(new RulesetFlag());
     this.addOption(new TotalScoreFlag());
   }
 
-  protected _getRulesetId(): GameMode | null {
+  protected _getDefaultRulesetId(): GameMode | null {
     return null;
   }
 
@@ -48,6 +50,15 @@ export class DefaultSimulateCommand extends SimulateCommand {
     dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
     dto.totalScore = this.getValue(TotalScoreFlag) ?? dto.totalScore;
+
+    const targetRuleset = this.getValue(RulesetFlag);
+    const input = !isNaN(Number(targetRuleset))
+      ? Number(targetRuleset)
+      : targetRuleset;
+
+    if (typeof input === 'number' || typeof input === 'string') {
+      dto.rulesetId = getRulesetId(input);
+    }
 
     return dto;
   }

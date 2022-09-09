@@ -30,7 +30,7 @@ export class TaikoSimulateCommand extends SimulateCommand {
     this.addOption(new AccuracyFlag());
   }
 
-  protected _getRulesetId(): GameMode | null {
+  protected _getDefaultRulesetId(): GameMode | null {
     return GameMode.Taiko;
   }
 

@@ -19,7 +19,7 @@ export class ManiaSimulateCommand extends SimulateCommand {
     this.addOption(new TotalScoreFlag());
   }
 
-  protected _getRulesetId(): GameMode | null {
+  protected _getDefaultRulesetId(): GameMode | null {
     return GameMode.Mania;
   }
 
