@@ -37,6 +37,15 @@ export class DefaultSimulateCommand extends SimulateCommand {
   }
 
   protected _getDefaultRulesetId(): GameMode | null {
+    const targetRuleset = this.getValue(RulesetFlag);
+    const input = targetRuleset !== null
+      ? (!isNaN(+targetRuleset) ? +targetRuleset : targetRuleset)
+      : null;
+
+    if (typeof input === 'number' || typeof input === 'string') {
+      return getRulesetId(input);
+    }
+
     return null;
   }
 
@@ -50,15 +59,6 @@ export class DefaultSimulateCommand extends SimulateCommand {
     dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
     dto.totalScore = this.getValue(TotalScoreFlag) ?? dto.totalScore;
-
-    const targetRuleset = this.getValue(RulesetFlag);
-    const input = !isNaN(Number(targetRuleset))
-      ? Number(targetRuleset)
-      : targetRuleset;
-
-    if (typeof input === 'number' || typeof input === 'string') {
-      dto.rulesetId = getRulesetId(input);
-    }
 
     return dto;
   }

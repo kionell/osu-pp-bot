@@ -139,9 +139,9 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     const targetRuleset = this.getValue(RulesetFlag);
 
     const scanned = scanner.getRulesetIdFromURL(targetBeatmap);
-    const input = !isNaN(Number(targetRuleset))
-      ? Number(targetRuleset)
-      : (targetRuleset || scanned);
+    const input = targetRuleset !== null
+      ? (!isNaN(+targetRuleset) ? +targetRuleset : targetRuleset)
+      : scanned;
 
     if (typeof input === 'number' || typeof input === 'string') {
       return getRulesetId(input);
