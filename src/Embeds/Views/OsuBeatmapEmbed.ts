@@ -22,13 +22,12 @@ export class OsuBeatmapEmbed extends BeatmapEmbed {
     const prefix = super._getStarRatingDetails();
 
     const stars = [
-      `**Aim:** \`${formatStarRating(difficulty.aimStrain)}\``,
-      `**Speed:** \`${formatStarRating(difficulty.speedStrain)}\``,
+      `**Aim:** ${formatStarRating(difficulty.aimStrain)}`,
+      `**Speed:** ${formatStarRating(difficulty.speedStrain)}`,
     ];
 
-    const acronyms = this._beatmap.difficulty.mods.match(/.{1,2}/g);
-
-    if (acronyms?.includes('FL')) {
+    // This is a very simple way to split mod combination by two characters.
+    if (difficulty.mods.indexOf('FL') % 2 === 0) {
       stars.push(`**FL:** \`${formatStarRating(difficulty.flashlightRating)}\``);
     }
 

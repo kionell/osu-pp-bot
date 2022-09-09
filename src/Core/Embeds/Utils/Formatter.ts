@@ -45,26 +45,28 @@ export function formatCombo(scoreCombo: number, beatmapCombo?: number): string {
   return `${scoreCombo}x`;
 }
 
-export function formatStarRating(starRating: number): string {
-  return `\`${starRating.toFixed(2)}★\``;
+export function formatStarRating(starRating: number, url?: string): string {
+  if (!url) return `\`${starRating.toFixed(2)}\``;
+
+  return `[${starRating.toFixed(2)}★](${url} "${starRating}")`;
 }
 
-export function formatPerformance(performance: number, short = false): string {
+export function formatPerformance(performance: number, short = false, url?: string): string {
   const error = 0.000001;
 
+  let text = performance.toFixed(2);
+
   if (short && performance >= 1e9 - error) {
-    return performance.toExponential(1);
+    text = performance.toExponential(1);
+  }
+  else if (short && performance >= 1e6 - error) {
+    text = `${(performance / 1e6).toFixed(1)}m`;
+  }
+  else if (short && performance >= 1e4 - error) {
+    text = `${(performance / 1e3).toFixed(1)}k`;
   }
 
-  if (short && performance >= 1e6 - error) {
-    return `${(performance / 1e6).toFixed(1)}m`;
-  }
-
-  if (short && performance >= 1e4 - error) {
-    return `${(performance / 1e3).toFixed(1)}k`;
-  }
-
-  return performance.toFixed(2);
+  return url ? `[${text}](${url} "${performance}")` : `${text}`;
 }
 
 export function formatHitStatistics(statistics: IHitStatistics, rulesetId: GameMode): string {

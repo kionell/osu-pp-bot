@@ -14,6 +14,7 @@ import {
   Emoji,
   formatBeatmapLength,
   formatBPM,
+  formatStarRating,
   formatPerformance,
   getDifficultyColor,
   getRulesetIconURL,
@@ -124,7 +125,7 @@ export abstract class BeatmapEmbed extends ExtendedEmbed {
   protected _getStarRatingDetails(): string {
     const difficulty = this._beatmap.difficulty;
 
-    return `\`${difficulty.starRating.toFixed(2)}★\``;
+    return formatStarRating(difficulty.starRating);
   }
 
   protected _getPerformanceTable(): string {

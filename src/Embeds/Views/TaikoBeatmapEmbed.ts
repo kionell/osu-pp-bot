@@ -19,9 +19,9 @@ export class TaikoBeatmapEmbed extends BeatmapEmbed {
     const prefix = super._getStarRatingDetails();
 
     const stars = [
-      `**Colour:** \`${formatStarRating(difficulty.colourStrain)}\``,
-      `**Stamina:** \`${formatStarRating(difficulty.staminaStrain)}\``,
-      `**Rhythm:** \`${formatStarRating(difficulty.rhythmStrain)}\``,
+      `**Colour:** ${formatStarRating(difficulty.colourStrain)}`,
+      `**Stamina:** ${formatStarRating(difficulty.staminaStrain)}`,
+      `**Rhythm:** ${formatStarRating(difficulty.rhythmStrain)}`,
     ];
 
     return `${prefix} (${stars.join(', ')})`;
