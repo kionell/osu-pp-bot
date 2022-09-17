@@ -82,12 +82,6 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
       dto.server = targetServer;
     }
 
-    const targetBeatmap = this._getTargetBeatmap(scanner, options);
-
-    if (typeof targetBeatmap === 'number' && targetBeatmap) {
-      dto.beatmapId = targetBeatmap;
-    }
-
     const targetRuleset = this._getTargetRuleset(scanner);
 
     if (typeof targetRuleset === 'number') {
@@ -108,9 +102,6 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
 
     if (beatmapAttachment !== null) {
       dto.fileURL = beatmapAttachment.url;
-
-      // Cached beatmap ID will have higher priority so we will delete it.
-      delete dto.beatmapId;
     }
 
     const replayAttachment = this.attachments
@@ -118,6 +109,16 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
 
     if (replayAttachment !== null) {
       dto.replayURL = replayAttachment.url;
+    }
+
+    const targetBeatmap = this._getTargetBeatmap(scanner, options);
+
+    if (typeof targetBeatmap === 'number' && targetBeatmap) {
+      dto.beatmapId = targetBeatmap;
+    }
+
+    if (!dto.beatmapId && !dto.fileURL && !dto.replayURL) {
+      dto.beatmapId = options.cachedChannel.beatmapId;
     }
 
     const targetMods = this.getValueOrDefault(ModsFlag);
@@ -128,14 +129,14 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     return dto;
   }
 
-  protected _getTargetBeatmap(scanner: URLScanner, options: ICommandOptions): number | null {
+  protected _getTargetBeatmap(scanner: URLScanner, options: ICommandOptions): number {
     const targetBeatmap = this.getValue(BeatmapArgument);
 
     const raw = Number(targetBeatmap);
     const url = scanner.getBeatmapIdFromURL(targetBeatmap);
     const reference = options.msg ? getBeatmapIdFromMessage(scanner, options.msg) : 0;
 
-    return raw || url || reference || options.cachedChannel.beatmapId;
+    return raw || url || reference;
   }
 
   protected _getTargetServer(): ReturnType<typeof getServerName> {

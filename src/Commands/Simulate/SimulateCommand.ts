@@ -54,20 +54,10 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
   protected _getScoreDto(options: ICommandOptions): IScoreOptionsDto {
     const dto: IScoreOptionsDto = {};
 
-    const scanner = APIFactory.createURLScanner();
-    const targetBeatmap = this._getTargetBeatmap(scanner, options);
-
-    if (typeof targetBeatmap === 'number' && targetBeatmap) {
-      dto.beatmapId = targetBeatmap;
-    }
-
     const targetSearch = this.getValue(SearchFlag);
 
     if (typeof targetSearch === 'string') {
       dto.search = targetSearch;
-
-      // Cached beatmap ID will have higher priority so we will delete it.
-      delete dto.beatmapId;
     }
 
     const beatmapAttachment = this.attachments
@@ -85,6 +75,17 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
 
     if (replayAttachment !== null) {
       dto.replayURL = replayAttachment.url;
+    }
+
+    const scanner = APIFactory.createURLScanner();
+    const targetBeatmap = this._getTargetBeatmap(scanner, options);
+
+    if (typeof targetBeatmap === 'number' && targetBeatmap) {
+      dto.beatmapId = targetBeatmap;
+    }
+
+    if (!dto.beatmapId && !dto.fileURL && !dto.replayURL) {
+      dto.beatmapId = options.cachedChannel.beatmapId;
     }
 
     const targetRuleset = this._getDefaultRulesetId();
@@ -108,7 +109,7 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
     const url = scanner.getBeatmapIdFromURL(targetBeatmap);
     const reference = options.msg ? getBeatmapIdFromMessage(scanner, options.msg) : 0;
 
-    return raw || url || reference || options.cachedChannel.beatmapId;
+    return raw || url || reference;
   }
 
   protected abstract _getDefaultRulesetId(): GameMode | null;
