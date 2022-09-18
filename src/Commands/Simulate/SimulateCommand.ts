@@ -84,7 +84,7 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
       dto.beatmapId = targetBeatmap;
     }
 
-    if (!dto.beatmapId && !dto.fileURL && !dto.replayURL) {
+    if (!dto.beatmapId && !dto.fileURL && !dto.replayURL && !dto.search) {
       dto.beatmapId = options.cachedChannel.beatmapId;
     }
 
