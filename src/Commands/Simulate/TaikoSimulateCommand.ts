@@ -9,6 +9,7 @@ import {
   ComboFlag,
   PercentComboFlag,
   AccuracyFlag,
+  OverallDifficultyFlag,
 } from '@Options';
 
 export class TaikoSimulateCommand extends SimulateCommand {
@@ -28,6 +29,7 @@ export class TaikoSimulateCommand extends SimulateCommand {
     this.addOption(new ComboFlag());
     this.addOption(new PercentComboFlag());
     this.addOption(new AccuracyFlag());
+    this.addOption(new OverallDifficultyFlag());
   }
 
   protected _getTargetRuleset(): GameMode | null {
@@ -42,6 +44,8 @@ export class TaikoSimulateCommand extends SimulateCommand {
     dto.maxCombo = this.getValue(ComboFlag) ?? dto.maxCombo;
     dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
+
+    dto.overallDifficulty = this.getValue(OverallDifficultyFlag) ?? dto.overallDifficulty;
 
     return dto;
   }

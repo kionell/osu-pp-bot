@@ -10,6 +10,8 @@ import {
   ComboFlag,
   AccuracyFlag,
   PercentComboFlag,
+  ApproachRateFlag,
+  CircleSizeFlag,
 } from '@Options';
 
 export class CatchSimulateCommand extends SimulateCommand {
@@ -30,6 +32,8 @@ export class CatchSimulateCommand extends SimulateCommand {
     this.addOption(new ComboFlag());
     this.addOption(new PercentComboFlag());
     this.addOption(new AccuracyFlag());
+    this.addOption(new ApproachRateFlag());
+    this.addOption(new CircleSizeFlag());
   }
 
   protected _getTargetRuleset(): GameMode | null {
@@ -45,6 +49,9 @@ export class CatchSimulateCommand extends SimulateCommand {
     dto.maxCombo = this.getValue(ComboFlag) ?? dto.maxCombo;
     dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
+
+    dto.approachRate = this.getValue(ApproachRateFlag) ?? dto.approachRate;
+    dto.circleSize = this.getValue(CircleSizeFlag) ?? dto.circleSize;
 
     return dto;
   }
