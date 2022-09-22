@@ -33,7 +33,7 @@ export class OsuBeatmapEmbed extends BeatmapEmbed {
 
     return [
       `${prefix} (${stars.join(', ')})`,
-      `**Slider factor:** ${difficulty.sliderFactor}`,
+      `**Slider factor:** ${formatNumber(difficulty.sliderFactor)}`,
     ].join('\n');
   }
 
