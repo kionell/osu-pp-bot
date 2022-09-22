@@ -14,6 +14,10 @@ export function formatCategoryName(category: Category): string {
   }
 }
 
+export function formatNumber(value: number, digits = 2): string {
+  return `\`${value.toFixed(digits)}\``;
+}
+
 export function formatBPM(bpmMin: number, bpmMax: number, bpmMode: number): string {
   bpmMin = Math.round(bpmMin);
   bpmMax = Math.round(bpmMax);
@@ -46,7 +50,7 @@ export function formatCombo(scoreCombo: number, beatmapCombo?: number): string {
 }
 
 export function formatStarRating(starRating: number, url?: string): string {
-  if (!url) return `\`${starRating.toFixed(2)}\``;
+  if (!url) return `\`${starRating.toFixed(2)}★\``;
 
   return `[${starRating.toFixed(2)}★](${url} "${starRating}")`;
 }

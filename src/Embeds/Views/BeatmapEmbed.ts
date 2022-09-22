@@ -11,6 +11,7 @@ import {
 import {
   ExtendedEmbed,
   Emoji,
+  formatNumber,
   formatBeatmapLength,
   formatBPM,
   formatStarRating,
@@ -106,10 +107,10 @@ export abstract class BeatmapEmbed extends ExtendedEmbed {
     const general = this._beatmap.general;
 
     const values = [
-      `**CS:** \`${(general.circleSize).toFixed(2)}\``,
-      `**AR:** \`${(general.approachRate).toFixed(2)}\``,
-      `**OD:** \`${(general.overallDifficulty).toFixed(2)}\``,
-      `**HP:** \`${(general.drainRate).toFixed(2)}\``,
+      `**CS:** ${formatNumber(general.circleSize)}`,
+      `**AR:** ${formatNumber(general.approachRate)}`,
+      `**OD:** ${formatNumber(general.overallDifficulty)}`,
+      `**HP:** ${formatNumber(general.drainRate)}`,
     ];
 
     return values.join(' ⦁ ');

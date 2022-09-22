@@ -1,4 +1,5 @@
 import { ICatchDifficulty } from '@Core/REST';
+import { formatNumber } from '@Core/Embeds';
 import { BeatmapEmbed } from './BeatmapEmbed';
 
 export class CatchBeatmapEmbed extends BeatmapEmbed {
@@ -7,10 +8,10 @@ export class CatchBeatmapEmbed extends BeatmapEmbed {
     const difficulty = this._beatmap.difficulty as ICatchDifficulty;
 
     const values = [
-      `**CS:** \`${(general.circleSize).toFixed(2)}\``,
-      `**AR:** \`${(difficulty.approachRate).toFixed(2)}\``,
-      `**OD:** \`${(general.overallDifficulty).toFixed(2)}\``,
-      `**HP:** \`${(general.drainRate).toFixed(2)}\``,
+      `**CS:** ${formatNumber(general.circleSize)}`,
+      `**AR:** ${formatNumber(difficulty.approachRate)}`,
+      `**OD:** ${formatNumber(general.overallDifficulty)}`,
+      `**HP:** ${formatNumber(general.drainRate)}`,
     ];
 
     return values.join(' ⦁ ');

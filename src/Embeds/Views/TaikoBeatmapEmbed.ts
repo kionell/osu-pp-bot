@@ -1,4 +1,4 @@
-import { formatPerformance, formatStarRating } from '@Core/Embeds';
+import { formatNumber, formatPerformance, formatStarRating } from '@Core/Embeds';
 import { ITaikoDifficulty, ITaikoPerformance } from '@Core/REST';
 import { BeatmapEmbed } from './BeatmapEmbed';
 
@@ -7,8 +7,8 @@ export class TaikoBeatmapEmbed extends BeatmapEmbed {
     const general = this._beatmap.general;
 
     const values = [
-      `**OD:** \`${(general.overallDifficulty).toFixed(2)}\``,
-      `**HP:** \`${(general.drainRate).toFixed(2)}\``,
+      `**OD:** ${formatNumber(general.overallDifficulty)}`,
+      `**HP:** ${formatNumber(general.drainRate)}`,
     ];
 
     return values.join(' ⦁ ');

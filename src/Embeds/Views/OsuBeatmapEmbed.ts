@@ -1,4 +1,4 @@
-import { formatPerformance, formatStarRating } from '@Core/Embeds';
+import { formatNumber, formatPerformance, formatStarRating } from '@Core/Embeds';
 import { IOsuDifficulty, IOsuPerformance } from '@Core/REST';
 import { BeatmapEmbed } from './BeatmapEmbed';
 
@@ -8,10 +8,10 @@ export class OsuBeatmapEmbed extends BeatmapEmbed {
     const difficulty = this._beatmap.difficulty as IOsuDifficulty;
 
     const values = [
-      `**CS:** \`${general.circleSize.toFixed(2)}\``,
-      `**AR:** \`${difficulty.approachRate.toFixed(2)}\``,
-      `**OD:** \`${difficulty.overallDifficulty.toFixed(2)}\``,
-      `**HP:** \`${difficulty.drainRate.toFixed(2)}\``,
+      `**CS:** ${formatNumber(general.circleSize)}`,
+      `**AR:** ${formatNumber(difficulty.approachRate)}`,
+      `**OD:** ${formatNumber(difficulty.overallDifficulty)}`,
+      `**HP:** ${formatNumber(difficulty.drainRate)}`,
     ];
 
     return values.join(' ⦁ ');

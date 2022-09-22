@@ -1,4 +1,4 @@
-import { formatPerformance, formatTotalScore } from '@Core/Embeds';
+import { formatNumber, formatPerformance, formatTotalScore } from '@Core/Embeds';
 import { IManiaDifficulty, IManiaPerformance } from '@Core/REST';
 import { BeatmapEmbed } from './BeatmapEmbed';
 
@@ -7,9 +7,9 @@ export class ManiaBeatmapEmbed extends BeatmapEmbed {
     const general = this._beatmap.general;
 
     const values = [
-      `**Keys:** \`${general.circleSize.toFixed(0)}\``,
-      `**OD:** \`${(general.overallDifficulty).toFixed(2)}\``,
-      `**HP:** \`${(general.drainRate).toFixed(2)}\``,
+      `**Keys:** ${formatNumber(general.circleSize, 0)}`,
+      `**OD:** ${formatNumber(general.overallDifficulty)}`,
+      `**HP:** ${formatNumber(general.drainRate)}`,
     ];
 
     return values.join(' ⦁ ');
