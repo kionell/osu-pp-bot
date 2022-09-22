@@ -71,7 +71,7 @@ export abstract class BeatmapEmbed extends ExtendedEmbed {
       '\u200b',
       this._getStatsDetails(),
       values.join(' ⦁ '),
-      `**Stars:** ${this._getStarRatingDetails()}`,
+      this._getDifficultyDetails(),
       '\u200b',
       this._getPerformanceTable(),
     ];
@@ -116,10 +116,10 @@ export abstract class BeatmapEmbed extends ExtendedEmbed {
     return values.join(' ⦁ ');
   }
 
-  protected _getStarRatingDetails(): string {
+  protected _getDifficultyDetails(): string {
     const difficulty = this._beatmap.difficulty;
 
-    return formatStarRating(difficulty.starRating);
+    return `**Stars:** ${formatStarRating(difficulty.starRating)}`;
   }
 
   protected _getPerformanceTable(): string {

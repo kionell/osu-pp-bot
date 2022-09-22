@@ -14,9 +14,9 @@ export class TaikoBeatmapEmbed extends BeatmapEmbed {
     return values.join(' ⦁ ');
   }
 
-  protected _getStarRatingDetails(): string {
+  protected _getDifficultyDetails(): string {
     const difficulty = this._beatmap.difficulty as ITaikoDifficulty;
-    const prefix = super._getStarRatingDetails();
+    const prefix = super._getDifficultyDetails();
 
     const stars = [
       `**Colour:** ${formatStarRating(difficulty.colourStrain)}`,

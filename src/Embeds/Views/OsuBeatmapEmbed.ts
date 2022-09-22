@@ -17,9 +17,9 @@ export class OsuBeatmapEmbed extends BeatmapEmbed {
     return values.join(' ⦁ ');
   }
 
-  protected _getStarRatingDetails(): string {
+  protected _getDifficultyDetails(): string {
     const difficulty = this._beatmap.difficulty as IOsuDifficulty;
-    const prefix = super._getStarRatingDetails();
+    const prefix = super._getDifficultyDetails();
 
     const stars = [
       `**Aim:** ${formatStarRating(difficulty.aimStrain)}`,
@@ -31,7 +31,10 @@ export class OsuBeatmapEmbed extends BeatmapEmbed {
       stars.push(`**FL:** \`${formatStarRating(difficulty.flashlightRating)}\``);
     }
 
-    return `${prefix} (${stars.join(', ')})`;
+    return [
+      `${prefix} (${stars.join(', ')})`,
+      `**Slider factor:** ${difficulty.sliderFactor}`,
+    ].join('\n');
   }
 
   protected _getPerformanceValues(): string[][] {
