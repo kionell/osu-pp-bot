@@ -2,7 +2,7 @@ import { APIFactory, getRulesetId, getServerName, URLScanner } from '@kionell/os
 import { BotCommand, CommandAttachments, AttachmentType, ICommandOptions, IHasAttachments, Category } from '@Core/Commands';
 import { IScoreOptionsDto, RESTClient } from '@Core/REST';
 import { getScoreIdFromMessage } from '@Core/Utils';
-import { ScoreArgument, ServerFlag } from 'src/Options';
+import { ScoreArgument, ServerFlag } from '@Options';
 import { EmbedFactory } from '@Embeds';
 import { MessageAttachment } from 'discord.js';
 
@@ -60,27 +60,13 @@ export class ScoreCommand extends BotCommand implements IHasAttachments {
     const targetServer = this._getTargetServer();
     const scanner = APIFactory.createURLScanner(targetServer);
 
-    if (typeof targetServer === 'string') {
-      dto.server = targetServer;
-    }
-
-    const targetScore = this._getTargetScore(scanner, options);
-
-    if (typeof targetScore === 'number') {
-      dto.scoreId = targetScore;
-    }
-
-    const targetRuleset = this._getTargetRuleset(scanner);
-
-    if (typeof targetRuleset === 'number') {
-      dto.rulesetId = targetRuleset;
-    }
+    dto.server = targetServer ?? dto.server;
+    dto.scoreId = this._getTargetScore(scanner, options) ?? dto.scoreId;
+    dto.rulesetId = this._getTargetRuleset(scanner) ?? dto.rulesetId;
 
     const beatmapAttachment = this.attachments.getAttachmentOfType(AttachmentType.Beatmap);
 
-    if (beatmapAttachment !== null) {
-      dto.fileURL = beatmapAttachment.url;
-    }
+    if (beatmapAttachment !== null) dto.fileURL = beatmapAttachment.url;
 
     const replayAttachment = this.attachments.getAttachmentOfType(AttachmentType.Score);
 

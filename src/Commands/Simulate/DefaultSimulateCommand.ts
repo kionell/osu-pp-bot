@@ -12,7 +12,7 @@ import {
   AccuracyFlag,
   TotalScoreFlag,
   RulesetFlag,
-} from 'src/Options';
+} from '@Options';
 
 export class DefaultSimulateCommand extends SimulateCommand {
   name = 'simulate';
@@ -36,7 +36,7 @@ export class DefaultSimulateCommand extends SimulateCommand {
     this.addOption(new TotalScoreFlag());
   }
 
-  protected _getDefaultRulesetId(): GameMode | null {
+  protected _getTargetRuleset(): GameMode | null {
     const targetRuleset = this.getValue(RulesetFlag);
     const input = targetRuleset !== null
       ? (!isNaN(+targetRuleset) ? +targetRuleset : targetRuleset)

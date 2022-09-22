@@ -53,45 +53,22 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
 
   protected _getScoreDto(options: ICommandOptions): IScoreOptionsDto {
     const dto: IScoreOptionsDto = {};
-
-    const targetSearch = this.getValue(SearchFlag);
-
-    if (typeof targetSearch === 'string') {
-      dto.search = targetSearch;
-    }
-
-    const beatmapAttachment = this.attachments
-      .getAttachmentOfType(AttachmentType.Beatmap);
-
-    if (beatmapAttachment !== null) {
-      dto.fileURL = beatmapAttachment.url;
-
-      // Cached beatmap ID will have higher priority so we will delete it.
-      delete dto.beatmapId;
-    }
-
-    const replayAttachment = this.attachments
-      .getAttachmentOfType(AttachmentType.Score);
-
-    if (replayAttachment !== null) {
-      dto.replayURL = replayAttachment.url;
-    }
-
     const scanner = APIFactory.createURLScanner();
-    const targetBeatmap = this._getTargetBeatmap(scanner, options);
 
-    if (typeof targetBeatmap === 'number' && targetBeatmap) {
-      dto.beatmapId = targetBeatmap;
-    }
+    dto.beatmapId = this._getTargetBeatmap(scanner, options) ?? dto.beatmapId;
+    dto.rulesetId = this._getTargetRuleset() ?? dto.rulesetId;
+    dto.search = this.getValue(SearchFlag) ?? dto.search;
+
+    const beatmapAttachment = this.attachments.getAttachmentOfType(AttachmentType.Beatmap);
+
+    if (beatmapAttachment !== null) dto.fileURL = beatmapAttachment.url;
+
+    const replayAttachment = this.attachments.getAttachmentOfType(AttachmentType.Score);
+
+    if (replayAttachment !== null) dto.replayURL = replayAttachment.url;
 
     if (!dto.beatmapId && !dto.fileURL && !dto.replayURL && !dto.search) {
       dto.beatmapId = options.cachedChannel.beatmapId;
-    }
-
-    const targetRuleset = this._getDefaultRulesetId();
-
-    if (targetRuleset !== null) {
-      dto.rulesetId = targetRuleset;
     }
 
     const targetMods = this.getValueOrDefault(ModsFlag);
@@ -112,5 +89,5 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
     return raw || url || reference;
   }
 
-  protected abstract _getDefaultRulesetId(): GameMode | null;
+  protected abstract _getTargetRuleset(): GameMode | null;
 }

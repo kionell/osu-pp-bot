@@ -10,7 +10,7 @@ import {
   ComboFlag,
   AccuracyFlag,
   PercentComboFlag,
-} from 'src/Options';
+} from '@Options';
 
 export class CatchSimulateCommand extends SimulateCommand {
   name = 'catchsimulate';
@@ -32,7 +32,7 @@ export class CatchSimulateCommand extends SimulateCommand {
     this.addOption(new AccuracyFlag());
   }
 
-  protected _getDefaultRulesetId(): GameMode | null {
+  protected _getTargetRuleset(): GameMode | null {
     return GameMode.Fruits;
   }
 

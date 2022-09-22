@@ -9,7 +9,7 @@ import {
   ComboFlag,
   PercentComboFlag,
   AccuracyFlag,
-} from 'src/Options';
+} from '@Options';
 
 export class TaikoSimulateCommand extends SimulateCommand {
   name = 'taikosimulate';
@@ -30,7 +30,7 @@ export class TaikoSimulateCommand extends SimulateCommand {
     this.addOption(new AccuracyFlag());
   }
 
-  protected _getDefaultRulesetId(): GameMode | null {
+  protected _getTargetRuleset(): GameMode | null {
     return GameMode.Taiko;
   }
 

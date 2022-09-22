@@ -3,8 +3,18 @@ import { APIFactory, getRulesetId, getServerName, URLScanner } from '@kionell/os
 import { BotCommand, CommandAttachments, AttachmentType, ICommandOptions, IHasAttachments, Category } from '@Core/Commands';
 import { IBeatmapOptionsDto, RESTClient } from '@Core/REST';
 import { getBeatmapIdFromMessage } from '@Core/Utils';
-import { BeatmapArgument, ModsFlag, RulesetFlag, SearchFlag, ServerFlag } from 'src/Options';
 import { EmbedFactory } from '@Embeds';
+import {
+  ApproachRateFlag,
+  BeatmapArgument,
+  CircleSizeFlag,
+  ClockRateFlag,
+  ModsFlag,
+  OverallDifficultyFlag,
+  RulesetFlag,
+  SearchFlag,
+  ServerFlag,
+} from '@Options';
 
 export class BeatmapCommand extends BotCommand implements IHasAttachments {
   name = 'beatmap';
@@ -43,6 +53,10 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     this.addOption(new RulesetFlag());
     this.addOption(new SearchFlag());
     this.addOption(new ServerFlag());
+    this.addOption(new ApproachRateFlag());
+    this.addOption(new CircleSizeFlag());
+    this.addOption(new OverallDifficultyFlag());
+    this.addOption(new ClockRateFlag());
   }
 
   async execute(options: ICommandOptions): Promise<void> {
@@ -78,44 +92,18 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     const targetServer = this._getTargetServer();
     const scanner = APIFactory.createURLScanner(targetServer);
 
-    if (typeof targetServer === 'string') {
-      dto.server = targetServer;
-    }
+    dto.beatmapId = this._getTargetBeatmap(scanner, options) ?? dto.beatmapId;
+    dto.rulesetId = this._getTargetRuleset(scanner) ?? dto.rulesetId;
+    dto.search = this.getValue(SearchFlag) ?? dto.search;
+    dto.server = targetServer ?? dto.server;
 
-    const targetRuleset = this._getTargetRuleset(scanner);
+    const beatmapAttachment = this.attachments.getAttachmentOfType(AttachmentType.Beatmap);
 
-    if (typeof targetRuleset === 'number') {
-      dto.rulesetId = targetRuleset;
-    }
+    if (beatmapAttachment !== null) dto.fileURL = beatmapAttachment.url;
 
-    const targetSearch = this.getValue(SearchFlag);
+    const replayAttachment = this.attachments.getAttachmentOfType(AttachmentType.Score);
 
-    if (typeof targetSearch === 'string') {
-      dto.search = targetSearch;
-
-      // Cached beatmap ID will have higher priority so we will delete it.
-      delete dto.beatmapId;
-    }
-
-    const beatmapAttachment = this.attachments
-      .getAttachmentOfType(AttachmentType.Beatmap);
-
-    if (beatmapAttachment !== null) {
-      dto.fileURL = beatmapAttachment.url;
-    }
-
-    const replayAttachment = this.attachments
-      .getAttachmentOfType(AttachmentType.Score);
-
-    if (replayAttachment !== null) {
-      dto.replayURL = replayAttachment.url;
-    }
-
-    const targetBeatmap = this._getTargetBeatmap(scanner, options);
-
-    if (typeof targetBeatmap === 'number' && targetBeatmap) {
-      dto.beatmapId = targetBeatmap;
-    }
+    if (replayAttachment !== null) dto.replayURL = replayAttachment.url;
 
     if (!dto.beatmapId && !dto.fileURL && !dto.replayURL && !dto.search) {
       dto.beatmapId = options.cachedChannel.beatmapId;

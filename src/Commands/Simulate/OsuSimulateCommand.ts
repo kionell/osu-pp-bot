@@ -10,7 +10,7 @@ import {
   ComboFlag,
   PercentComboFlag,
   AccuracyFlag,
-} from 'src/Options';
+} from '@Options';
 
 export class OsuSimulateCommand extends SimulateCommand {
   name = 'osusimulate';
@@ -32,7 +32,7 @@ export class OsuSimulateCommand extends SimulateCommand {
     this.addOption(new AccuracyFlag());
   }
 
-  protected _getDefaultRulesetId(): GameMode | null {
+  protected _getTargetRuleset(): GameMode | null {
     return GameMode.Osu;
   }
 
