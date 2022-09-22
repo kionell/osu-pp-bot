@@ -1,3 +1,5 @@
+import { Server } from '@kionell/osu-api';
+
 /**
  * Options to create a beatmap.
  */
@@ -40,7 +42,7 @@ export interface IBeatmapOptionsDto {
   /**
    * Server name (bancho, gatari...).
    */
-  server?: string;
+  server?: keyof typeof Server;
 
   /**
    * Search query.
