@@ -4,6 +4,10 @@ import { IScoreOptionsDto } from '@Core/REST';
 import { SimulateCommand } from './SimulateCommand';
 
 import {
+  ApproachRateFlag,
+  CircleSizeFlag,
+  ClockRateFlag,
+  OverallDifficultyFlag,
   MissFlag,
   MehFlag,
   GoodFlag,
@@ -34,6 +38,10 @@ export class DefaultSimulateCommand extends SimulateCommand {
     this.addOption(new AccuracyFlag());
     this.addOption(new RulesetFlag());
     this.addOption(new TotalScoreFlag());
+    this.addOption(new ApproachRateFlag());
+    this.addOption(new CircleSizeFlag());
+    this.addOption(new OverallDifficultyFlag());
+    this.addOption(new ClockRateFlag());
   }
 
   protected _getTargetRuleset(): GameMode | null {
@@ -59,6 +67,11 @@ export class DefaultSimulateCommand extends SimulateCommand {
     dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
     dto.totalScore = this.getValue(TotalScoreFlag) ?? dto.totalScore;
+
+    dto.approachRate = this.getValue(ApproachRateFlag) ?? dto.approachRate;
+    dto.overallDifficulty = this.getValue(OverallDifficultyFlag) ?? dto.overallDifficulty;
+    dto.circleSize = this.getValue(CircleSizeFlag) ?? dto.circleSize;
+    dto.clockRate = this.getValue(ClockRateFlag) ?? dto.clockRate;
 
     return dto;
   }

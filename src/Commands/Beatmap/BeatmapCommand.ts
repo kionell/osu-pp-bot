@@ -97,6 +97,11 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     dto.search = this.getValue(SearchFlag) ?? dto.search;
     dto.server = targetServer ?? dto.server;
 
+    dto.approachRate = this.getValue(ApproachRateFlag) ?? dto.approachRate;
+    dto.overallDifficulty = this.getValue(OverallDifficultyFlag) ?? dto.overallDifficulty;
+    dto.circleSize = this.getValue(CircleSizeFlag) ?? dto.circleSize;
+    dto.clockRate = this.getValue(ClockRateFlag) ?? dto.clockRate;
+
     const beatmapAttachment = this.attachments.getAttachmentOfType(AttachmentType.Beatmap);
 
     if (beatmapAttachment !== null) dto.fileURL = beatmapAttachment.url;
