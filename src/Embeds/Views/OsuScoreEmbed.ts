@@ -1,4 +1,4 @@
-import { formatPerformance } from '@Core/Embeds';
+import { formatNumber, formatPerformance } from '@Core/Embeds';
 import { IOsuPerformance } from '@Core/REST';
 import { ScoreEmbed } from './ScoreEmbed';
 
@@ -19,6 +19,9 @@ export class OsuScoreEmbed extends ScoreEmbed {
       separated.push(`**FL:** ${formatPerformance(performance.flashlightPerformance, true)}`);
     }
 
-    return `${base} (${separated.join(', ')})`;
+    return [
+      `${base} (${separated.join(', ')})`,
+      `**Effective miss count:** ${formatNumber(performance.effectiveMissCount)}`,
+    ].join('\n');
   }
 }
