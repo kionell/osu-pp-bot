@@ -7,7 +7,7 @@ export class OverallDifficultyFlag extends Flag<number> {
   shortPrefixAliases = [''];
   separatorAliases = ['='];
   title = 'Overall difficulty flag';
-  description = 'Overall difficulty of the target beatmap.';
+  description = 'Overall difficulty of the target beatmap in range `[0-11]`.';
   expected = 'number';
   isRequired = true;
   minWords = 1;
