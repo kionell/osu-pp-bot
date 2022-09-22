@@ -62,8 +62,13 @@ export abstract class BeatmapEmbed extends ExtendedEmbed {
   protected _createEmbedDescription(): string {
     const values = [
       `**Mods:** \`${this._beatmap.mods}\``,
-      `**Max Combo:** \`${this._beatmap.general.maxCombo}x\``,
     ];
+
+    if (this._beatmap.general.clockRate !== 1) {
+      values.push(`**Clock Rate:** ${formatNumber(this._beatmap.general.clockRate)}x`);
+    }
+
+    values.push(`**Max Combo:** ${formatNumber(this._beatmap.general.maxCombo, 0)}x`);
 
     const lines = [
       '\u200b',

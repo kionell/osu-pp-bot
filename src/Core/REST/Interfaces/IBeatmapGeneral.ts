@@ -10,6 +10,7 @@ interface IBaseBeatmapGeneral {
   approachRate: number;
   overallDifficulty: number;
   drainRate: number;
+  clockRate: number;
   hittable: number;
   slidable: number;
   spinnable: number;
