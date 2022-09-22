@@ -65,10 +65,12 @@ export abstract class BeatmapEmbed extends ExtendedEmbed {
     ];
 
     if (this._beatmap.general.clockRate !== 1) {
-      values.push(`**Clock Rate:** ${formatNumber(this._beatmap.general.clockRate)}x`);
+      const clockRate = this._beatmap.general.clockRate.toFixed(2);
+
+      values.push(`**Clock Rate:** \`${clockRate}x\``);
     }
 
-    values.push(`**Max Combo:** ${formatNumber(this._beatmap.general.maxCombo, 0)}x`);
+    values.push(`**Max Combo:** \`${this._beatmap.general.maxCombo}x\``);
 
     const lines = [
       '\u200b',
