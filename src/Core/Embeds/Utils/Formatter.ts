@@ -14,8 +14,14 @@ export function formatCategoryName(category: Category): string {
   }
 }
 
-export function formatNumber(value: number, digits = 2): string {
-  return `\`${value.toFixed(digits)}\``;
+export function formatNumber(value: number, digits = 2, units?: string): string {
+  const values = [
+    value.toFixed(digits),
+  ];
+
+  if (units) values.push(units);
+
+  return `\`${values.join(' ')}\``;
 }
 
 export function formatBPM(bpmMin: number, bpmMax: number, bpmMode: number): string {
