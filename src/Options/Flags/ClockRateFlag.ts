@@ -10,6 +10,7 @@ export class ClockRateFlag extends Flag<number> {
   description = 'Clock rate of the target beatmap in range `[0.25-3.00]`.';
   expected = 'number';
   isRequired = true;
+  defaultValue = 1;
   minWords = 1;
   maxWords = 1;
   dataType = DataType.Float;

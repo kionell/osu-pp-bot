@@ -19,7 +19,7 @@ export function getRankStatusEmoji(status: RankStatus): Emoji {
   return Emoji.Unknown;
 }
 
-export function getRulesetEmoji(mode: GameMode): Emoji {
+export function getRulesetEmoji(mode?: GameMode): Emoji {
   switch (mode) {
     case GameMode.Taiko:
       return Emoji.Taiko;
@@ -53,7 +53,7 @@ export function getCategoryEmoji(category: Category): Emoji {
   }
 }
 
-export function getRulesetIconURL(mode: GameMode): string {
+export function getRulesetIconURL(mode?: GameMode): string {
   const emoji = getRulesetEmoji(mode);
   const emojiId = emoji.replace(/\D+/g, '');
 

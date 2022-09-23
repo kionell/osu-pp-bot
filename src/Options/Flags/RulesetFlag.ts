@@ -27,6 +27,7 @@ export class RulesetFlag extends Flag<keyof typeof GameMode | number> {
 
   expected = 'ID or shortname';
   isRequired = true;
+  defaultValue = GameMode.Osu;
   minWords = 1;
   maxWords = 1;
 }
