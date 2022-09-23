@@ -3,6 +3,7 @@ export * from './ApproachRateFlag';
 export * from './CircleSizeFlag';
 export * from './ClockRateFlag';
 export * from './ComboFlag';
+export * from './ConvertedFlag';
 export * from './DropletFlag';
 export * from './GoodFlag';
 export * from './MehFlag';

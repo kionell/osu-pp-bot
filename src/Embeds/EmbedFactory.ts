@@ -29,6 +29,12 @@ import {
   ManiaScoreEmbed,
   GeneralHelpEmbed,
   CommandHelpEmbed,
+  AttributesEmbed,
+  OsuAttributesEmbed,
+  TaikoAttributesEmbed,
+  CatchAttributesEmbed,
+  ManiaAttributesEmbed,
+  IOutputAttributes,
 } from './Views';
 
 /**
@@ -89,6 +95,21 @@ export class EmbedFactory {
     }
 
     return new OsuScoreEmbed(data, urlGenerator);
+  }
+
+  createAttributesEmbed(data: IOutputAttributes): AttributesEmbed {
+    switch (data.rulesetId) {
+      case GameMode.Taiko:
+        return new TaikoAttributesEmbed(data);
+
+      case GameMode.Fruits:
+        return new CatchAttributesEmbed(data);
+
+      case GameMode.Mania:
+        return new ManiaAttributesEmbed(data);
+    }
+
+    return new OsuAttributesEmbed(data);
   }
 }
 
