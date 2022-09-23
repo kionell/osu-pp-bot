@@ -11,7 +11,7 @@
   "author": "Kionell",
   "license": "MIT",
   "dependencies": {
-    "@kionell/osu-api": "github:kionell/osu-api",
+    "@kionell/osu-api": "^1.0.2",
     "axios": "^0.27.2",
     "cli-processor": "^0.8.3",
     "d3": "^7.3.0",
@@ -19,7 +19,7 @@
     "dotenv": "^16.0.1",
     "fast-glob": "^3.2.10",
     "markdown-table": "^3.0.2",
-    "osu-classes": "^0.10.1",
+    "osu-classes": "^1.2.0",
     "string-width": "^5.1.0"
   },
   "devDependencies": {
