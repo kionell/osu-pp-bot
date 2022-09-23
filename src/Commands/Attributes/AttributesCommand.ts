@@ -54,28 +54,28 @@ export class AttributesCommand extends BotCommand {
   private _calculateAttributes(): IOutputAttributes {
     const targetRuleset = this.getValueOrDefault(RulesetFlag);
     const targetMods = this.getValueOrDefault(ModsFlag);
-    const targetClockRate = this.getValueOrDefault(ClockRateFlag);
 
     const rulesetInput = !isNaN(+targetRuleset) ? +targetRuleset : targetRuleset;
     const rulesetId = getRulesetId(rulesetInput);
     const combination = this._toModCombination(targetMods, rulesetId);
+    const clockRate = this._calculateClockRate(combination);
 
     const isForStandard = rulesetId === GameMode.Osu;
     const isForCatch = rulesetId === GameMode.Fruits;
 
     const attributes: IOutputAttributes = {
-      clockRate: targetClockRate,
       mods: combination.toString(),
       rulesetId,
+      clockRate,
     };
 
     if (isForStandard || isForCatch) {
       this._tryToAddCSValues(attributes, combination);
-      this._tryToAddARValues(attributes, combination, targetClockRate);
+      this._tryToAddARValues(attributes, combination, clockRate);
     }
 
     if (!isForCatch) {
-      this._tryToAddODValues(attributes, combination, rulesetId, targetClockRate);
+      this._tryToAddODValues(attributes, combination, rulesetId, clockRate);
     }
 
     return attributes;
@@ -168,6 +168,17 @@ export class AttributesCommand extends BotCommand {
     }
 
     return applyModAdjustments(47);
+  }
+
+  private _calculateClockRate(mods: ModCombination): number {
+    const targetClockRate = this.getValue(ClockRateFlag);
+
+    if (targetClockRate !== null) return targetClockRate;
+
+    if (mods.has('DT') || mods.has('NC')) return 1.5;
+    if (mods.has('HT') || mods.has('DC')) return 0.75;
+
+    return 1;
   }
 
   private _toModCombination(input: string | number, rulesetId: GameMode) {
