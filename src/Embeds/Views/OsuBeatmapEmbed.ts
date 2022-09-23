@@ -31,9 +31,13 @@ export class OsuBeatmapEmbed extends BeatmapEmbed {
       stars.push(`**FL:** \`${formatStarRating(difficulty.flashlightRating)}\``);
     }
 
+    const additional = [
+      `**Slider factor:** ${formatNumber(difficulty.sliderFactor, 4)}`,
+    ];
+
     return [
       `${prefix} (${stars.join(', ')})`,
-      `**Slider factor:** ${formatNumber(difficulty.sliderFactor)}`,
+      additional.join(' ⦁ '),
     ].join('\n');
   }
 
