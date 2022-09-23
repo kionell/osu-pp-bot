@@ -19,7 +19,7 @@ import {
 export class OsuSimulateCommand extends SimulateCommand {
   name = 'osusimulate';
 
-  aliases = [ 'osusim' ];
+  aliases = [ 'osusim', 'standardsimulate', 'standardsim '];
 
   title = 'Simulate command (osu!standard)';
 
