@@ -7,6 +7,7 @@ import { EmbedFactory } from '@Embeds';
 import {
   ApproachRateFlag,
   BeatmapArgument,
+  BPMFlag,
   CircleSizeFlag,
   ClockRateFlag,
   ModsFlag,
@@ -55,6 +56,7 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     this.addOption(new CircleSizeFlag());
     this.addOption(new OverallDifficultyFlag());
     this.addOption(new ClockRateFlag());
+    this.addOption(new BPMFlag());
   }
 
   async execute(options: ICommandOptions): Promise<void> {
@@ -96,6 +98,7 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     dto.overallDifficulty = this.getValue(OverallDifficultyFlag) ?? dto.overallDifficulty;
     dto.circleSize = this.getValue(CircleSizeFlag) ?? dto.circleSize;
     dto.clockRate = this.getValue(ClockRateFlag) ?? dto.clockRate;
+    dto.bpm = this.getValue(BPMFlag) ?? dto.bpm;
 
     const beatmapAttachment = this.attachments.getAttachmentOfType(AttachmentType.Beatmap);
 

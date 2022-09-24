@@ -1,5 +1,6 @@
 export * from './AccuracyFlag';
 export * from './ApproachRateFlag';
+export * from './BPMFlag';
 export * from './CircleSizeFlag';
 export * from './ClockRateFlag';
 export * from './ComboFlag';
