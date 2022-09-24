@@ -109,27 +109,9 @@ export class CommandHelpEmbed extends ExtendedEmbed {
   }
 
   protected _stringifyFlag(flag: IFlag): string {
-    const wrapWithOptional = (args: string[]): string => {
-      return args.includes('')
-        ? (args.length > 1 ? '[' + args.filter((x) => x).join('|') + ']' : '')
-        : (args.length > 1 ? '(' + args.join('|') + ')' : args[0]);
-    };
-
-    const wrapWithBrackets = (args: string[]): string => {
-      return args.length > 1 ? '(' + args.join('|') + ')' : args[0];
-    };
-
-    const shortPrefixes = [flag.shortPrefix, ...flag.shortPrefixAliases];
-    const shortNames = [flag.shortName, ...flag.shortAliases];
-    const short = wrapWithOptional(shortPrefixes) + wrapWithBrackets(shortNames);
-
-    const fullPrefixes = [flag.prefix, ...flag.prefixAliases];
-    const fullNames = [flag.name, ...flag.aliases];
-    const full = wrapWithOptional(fullPrefixes) + wrapWithBrackets(fullNames);
-
-    const separators = [flag.separator, ...flag.separatorAliases];
-    const separator = wrapWithBrackets(separators);
-
+    const short = flag.shortPrefix + flag.shortName;
+    const full = flag.prefix + flag.name;
+    const separator = flag.separator;
     const arg = this._stringifyArg(flag);
 
     return `\`${short}|${full}${separator}${arg}\` - ${flag.description}`;
