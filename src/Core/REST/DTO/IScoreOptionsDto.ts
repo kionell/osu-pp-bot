@@ -70,6 +70,11 @@ export interface IScoreOptionsDto {
   clockRate?: number;
 
   /**
+   * Custom BPM for the target beatmap.
+   */
+  bpm?: number;
+
+  /**
    * Target score misses.
    */
   countMiss?: number;
