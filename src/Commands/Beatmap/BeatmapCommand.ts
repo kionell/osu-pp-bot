@@ -1,5 +1,5 @@
 import { MessageAttachment } from 'discord.js';
-import { APIFactory, getRulesetId, getServerName, URLScanner } from '@kionell/osu-api';
+import { APIFactory, getRulesetId, URLScanner } from '@kionell/osu-api';
 import { BotCommand, CommandAttachments, AttachmentType, ICommandOptions, IHasAttachments, Category } from '@Core/Commands';
 import { IBeatmapOptionsDto, RESTClient } from '@Core/REST';
 import { getBeatmapIdFromMessage } from '@Core/Utils';
@@ -13,7 +13,6 @@ import {
   OverallDifficultyFlag,
   RulesetFlag,
   SearchFlag,
-  ServerFlag,
 } from '@Options';
 
 export class BeatmapCommand extends BotCommand implements IHasAttachments {
@@ -52,7 +51,6 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     this.addOption(new ModsFlag());
     this.addOption(new RulesetFlag());
     this.addOption(new SearchFlag());
-    this.addOption(new ServerFlag());
     this.addOption(new ApproachRateFlag());
     this.addOption(new CircleSizeFlag());
     this.addOption(new OverallDifficultyFlag());
@@ -60,8 +58,7 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
   }
 
   async execute(options: ICommandOptions): Promise<void> {
-    const targetServer = this._getTargetServer();
-    const generator = APIFactory.createURLGenerator(targetServer);
+    const generator = APIFactory.createURLGenerator();
 
     const dto = this._getBeatmapDto(options);
     const beatmap = await RESTClient.calculateBeatmap(dto);
@@ -89,13 +86,11 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
   protected _getBeatmapDto(options: ICommandOptions): IBeatmapOptionsDto {
     const dto: IBeatmapOptionsDto = {};
 
-    const targetServer = this._getTargetServer();
-    const scanner = APIFactory.createURLScanner(targetServer);
+    const scanner = APIFactory.createURLScanner();
 
     dto.beatmapId = this._getTargetBeatmap(scanner, options) ?? dto.beatmapId;
     dto.rulesetId = this._getTargetRuleset(scanner) ?? dto.rulesetId;
     dto.search = this.getValue(SearchFlag) ?? dto.search;
-    dto.server = targetServer ?? dto.server;
 
     dto.approachRate = this.getValue(ApproachRateFlag) ?? dto.approachRate;
     dto.overallDifficulty = this.getValue(OverallDifficultyFlag) ?? dto.overallDifficulty;
@@ -130,12 +125,6 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     const reference = options.msg ? getBeatmapIdFromMessage(scanner, options.msg) : 0;
 
     return raw || url || reference;
-  }
-
-  protected _getTargetServer(): ReturnType<typeof getServerName> {
-    const targetBeatmap = this.getValue(BeatmapArgument);
-
-    return this.getValue(ServerFlag) ?? getServerName(targetBeatmap);
   }
 
   protected _getTargetRuleset(scanner: URLScanner): number | null {
