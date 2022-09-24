@@ -175,10 +175,7 @@ export class AttributesCommand extends BotCommand {
 
     if (targetClockRate !== null) return targetClockRate;
 
-    if (mods.has('DT') || mods.has('NC')) return 1.5;
-    if (mods.has('HT') || mods.has('DC')) return 0.75;
-
-    return 1;
+    return mods.has('DT') ? 1.5 : (mods.has('HT') ? 0.75 : 1);
   }
 
   private _toModCombination(input: string | number, rulesetId: GameMode) {
