@@ -8,14 +8,7 @@ export class ServerFlag extends Flag<keyof typeof Server> {
   prefixAliases = [''];
   shortPrefixAliases = [''];
   separatorAliases = ['='];
-
-  description = [
-    'Allows you to choose a game server (`Bancho|Gatari|Akatsuki|Ripple`).',
-    'Another servers are not supported right now so it does nothing.',
-    'Default server is Bancho.',
-  ].join(' ');
-
-  shortDescription = 'Allows you to choose a game server.';
+  description = 'Specific game server';
 
   choices: (keyof typeof Server)[] = [
     'Bancho',

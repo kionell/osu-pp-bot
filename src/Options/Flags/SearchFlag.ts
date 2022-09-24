@@ -8,8 +8,8 @@ export class SearchFlag extends Flag<string> {
   shortPrefixAliases = [''];
   separatorAliases = ['='];
   title = 'Search flag';
-  description = 'This helps to search beatmap by its creator, artist, title, difficulty name or tags.';
-  shortDescription = 'This helps to search beatmap by query.';
+  description = 'Search query for beatmap lookup on the bancho.';
+  shortDescription = 'Beatmap search query.';
   expected = 'query';
   isRequired = true;
   minWords = 1;

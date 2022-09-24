@@ -8,15 +8,8 @@ export class RulesetFlag extends Flag<keyof typeof GameMode | number> {
   prefixAliases = [''];
   shortPrefixAliases = [''];
   separatorAliases = ['='];
-
-  description = [
-    'Used to specify target ruleset ID (`0|1|2|3`) or shortname (`osu|taiko|ctb|catch|fruits|mania`).',
-    'By default it uses original ruleset of a beatmap or score.',
-  ].join(' ');
-
-  shortDescription = 'Used to specify target ruleset.';
-
-  matchPattern = /[0-3]|osu|taiko|ctb|catch|fruits|mania/i;
+  description = 'Convert beatmap to a specific ruleset.';
+  shortDescription = 'Ruleset of the target beatmap.';
 
   choices: (keyof typeof GameMode)[] = [
     'Osu',

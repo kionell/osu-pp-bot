@@ -7,7 +7,7 @@ export class ApproachRateFlag extends Flag<number> {
   shortPrefixAliases = [''];
   separatorAliases = ['='];
   title = 'Approach rate flag';
-  description = 'Approach rate of the target beatmap in range `[0-11]`.';
+  description = 'Approach rate of a beatmap in range `[0-11]`.';
   expected = 'number';
   isRequired = true;
   minWords = 1;

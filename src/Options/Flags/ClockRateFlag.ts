@@ -7,7 +7,7 @@ export class ClockRateFlag extends Flag<number> {
   shortPrefixAliases = [''];
   separatorAliases = ['='];
   title = 'Clock rate flag';
-  description = 'Clock rate of the target beatmap in range `[0.25-3.00]`.';
+  description = 'Clock rate of a beatmap in range `[0.25-3.00]`.';
   expected = 'number';
   isRequired = true;
   defaultValue = 1;

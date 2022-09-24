@@ -7,7 +7,7 @@ export class ModsFlag extends Flag<string> {
   shortPrefixAliases = [''];
   separatorAliases = ['='];
   title = 'Mods flag';
-  description = 'A string with mod combination or bitwise. Default value is NM.';
+  description = 'Mods of a beatmap.';
   expected = 'combination or bitwise';
   isRequired = true;
   minWords = 1;

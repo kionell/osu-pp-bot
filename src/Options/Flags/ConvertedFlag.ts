@@ -6,7 +6,7 @@ export class ConvertedFlag extends Flag<boolean> {
   shortPrefixAliases = [''];
   separatorAliases = ['='];
   title = 'Converted flag';
-  description = 'Whether beatmap is converted or not?';
+  description = 'Whether a beatmap is converted or not?';
   expected = 'boolean';
   isRequired = false;
   minWords = 1;
