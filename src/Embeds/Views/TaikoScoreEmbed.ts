@@ -1,5 +1,5 @@
 import { ITaikoPerformance } from '@Core/REST';
-import { formatPerformance } from '@Core/Embeds';
+import { formatNumber, formatPerformance } from '@Core/Embeds';
 import { ScoreEmbed } from './ScoreEmbed';
 
 export class TaikoScoreEmbed extends ScoreEmbed {
@@ -9,10 +9,13 @@ export class TaikoScoreEmbed extends ScoreEmbed {
     const base = super._getPerformanceDetails();
 
     const separated = [
-      `**Strain:** ${formatPerformance(performance.strainPerformance, true)}`,
+      `**Strain:** ${formatPerformance(performance.difficultyPerformance, true)}`,
       `**Acc:** ${formatPerformance(performance.accuracyPerformance, true)}`,
     ];
 
-    return `${base} (${separated.join(', ')})`;
+    return [
+      `${base} (${separated.join(', ')})`,
+      `**Effective miss count:** ${formatNumber(performance.effectiveMissCount)}`,
+    ].join('\n');
   }
 }

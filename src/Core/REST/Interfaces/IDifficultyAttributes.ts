@@ -11,9 +11,10 @@ interface IDifficulty {
  * Difficulty attributes of an osu!std beatmap.
  */
 export interface IOsuDifficulty extends IDifficulty {
-  aimStrain: number;
-  speedStrain: number;
-  flashlightRating: number;
+  aimDifficulty: number;
+  speedDifficulty: number;
+  speedNoteCount: number;
+  flashlightDifficulty: number;
   sliderFactor: number;
   approachRate: number;
   overallDifficulty: number;
@@ -27,10 +28,10 @@ export interface IOsuDifficulty extends IDifficulty {
  * Difficulty attributes of an osu!taiko beatmap.
  */
 export interface ITaikoDifficulty extends IDifficulty {
-  staminaStrain: number;
-  rhythmStrain: number;
-  colourStrain: number;
-  approachRate: number;
+  staminaDifficulty: number;
+  rhythmDifficulty: number;
+  colourDifficulty: number;
+  peakDifficulty: number;
   greatHitWindow: number;
 }
 

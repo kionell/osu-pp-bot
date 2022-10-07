@@ -21,8 +21,9 @@ export interface IOsuPerformance extends IPerformance {
  * Performance attributes of an osu!taiko score.
  */
 export interface ITaikoPerformance extends IPerformance {
-  strainPerformance: number;
+  difficultyPerformance: number;
   accuracyPerformance: number;
+  effectiveMissCount: number;
 }
 
 /**

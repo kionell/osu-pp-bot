@@ -19,9 +19,10 @@ export class TaikoBeatmapEmbed extends BeatmapEmbed {
     const prefix = super._getDifficultyDetails();
 
     const stars = [
-      `**Colour:** ${formatStarRating(difficulty.colourStrain)}`,
-      `**Stamina:** ${formatStarRating(difficulty.staminaStrain)}`,
-      `**Rhythm:** ${formatStarRating(difficulty.rhythmStrain)}`,
+      `**Colour:** ${formatStarRating(difficulty.colourDifficulty)}`,
+      `**Stamina:** ${formatStarRating(difficulty.staminaDifficulty)}`,
+      `**Rhythm:** ${formatStarRating(difficulty.rhythmDifficulty)}`,
+      `**Peaks:** ${formatStarRating(difficulty.peakDifficulty)}`,
     ];
 
     return `${prefix} (${stars.join(', ')})`;
@@ -32,7 +33,7 @@ export class TaikoBeatmapEmbed extends BeatmapEmbed {
     const f = formatPerformance;
 
     return [
-      ['Strain', ...pp.map((a) => f(a.strainPerformance, true))],
+      ['Strain', ...pp.map((a) => f(a.difficultyPerformance, true))],
       ['Acc', ...pp.map((a) => f(a.accuracyPerformance, true))],
       ['Total', ...pp.map((a) => f(a.totalPerformance, true))],
     ];

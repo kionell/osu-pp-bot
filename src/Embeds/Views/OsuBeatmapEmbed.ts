@@ -22,17 +22,18 @@ export class OsuBeatmapEmbed extends BeatmapEmbed {
     const prefix = super._getDifficultyDetails();
 
     const stars = [
-      `**Aim:** ${formatStarRating(difficulty.aimStrain)}`,
-      `**Speed:** ${formatStarRating(difficulty.speedStrain)}`,
+      `**Aim:** ${formatStarRating(difficulty.aimDifficulty)}`,
+      `**Speed:** ${formatStarRating(difficulty.speedDifficulty)}`,
     ];
 
     // This is a very simple way to split mod combination by two characters.
     if (difficulty.mods.indexOf('FL') % 2 === 0) {
-      stars.push(`**FL:** \`${formatStarRating(difficulty.flashlightRating)}\``);
+      stars.push(`**FL:** \`${formatStarRating(difficulty.flashlightDifficulty)}\``);
     }
 
     const additional = [
-      `**Slider factor:** ${formatNumber(difficulty.sliderFactor, 4)}`,
+      `**Slider Factor:** ${formatNumber(difficulty.sliderFactor, 4)}`,
+      `**Speed Note Count:** ${formatNumber(difficulty.speedNoteCount, 2)}`,
     ];
 
     return [
