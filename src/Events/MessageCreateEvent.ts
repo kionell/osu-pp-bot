@@ -14,6 +14,8 @@ export class MessageCreateEvent extends MessageEvent {
 
   async handle(msg: Message): Promise<void> {
     try {
+      console.log(msg.content);
+
       const cachedChannel = await MessageEvent.getDatabaseChatChannel(msg);
 
       if (!cachedChannel) return;
