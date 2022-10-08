@@ -17,7 +17,7 @@ export class MessageCreateEvent extends MessageEvent {
       const cachedChannel = await MessageEvent.getDatabaseChatChannel(msg);
 
       if (!cachedChannel) {
-        console.log('Cached channel is null!');
+        console.warn('Cached channel is null!');
 
         return;
       }
