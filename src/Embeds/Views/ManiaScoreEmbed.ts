@@ -3,7 +3,7 @@ import { formatAccuracy, formatPerformance } from '@Core/Embeds';
 import { ScoreEmbed } from './ScoreEmbed';
 
 export class ManiaScoreEmbed extends ScoreEmbed {
-  protected _getComboDetails(): string {
+  protected _getAccuracyDetails(): string {
     const { accuracy, statistics } = this._score;
 
     const formattedAccuracy = formatAccuracy(accuracy);
