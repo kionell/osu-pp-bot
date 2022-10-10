@@ -7,6 +7,7 @@ export * from './ComboFlag';
 export * from './ConvertedFlag';
 export * from './DropletFlag';
 export * from './GoodFlag';
+export * from './GreatFlag';
 export * from './MehFlag';
 export * from './MissFlag';
 export * from './ModsFlag';

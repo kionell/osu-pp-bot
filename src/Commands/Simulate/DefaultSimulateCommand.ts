@@ -10,6 +10,7 @@ import {
   MissFlag,
   MehFlag,
   GoodFlag,
+  GreatFlag,
   OkFlag,
   PerfectFlag,
   AccuracyFlag,
@@ -33,6 +34,7 @@ export class DefaultSimulateCommand extends SimulateCommand {
     this.addOption(new MissFlag());
     this.addOption(new MehFlag());
     this.addOption(new GoodFlag());
+    this.addOption(new GreatFlag());
     this.addOption(new OkFlag());
     this.addOption(new PerfectFlag());
     this.addOption(new AccuracyFlag());
@@ -63,6 +65,7 @@ export class DefaultSimulateCommand extends SimulateCommand {
     dto.countMiss = this.getValue(MissFlag) ?? dto.countMiss;
     dto.count50 = this.getValue(MehFlag) ?? dto.count50;
     dto.count100 = this.getValue(GoodFlag) ?? dto.count100;
+    dto.count300 = this.getValue(GreatFlag) ?? dto.count300;
     dto.countKatu = this.getValue(OkFlag) ?? dto.countKatu;
     dto.countGeki = this.getValue(PerfectFlag) ?? dto.countGeki;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;

@@ -7,7 +7,7 @@ import {
   MehFlag,
   GoodFlag,
   OkFlag,
-  PerfectFlag,
+  GreatFlag,
   AccuracyFlag,
 } from '../../Options';
 
@@ -27,7 +27,7 @@ export class ManiaSimulateCommand extends SimulateCommand {
     this.addOption(new MehFlag());
     this.addOption(new GoodFlag());
     this.addOption(new OkFlag());
-    this.addOption(new PerfectFlag());
+    this.addOption(new GreatFlag());
     this.addOption(new AccuracyFlag());
   }
 
@@ -40,9 +40,9 @@ export class ManiaSimulateCommand extends SimulateCommand {
 
     dto.countMiss = this.getValue(MissFlag) ?? dto.countMiss;
     dto.count50 = this.getValue(MehFlag) ?? dto.count50;
-    dto.count100 = this.getValue(GoodFlag) ?? dto.count100;
-    dto.countKatu = this.getValue(OkFlag) ?? dto.countKatu;
-    dto.countGeki = this.getValue(PerfectFlag) ?? dto.countGeki;
+    dto.count100 = this.getValue(OkFlag) ?? dto.count100;
+    dto.countKatu = this.getValue(GoodFlag) ?? dto.countKatu;
+    dto.count300 = this.getValue(GreatFlag) ?? dto.countGeki;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
 
     return dto;
