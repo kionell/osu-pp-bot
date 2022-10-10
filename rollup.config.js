@@ -26,7 +26,7 @@ export default [
       {
         dir: './build',
         format: 'es',
-        sourcemap: !(process.env.NODE_ENV === 'production'),
+        sourcemap: process.env.NODE_ENV ? process.env?.NODE_ENV === 'production' : false,
         preserveModules: true,
       },
     ],
