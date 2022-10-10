@@ -13,6 +13,8 @@ export class ConvertedFlag extends Flag<boolean> {
     'depending on what type of a beatmap is processed',
   ].join(' ');
 
+  shortDescription = 'Whether a beatmap is converted or not?';
+
   expected = 'boolean';
   isRequired = false;
   minWords = 1;
