@@ -12,7 +12,6 @@ import {
   GoodFlag,
   GreatFlag,
   OkFlag,
-  PerfectFlag,
   AccuracyFlag,
   ComboFlag,
   PercentComboFlag,
@@ -36,7 +35,6 @@ export class DefaultSimulateCommand extends SimulateCommand {
     this.addOption(new GoodFlag());
     this.addOption(new GreatFlag());
     this.addOption(new OkFlag());
-    this.addOption(new PerfectFlag());
     this.addOption(new AccuracyFlag());
     this.addOption(new ComboFlag());
     this.addOption(new PercentComboFlag());
@@ -67,7 +65,6 @@ export class DefaultSimulateCommand extends SimulateCommand {
     dto.count100 = this.getValue(GoodFlag) ?? dto.count100;
     dto.count300 = this.getValue(GreatFlag) ?? dto.count300;
     dto.countKatu = this.getValue(OkFlag) ?? dto.countKatu;
-    dto.countGeki = this.getValue(PerfectFlag) ?? dto.countGeki;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
     dto.maxCombo = this.getValue(ComboFlag) ?? dto.maxCombo;
     dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
