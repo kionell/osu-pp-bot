@@ -10,9 +10,11 @@ import {
   MissFlag,
   MehFlag,
   GoodFlag,
+  OkFlag,
+  PerfectFlag,
+  AccuracyFlag,
   ComboFlag,
   PercentComboFlag,
-  AccuracyFlag,
   RulesetFlag,
 } from '@Options';
 
@@ -31,9 +33,11 @@ export class DefaultSimulateCommand extends SimulateCommand {
     this.addOption(new MissFlag());
     this.addOption(new MehFlag());
     this.addOption(new GoodFlag());
+    this.addOption(new OkFlag());
+    this.addOption(new PerfectFlag());
+    this.addOption(new AccuracyFlag());
     this.addOption(new ComboFlag());
     this.addOption(new PercentComboFlag());
-    this.addOption(new AccuracyFlag());
     this.addOption(new RulesetFlag());
     this.addOption(new ApproachRateFlag());
     this.addOption(new CircleSizeFlag());
@@ -59,9 +63,11 @@ export class DefaultSimulateCommand extends SimulateCommand {
     dto.countMiss = this.getValue(MissFlag) ?? dto.countMiss;
     dto.count50 = this.getValue(MehFlag) ?? dto.count50;
     dto.count100 = this.getValue(GoodFlag) ?? dto.count100;
+    dto.countKatu = this.getValue(OkFlag) ?? dto.countKatu;
+    dto.countGeki = this.getValue(PerfectFlag) ?? dto.countGeki;
+    dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
     dto.maxCombo = this.getValue(ComboFlag) ?? dto.maxCombo;
     dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
-    dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
 
     dto.approachRate = this.getValue(ApproachRateFlag) ?? dto.approachRate;
     dto.overallDifficulty = this.getValue(OverallDifficultyFlag) ?? dto.overallDifficulty;
