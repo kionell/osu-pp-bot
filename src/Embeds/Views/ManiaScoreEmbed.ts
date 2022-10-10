@@ -1,8 +1,14 @@
 import { IManiaPerformance } from '@Core/REST';
-import { formatAccuracy, formatPerformance } from '@Core/Embeds';
+import { formatCombo, formatAccuracy, formatPerformance } from '@Core/Embeds';
 import { ScoreEmbed } from './ScoreEmbed';
 
 export class ManiaScoreEmbed extends ScoreEmbed {
+  protected _getComboDetails(): string {
+    const scoreMaxCombo = this._score.maxCombo;
+
+    return formatCombo(scoreMaxCombo);
+  }
+
   protected _getAccuracyDetails(): string {
     const { accuracy, statistics } = this._score;
 
