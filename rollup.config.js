@@ -3,6 +3,7 @@ import externals from 'rollup-plugin-node-externals';
 import clean from 'rollup-plugin-delete';
 import { typescriptPaths } from 'rollup-plugin-typescript-paths';
 import { folderInput } from 'rollup-plugin-folder-input';
+import 'dotenv/config';
 
 export default [
   {
@@ -26,7 +27,7 @@ export default [
       {
         dir: './build',
         format: 'es',
-        sourcemap: process?.env?.NODE_ENV ? process.env.NODE_ENV === 'production' : false,
+        sourcemap: process.env.NODE_ENV === 'development',
         preserveModules: true,
       },
     ],
