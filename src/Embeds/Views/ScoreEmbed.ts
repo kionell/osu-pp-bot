@@ -35,10 +35,7 @@ export abstract class ScoreEmbed extends ExtendedEmbed {
   }
 
   protected _createEmbedDescription(): string {
-    const {
-      username, userId, rank, accuracy,
-      mods, rulesetId, date,
-    } = this._score;
+    const { username, userId, rank, mods, rulesetId, date } = this._score;
 
     const statistics = this._score.statistics;
     const difficulty = this._score.beatmap.difficulty;
@@ -49,7 +46,7 @@ export abstract class ScoreEmbed extends ExtendedEmbed {
       `**Stars**: ${formatStarRating(difficulty.starRating)}`,
       `**Combo**: ${this._getComboDetails()}`,
       `**Mods**: ${mods}`,
-      `**Accuracy**: ${formatAccuracy(accuracy)}`,
+      `**Accuracy**: ${this._getAccuracyDetails()}`,
     ];
 
     if ((userId || username) && username !== 'osu!') {
@@ -72,6 +69,12 @@ export abstract class ScoreEmbed extends ExtendedEmbed {
     const beatmapMaxCombo = this._score.beatmap.difficulty.maxCombo;
 
     return formatCombo(scoreMaxCombo, beatmapMaxCombo);
+  }
+
+  protected _getAccuracyDetails(): string {
+    const accuracy = this._score.accuracy;
+
+    return formatAccuracy(accuracy);
   }
 
   protected _getPerformanceDetails(): string {

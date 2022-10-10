@@ -1,12 +1,12 @@
 import { IManiaPerformance } from '@Core/REST';
-import { formatCombo, formatPerformance } from '@Core/Embeds';
+import { formatAccuracy, formatPerformance } from '@Core/Embeds';
 import { ScoreEmbed } from './ScoreEmbed';
 
 export class ManiaScoreEmbed extends ScoreEmbed {
   protected _getComboDetails(): string {
-    const { maxCombo, statistics } = this._score;
+    const { accuracy, statistics } = this._score;
 
-    const combo = formatCombo(maxCombo);
+    const formattedAccuracy = formatAccuracy(accuracy);
 
     const marvelous = statistics.countGeki;
     const perfect = statistics.count300;
@@ -14,10 +14,10 @@ export class ManiaScoreEmbed extends ScoreEmbed {
     if (perfect) {
       const ratio = (marvelous / perfect).toFixed(2);
 
-      return `${combo} (${ratio})`;
+      return `${formattedAccuracy} (${ratio})`;
     }
 
-    return combo;
+    return formattedAccuracy;
   }
 
   protected _getPerformanceDetails(): string {
