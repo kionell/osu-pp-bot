@@ -8,7 +8,6 @@ import {
   GoodFlag,
   OkFlag,
   GreatFlag,
-  AccuracyFlag,
 } from '../../Options';
 
 export class ManiaSimulateCommand extends SimulateCommand {
@@ -28,7 +27,6 @@ export class ManiaSimulateCommand extends SimulateCommand {
     this.addOption(new GoodFlag());
     this.addOption(new OkFlag());
     this.addOption(new GreatFlag());
-    this.addOption(new AccuracyFlag());
   }
 
   protected _getTargetRuleset(): GameMode | null {
@@ -43,7 +41,6 @@ export class ManiaSimulateCommand extends SimulateCommand {
     dto.count100 = this.getValue(OkFlag) ?? dto.count100;
     dto.countKatu = this.getValue(GoodFlag) ?? dto.countKatu;
     dto.count300 = this.getValue(GreatFlag) ?? dto.countGeki;
-    dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
 
     return dto;
   }
