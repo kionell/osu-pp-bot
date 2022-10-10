@@ -10,6 +10,7 @@
 !LICENSE
 !package-lock.json
 !package.json
+!Dockerfile
 !README.md
 !rollup.config.js
 !jest.config.js
