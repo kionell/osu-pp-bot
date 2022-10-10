@@ -2,7 +2,7 @@ import { DataType, Flag } from 'cli-processor';
 
 export class PercentComboFlag extends Flag<number> {
   name = 'percent-combo';
-  shortName = 'P';
+  shortName = 'PC';
   prefixAliases = [''];
   shortPrefixAliases = [''];
   separatorAliases = ['='];
