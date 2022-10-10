@@ -37,7 +37,7 @@ export abstract class ScoreEmbed extends ExtendedEmbed {
   protected _createEmbedDescription(): string {
     const {
       username, userId, rank, accuracy,
-      mods, totalScore, rulesetId, date,
+      mods, rulesetId, date,
     } = this._score;
 
     const statistics = this._score.statistics;
@@ -56,10 +56,6 @@ export abstract class ScoreEmbed extends ExtendedEmbed {
       const userURL = this._urlGenerator.generateUserURL(userId || username);
 
       result[0] = `**Player**: [${username}](${userURL})`;
-    }
-
-    if (totalScore > 0) {
-      result.push(`**Score**: ${totalScore.toLocaleString()}`);
     }
 
     const timestamp = formatPassedTime(new Date(date).getTime());
