@@ -8,8 +8,6 @@ RUN npm i
 
 COPY . .
 
-EXPOSE 3000
-
 ENV NODE_PATH = ./build
 
 RUN npm run build
