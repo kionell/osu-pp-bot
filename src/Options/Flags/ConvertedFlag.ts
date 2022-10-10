@@ -6,7 +6,13 @@ export class ConvertedFlag extends Flag<boolean> {
   shortPrefixAliases = [''];
   separatorAliases = ['='];
   title = 'Converted flag';
-  description = 'Whether a beatmap is converted or not?';
+
+  description = [
+    'Whether a beatmap is converted or not?',
+    'This is used only for osu!mania attributes as they are different',
+    'depending on what type of a beatmap is processed',
+  ].join(' ');
+
   expected = 'boolean';
   isRequired = false;
   minWords = 1;
