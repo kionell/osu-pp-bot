@@ -62,9 +62,9 @@ export class DefaultSimulateCommand extends SimulateCommand {
 
     dto.countMiss = this.getValue(MissFlag) ?? dto.countMiss;
     dto.count50 = this.getValue(MehFlag) ?? dto.count50;
-    dto.count100 = this.getValue(GoodFlag) ?? dto.count100;
+    dto.count100 = this.getValue(OkFlag) ?? dto.count100;
     dto.count300 = this.getValue(GreatFlag) ?? dto.count300;
-    dto.countKatu = this.getValue(OkFlag) ?? dto.countKatu;
+    dto.countKatu = this.getValue(GoodFlag) ?? dto.countKatu;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
     dto.maxCombo = this.getValue(ComboFlag) ?? dto.maxCombo;
     dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;

@@ -3,12 +3,12 @@ import { Flag, DataType } from 'cli-processor';
 export class GoodFlag extends Flag<number> {
   name = 'goods';
   shortName = 'G';
-  aliases = ['n100'];
+  aliases = ['katus', 'katu'];
   prefixAliases = [''];
   shortPrefixAliases = [''];
   separatorAliases = ['='];
   title = 'Good flag';
-  description = 'The number of good (100) hits of a score.';
+  description = 'The number of good (katu) hits of a score.';
   expected = 'number';
   isRequired = true;
   minWords = 1;
