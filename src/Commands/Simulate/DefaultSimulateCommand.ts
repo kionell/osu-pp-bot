@@ -13,7 +13,6 @@ import {
   ComboFlag,
   PercentComboFlag,
   AccuracyFlag,
-  TotalScoreFlag,
   RulesetFlag,
 } from '@Options';
 
@@ -36,7 +35,6 @@ export class DefaultSimulateCommand extends SimulateCommand {
     this.addOption(new PercentComboFlag());
     this.addOption(new AccuracyFlag());
     this.addOption(new RulesetFlag());
-    this.addOption(new TotalScoreFlag());
     this.addOption(new ApproachRateFlag());
     this.addOption(new CircleSizeFlag());
     this.addOption(new OverallDifficultyFlag());
@@ -64,7 +62,6 @@ export class DefaultSimulateCommand extends SimulateCommand {
     dto.maxCombo = this.getValue(ComboFlag) ?? dto.maxCombo;
     dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
-    dto.totalScore = this.getValue(TotalScoreFlag) ?? dto.totalScore;
 
     dto.approachRate = this.getValue(ApproachRateFlag) ?? dto.approachRate;
     dto.overallDifficulty = this.getValue(OverallDifficultyFlag) ?? dto.overallDifficulty;
