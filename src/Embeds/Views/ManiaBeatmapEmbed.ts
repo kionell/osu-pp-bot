@@ -21,6 +21,7 @@ export class ManiaBeatmapEmbed extends BeatmapEmbed {
 
     return [
       ['Strain', ...pp.map((a) => f(a.difficultyPerformance, true))],
+      ['Total', ...pp.map((a) => f(a.totalPerformance, true))],
     ];
   }
 }
