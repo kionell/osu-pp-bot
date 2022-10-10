@@ -1,17 +1,11 @@
 /**
 !/src
 !/src/**
-!/tests
-!/tests/**
 !.eslintignore
 !.eslintrc.json
-!.gitignore
 !.dockerignore
-!LICENSE
 !package-lock.json
 !package.json
-!README.md
 !rollup.config.js
 !jest.config.js
 !tsconfig.json
-!template.env
