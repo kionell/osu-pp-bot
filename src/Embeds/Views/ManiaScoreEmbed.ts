@@ -26,8 +26,7 @@ export class ManiaScoreEmbed extends ScoreEmbed {
     const base = super._getPerformanceDetails();
 
     const separated = [
-      `**Strain:** ${formatPerformance(performance.strainPerformance, true)}`,
-      `**Acc:** ${formatPerformance(performance.accuracyPerformance, true)}`,
+      `**Strain:** ${formatPerformance(performance.difficultyPerformance, true)}`,
     ];
 
     return `${base} (${separated.join(', ')})`;

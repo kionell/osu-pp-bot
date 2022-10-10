@@ -47,7 +47,6 @@ export interface ICatchDifficulty extends IDifficulty {
  */
 export interface IManiaDifficulty extends IDifficulty {
   greatHitWindow: number;
-  scoreMultiplier: number;
 }
 
 /**

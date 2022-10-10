@@ -30,9 +30,7 @@ export interface ITaikoPerformance extends IPerformance {
  * Performance attributes of an osu!mania score.
  */
 export interface IManiaPerformance extends IPerformance {
-  strainPerformance: number;
-  accuracyPerformance: number;
-  scaledScore: number;
+  difficultyPerformance: number;
 }
 
 /**
