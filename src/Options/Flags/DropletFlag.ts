@@ -6,7 +6,7 @@ export class DropletFlag extends Flag<number> {
   prefixAliases = [''];
   shortPrefixAliases = [''];
   separatorAliases = ['='];
-  title = 'Droplets flag';
+  title = 'Droplet flag';
   description = 'The number of droplets of an osu!catch score.';
   expected = 'number';
   isRequired = true;

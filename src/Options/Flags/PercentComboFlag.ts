@@ -7,7 +7,7 @@ export class PercentComboFlag extends Flag<number> {
   shortPrefixAliases = [''];
   separatorAliases = ['='];
   title = 'Combo percent flag';
-  description = 'Used to specify percentage of score max combo.';
+  description = 'Percentage of score max combo.';
   expected = 'number';
   isRequired = true;
   minWords = 1;

@@ -7,8 +7,8 @@ export class MehFlag extends Flag<number> {
   prefixAliases = [''];
   shortPrefixAliases = [''];
   separatorAliases = ['='];
-  title = 'Mehs flag';
-  description = 'The number of 50\'s of a score.';
+  title = 'Meh flag';
+  description = 'The number of meh (50) hits of a score.';
   expected = 'number';
   isRequired = true;
   minWords = 1;

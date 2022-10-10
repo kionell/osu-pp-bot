@@ -7,8 +7,8 @@ export class GoodFlag extends Flag<number> {
   prefixAliases = [''];
   shortPrefixAliases = [''];
   separatorAliases = ['='];
-  title = 'Goods flag';
-  description = 'The number of 100\'s of a score.';
+  title = 'Good flag';
+  description = 'The number of good (100) hits of a score.';
   expected = 'number';
   isRequired = true;
   minWords = 1;
