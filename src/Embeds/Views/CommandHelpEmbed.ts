@@ -40,7 +40,7 @@ export class CommandHelpEmbed extends ExtendedEmbed {
     }
 
     if (typeof flags !== 'undefined' && flags.length) {
-      fields.push(this._createFlagsField(flags as IFlag[]));
+      fields.push(...this._createFlagsFields(flags as IFlag[]));
     }
 
     if (this._command?.examples.length) {
@@ -82,14 +82,33 @@ export class CommandHelpEmbed extends ExtendedEmbed {
     return this._createField('**[Subcommands]**', subcommands.join('\n'));
   }
 
-  protected _createFlagsField(flags: IFlag[]): EmbedField {
-    const template: string[] = [];
+  protected _createFlagsFields(flags: IFlag[]): EmbedField[] {
+    const fields: EmbedField[] = [];
+
+    // Temprorary fix for embed field overflow.
+    let template: string[] = [];
+    let templateLength = 0;
+
+    const MAX_FIELD_LENGTH = 1024;
 
     flags.forEach((flag) => {
-      template.push(this._stringifyFlag(flag));
+      const stringifiedFlag = this._stringifyFlag(flag);
+
+      // TODO: This should be replaced with discord components.
+      if (templateLength + stringifiedFlag.length >= MAX_FIELD_LENGTH) {
+        const field = this._createField('**[Flags]**', template.join('\n'));
+
+        fields.push(field);
+
+        template = [];
+        templateLength = 0;
+      }
+
+      template.push(stringifiedFlag);
+      templateLength += stringifiedFlag.length;
     });
 
-    return this._createField('**[Flags]**', template.join('\n'));
+    return fields;
   }
 
   protected _createExamplesField(): EmbedField {
