@@ -85,28 +85,37 @@ export class CommandHelpEmbed extends ExtendedEmbed {
   protected _createFlagsFields(flags: IFlag[]): EmbedField[] {
     const fields: EmbedField[] = [];
 
-    // Temprorary fix for embed field overflow.
     let template: string[] = [];
     let templateLength = 0;
 
     const MAX_FIELD_LENGTH = 1024;
+
+    // Temprorary fix for embed field overflow.
+    const addFlagField = () => {
+      const fieldName = '**[Flags]**';
+      const fieldValue = template.join('\n');
+
+      const field = this._createField(fieldName, fieldValue);
+
+      fields.push(field);
+
+      template = [];
+      templateLength = 0;
+    };
 
     flags.forEach((flag) => {
       const stringifiedFlag = this._stringifyFlag(flag);
 
       // TODO: This should be replaced with discord components.
       if (templateLength + stringifiedFlag.length >= MAX_FIELD_LENGTH) {
-        const field = this._createField('**[Flags]**', template.join('\n'));
-
-        fields.push(field);
-
-        template = [];
-        templateLength = 0;
+        addFlagField();
       }
 
       template.push(stringifiedFlag);
       templateLength += stringifiedFlag.length;
     });
+
+    addFlagField();
 
     return fields;
   }
