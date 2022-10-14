@@ -3,7 +3,7 @@ import { Flag, DataType } from 'cli-processor';
 export class OkFlag extends Flag<number> {
   name = 'oks';
   shortName = 'O';
-  aliases = ['n100'];
+  aliases = ['ok', 'n100'];
   prefixAliases = [''];
   shortPrefixAliases = [''];
   separatorAliases = ['='];

@@ -3,7 +3,7 @@ import { Flag, DataType } from 'cli-processor';
 export class MehFlag extends Flag<number> {
   name = 'mehs';
   shortName = 'M';
-  aliases = ['n50'];
+  aliases = ['meh', 'n50'];
   prefixAliases = [''];
   shortPrefixAliases = [''];
   separatorAliases = ['='];

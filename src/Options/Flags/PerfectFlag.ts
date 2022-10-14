@@ -3,7 +3,7 @@ import { Flag, DataType } from 'cli-processor';
 export class PerfectFlag extends Flag<number> {
   name = 'perfects';
   shortName = 'P';
-  aliases = ['gekis', 'geki'];
+  aliases = ['perfect', 'gekis', 'geki'];
   prefixAliases = [''];
   shortPrefixAliases = [''];
   separatorAliases = ['='];

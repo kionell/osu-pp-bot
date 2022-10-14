@@ -3,6 +3,7 @@ import { Flag, DataType } from 'cli-processor';
 export class DropletFlag extends Flag<number> {
   name = 'droplets';
   shortName = 'D';
+  aliases = ['droplet'];
   prefixAliases = [''];
   shortPrefixAliases = [''];
   separatorAliases = ['='];

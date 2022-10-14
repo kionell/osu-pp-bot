@@ -3,7 +3,7 @@ import { Flag, DataType } from 'cli-processor';
 export class GoodFlag extends Flag<number> {
   name = 'goods';
   shortName = 'G';
-  aliases = ['katus', 'katu'];
+  aliases = ['good', 'katus', 'katu'];
   prefixAliases = [''];
   shortPrefixAliases = [''];
   separatorAliases = ['='];
