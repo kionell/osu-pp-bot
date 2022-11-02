@@ -88,10 +88,13 @@ export class EmbedShipment {
     const firstEmbed = this._embeds?.[0] ?? null;
     const embeds = [];
 
-    if (firstEmbed) embeds.push(firstEmbed);
+    // We can't send embed shipment without embeds.
+    if (!firstEmbed) return null;
+
+    embeds.push(firstEmbed);
 
     const payload = {
-      content: embeds.length ? '\u200b' : null,
+      content: null,
       components: this._buttonSystem?.actionRows ?? [],
       files: this._attachments,
       embeds,
