@@ -35,14 +35,14 @@ export abstract class ScoreEmbed extends ExtendedEmbed {
   }
 
   protected _createEmbedDescription(): string {
-    const { username, userId, rank, mods, rulesetId, date, totalScore } = this._score;
+    const { username, userId, mods, rulesetId, date, totalScore } = this._score;
 
     const statistics = this._score.statistics;
     const difficulty = this._score.beatmap.difficulty;
 
     const result = [
       `**Player**: ${username}`,
-      `**Grade**: ${getRankEmoji(rank)}`,
+      `**Grade**: ${this._getGradeDetails()}`,
       `**Stars**: ${formatStarRating(difficulty.starRating)}`,
       `**Combo**: ${this._getComboDetails()}`,
       `**Mods**: ${mods}`,
@@ -66,6 +66,21 @@ export abstract class ScoreEmbed extends ExtendedEmbed {
     result.push(`**Date:** ${timestamp}`);
 
     return result.join('\n');
+  }
+
+  protected _getGradeDetails(): string {
+    const emoji = getRankEmoji(this._score.rank);
+
+    if (this._score.rank === 'F') {
+      const scoreTotalHits = this._score.totalHits;
+      const beatmapTotalHits = this._score.beatmap.general.totalHits;
+
+      const completionProgress = scoreTotalHits / beatmapTotalHits * 100;
+
+      return `${emoji} ${completionProgress.toFixed(1)}%`;
+    }
+
+    return emoji;
   }
 
   protected _getComboDetails(): string {
