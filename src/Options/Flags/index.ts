@@ -19,3 +19,4 @@ export * from './RulesetFlag';
 export * from './SearchFlag';
 export * from './ServerFlag';
 export * from './TinyDropletFlag';
+export * from './TotalHitsFlag';

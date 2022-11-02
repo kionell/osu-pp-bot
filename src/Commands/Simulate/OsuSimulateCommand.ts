@@ -52,9 +52,18 @@ export class OsuSimulateCommand extends SimulateCommand {
     dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
 
-    dto.approachRate = this.getValue(ApproachRateFlag) ?? dto.approachRate;
-    dto.overallDifficulty = this.getValue(OverallDifficultyFlag) ?? dto.overallDifficulty;
-    dto.circleSize = this.getValue(CircleSizeFlag) ?? dto.circleSize;
+    const approachRateFlag = this.getOption(ApproachRateFlag);
+    const overallDifficultyFlag = this.getOption(OverallDifficultyFlag);
+    const circleSizeFlag = this.getOption(CircleSizeFlag);
+
+    dto.approachRate = approachRateFlag?.getValue() ?? dto.approachRate;
+    dto.lockApproachRate = approachRateFlag?.raw?.endsWith('!') ?? false;
+
+    dto.overallDifficulty = overallDifficultyFlag?.getValue() ?? dto.overallDifficulty;
+    dto.lockOverallDifficulty = overallDifficultyFlag?.raw?.endsWith('!') ?? false;
+
+    dto.circleSize = circleSizeFlag?.getValue() ?? dto.circleSize;
+    dto.lockCircleSize = circleSizeFlag?.raw?.endsWith('!') ?? false;
 
     return dto;
   }

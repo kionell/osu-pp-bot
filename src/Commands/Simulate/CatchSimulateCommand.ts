@@ -50,8 +50,14 @@ export class CatchSimulateCommand extends SimulateCommand {
     dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
 
-    dto.approachRate = this.getValue(ApproachRateFlag) ?? dto.approachRate;
-    dto.circleSize = this.getValue(CircleSizeFlag) ?? dto.circleSize;
+    const approachRateFlag = this.getOption(ApproachRateFlag);
+    const circleSizeFlag = this.getOption(CircleSizeFlag);
+
+    dto.approachRate = approachRateFlag?.getValue() ?? dto.approachRate;
+    dto.lockApproachRate = approachRateFlag?.raw?.endsWith('!') ?? false;
+
+    dto.circleSize = circleSizeFlag?.getValue() ?? dto.circleSize;
+    dto.lockCircleSize = circleSizeFlag?.raw?.endsWith('!') ?? false;
 
     return dto;
   }

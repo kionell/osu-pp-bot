@@ -14,6 +14,7 @@ import {
   OverallDifficultyFlag,
   RulesetFlag,
   SearchFlag,
+  TotalHitsFlag,
 } from '@Options';
 
 export class BeatmapCommand extends BotCommand implements IHasAttachments {
@@ -94,11 +95,7 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     dto.rulesetId = this._getTargetRuleset(scanner) ?? dto.rulesetId;
     dto.search = this.getValue(SearchFlag) ?? dto.search;
 
-    dto.approachRate = this.getValue(ApproachRateFlag) ?? dto.approachRate;
-    dto.overallDifficulty = this.getValue(OverallDifficultyFlag) ?? dto.overallDifficulty;
-    dto.circleSize = this.getValue(CircleSizeFlag) ?? dto.circleSize;
-    dto.clockRate = this.getValue(ClockRateFlag) ?? dto.clockRate;
-    dto.bpm = this.getValue(BPMFlag) ?? dto.bpm;
+    this._addCustomStats(dto);
 
     const beatmapAttachment = this.attachments.getAttachmentOfType(AttachmentType.Beatmap);
 
@@ -144,6 +141,25 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     }
 
     return null;
+  }
+
+  protected _addCustomStats(dto: IBeatmapOptionsDto): void {
+    const approachRateFlag = this.getOption(ApproachRateFlag);
+    const overallDifficultyFlag = this.getOption(OverallDifficultyFlag);
+    const circleSizeFlag = this.getOption(CircleSizeFlag);
+
+    dto.approachRate = approachRateFlag?.getValue() ?? dto.approachRate;
+    dto.lockApproachRate = approachRateFlag?.raw?.endsWith('!') ?? false;
+
+    dto.overallDifficulty = overallDifficultyFlag?.getValue() ?? dto.overallDifficulty;
+    dto.lockOverallDifficulty = overallDifficultyFlag?.raw?.endsWith('!') ?? false;
+
+    dto.circleSize = circleSizeFlag?.getValue() ?? dto.circleSize;
+    dto.lockCircleSize = circleSizeFlag?.raw?.endsWith('!') ?? false;
+
+    dto.totalHits = this.getValue(TotalHitsFlag) ?? dto.totalHits;
+    dto.clockRate = this.getValue(ClockRateFlag) ?? dto.clockRate;
+    dto.bpm = this.getValue(BPMFlag) ?? dto.bpm;
   }
 
   protected _createGraphAttachment(strainGraph: Buffer | null): MessageAttachment | null {

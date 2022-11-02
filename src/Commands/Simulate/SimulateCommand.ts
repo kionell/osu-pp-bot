@@ -9,6 +9,7 @@ import {
   ClockRateFlag,
   ModsFlag,
   SearchFlag,
+  TotalHitsFlag,
 } from '@Options';
 
 export abstract class SimulateCommand extends BotCommand implements IHasAttachments {
@@ -38,6 +39,7 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
     this.addOption(new SearchFlag());
     this.addOption(new BPMFlag());
     this.addOption(new ClockRateFlag());
+    this.addOption(new TotalHitsFlag());
   }
 
   async execute(options: ICommandOptions): Promise<void> {
@@ -66,6 +68,7 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
     dto.beatmapId = this._getTargetBeatmap(scanner, options) ?? dto.beatmapId;
     dto.rulesetId = this._getTargetRuleset() ?? dto.rulesetId;
     dto.search = this.getValue(SearchFlag) ?? dto.search;
+    dto.totalHits = this.getValue(TotalHitsFlag) ?? dto.totalHits;
     dto.clockRate = this.getValue(ClockRateFlag) ?? dto.clockRate;
     dto.bpm = this.getValue(BPMFlag) ?? dto.bpm;
 

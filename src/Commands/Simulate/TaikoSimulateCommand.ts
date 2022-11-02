@@ -45,7 +45,10 @@ export class TaikoSimulateCommand extends SimulateCommand {
     dto.percentCombo = this.getValue(PercentComboFlag) ?? dto.percentCombo;
     dto.accuracy = this.getValue(AccuracyFlag) ?? dto.accuracy;
 
-    dto.overallDifficulty = this.getValue(OverallDifficultyFlag) ?? dto.overallDifficulty;
+    const overallDifficultyFlag = this.getOption(OverallDifficultyFlag);
+
+    dto.overallDifficulty = overallDifficultyFlag?.getValue() ?? dto.overallDifficulty;
+    dto.lockOverallDifficulty = overallDifficultyFlag?.raw?.endsWith('!') ?? false;
 
     return dto;
   }
