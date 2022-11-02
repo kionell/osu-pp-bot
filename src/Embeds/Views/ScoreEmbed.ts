@@ -77,7 +77,7 @@ export abstract class ScoreEmbed extends ExtendedEmbed {
 
       const completionProgress = scoreTotalHits / beatmapTotalHits * 100;
 
-      return `${emoji} ${completionProgress.toFixed(1)}%`;
+      return `${emoji} (${completionProgress.toFixed(1)}%)`;
     }
 
     return emoji;
