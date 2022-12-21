@@ -68,7 +68,7 @@ export function getBeatmapIdFromMessage(scanner: URLScanner, msg: Message, refer
   const descriptionURL = scanner.getBeatmapURL(embeds[0]?.description);
 
   if (descriptionURL) {
-    return scanner.getBeatmapIdFromURL(embeds[0].description as string);
+    return scanner.getBeatmapIdFromURL(descriptionURL);
   }
 
   if (embeds[0]?.fields.length) {
@@ -76,7 +76,7 @@ export function getBeatmapIdFromMessage(scanner: URLScanner, msg: Message, refer
       const fieldURL = scanner.getBeatmapURL(field.name);
 
       if (fieldURL) {
-        return scanner.getBeatmapIdFromURL(field.name);
+        return scanner.getBeatmapIdFromURL(fieldURL);
       }
     }
   }
@@ -122,7 +122,7 @@ export function getScoreIdFromMessage(scanner: URLScanner, msg: Message, referen
   const descriptionURL = scanner.getScoreURL(embeds[0]?.description);
 
   if (descriptionURL) {
-    return scanner.getScoreIdFromURL(embeds[0].description as string);
+    return scanner.getScoreIdFromURL(descriptionURL);
   }
 
   if (embeds[0]?.fields.length) {
@@ -130,7 +130,7 @@ export function getScoreIdFromMessage(scanner: URLScanner, msg: Message, referen
       const fieldURL = scanner.getScoreURL(field.name);
 
       if (fieldURL) {
-        return scanner.getScoreIdFromURL(field.name);
+        return scanner.getScoreIdFromURL(fieldURL);
       }
     }
   }
