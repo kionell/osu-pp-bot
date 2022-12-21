@@ -12,7 +12,18 @@ export function getServerNameFromMessage(msg: Message, reference = true): Return
 
   const found = getServerName(content)
     ?? getServerName(embeds?.[0]?.url)
-    ?? getServerName(embeds?.[0]?.author?.url);
+    ?? getServerName(embeds?.[0]?.author?.url)
+    ?? getServerName(embeds?.[0]?.description);
+
+  if (found) return found;
+
+  if (embeds?.[0]?.fields.length) {
+    for (const field of embeds[0].fields) {
+      const found = getServerName(field.name);
+
+      if (found) return found;
+    }
+  }
 
   if (found) return found;
 
@@ -54,6 +65,18 @@ export function getBeatmapIdFromMessage(scanner: URLScanner, msg: Message, refer
     return scanner.getBeatmapIdFromURL(embeds[0].author?.url as string);
   }
 
+  if (scanner.hasBeatmapURL(embeds[0]?.description)) {
+    return scanner.getBeatmapIdFromURL(embeds[0].description as string);
+  }
+
+  if (embeds[0]?.fields.length) {
+    for (const field of embeds[0].fields) {
+      if (scanner.hasBeatmapURL(field.name)) {
+        return scanner.getBeatmapIdFromURL(field.name);
+      }
+    }
+  }
+
   if (reference && msg.reference?.messageId) {
     const messageId = msg.reference?.messageId;
     const ref = msg.channel.messages.cache.get(messageId);
@@ -90,6 +113,18 @@ export function getScoreIdFromMessage(scanner: URLScanner, msg: Message, referen
 
   if (scanner.isScoreURL(embeds[0]?.author?.url)) {
     return scanner.getScoreIdFromURL(embeds[0].author?.url as string);
+  }
+
+  if (scanner.hasScoreURL(embeds[0]?.description)) {
+    return scanner.getScoreIdFromURL(embeds[0].description as string);
+  }
+
+  if (embeds[0]?.fields.length) {
+    for (const field of embeds[0].fields) {
+      if (scanner.hasScoreURL(field.name)) {
+        return scanner.getScoreIdFromURL(field.name);
+      }
+    }
   }
 
   if (reference && msg.reference?.messageId) {
