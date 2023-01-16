@@ -14,6 +14,18 @@ export function formatCategoryName(category: Category): string {
   }
 }
 
+export function formatTooltip(title: unknown, tooltip: unknown, url?: string): string {
+  // Replace last URL param with # to prevent message jumps
+  if (!url) return String(title);
+
+  const abstractURL = url
+    .split('/')
+    .map((arg, i, args) => i + 1 === args.length ? '#' : arg)
+    .join('/');
+
+  return `[${title}](${abstractURL} "${tooltip}")`;
+}
+
 export function formatNumber(value: number, digits = 2, units?: string): string {
   const values = [
     value.toFixed(digits),
@@ -55,28 +67,28 @@ export function formatCombo(scoreCombo: number, beatmapCombo?: number): string {
   return `${scoreCombo}x`;
 }
 
-export function formatStarRating(starRating: number, url?: string): string {
-  if (!url) return `\`${starRating.toFixed(2)}★\``;
+export function formatStarRating(starRating: number, tooltipURL?: string): string {
+  const tooltip = formatTooltip('★', starRating, tooltipURL);
 
-  return `[${starRating.toFixed(2)}★](${url} "${starRating}")`;
+  return `\`${starRating.toFixed(2)}\`${tooltip}`;
 }
 
-export function formatPerformance(performance: number, short = false, url?: string): string {
+export function formatPerformance(performance: number, short = false): string {
   const error = 0.000001;
 
-  let text = performance.toFixed(2);
-
   if (short && performance >= 1e9 - error) {
-    text = performance.toExponential(1);
-  }
-  else if (short && performance >= 1e6 - error) {
-    text = `${(performance / 1e6).toFixed(1)}m`;
-  }
-  else if (short && performance >= 1e4 - error) {
-    text = `${(performance / 1e3).toFixed(1)}k`;
+    return performance.toExponential(1);
   }
 
-  return url ? `[${text}](${url} "${performance}")` : `${text}`;
+  if (short && performance >= 1e6 - error) {
+    return `${(performance / 1e6).toFixed(1)}m`;
+  }
+
+  if (short && performance >= 1e4 - error) {
+    return `${(performance / 1e3).toFixed(1)}k`;
+  }
+
+  return performance.toFixed(2);
 }
 
 export function formatHitStatistics(statistics: IHitStatistics, rulesetId: GameMode): string {

@@ -18,22 +18,31 @@ export class OsuBeatmapEmbed extends BeatmapEmbed {
   }
 
   protected _getDifficultyDetails(): string {
-    const difficulty = this._beatmap.difficulty as IOsuDifficulty;
+    const {
+      aimDifficulty,
+      speedDifficulty,
+      flashlightDifficulty,
+      sliderFactor,
+      speedNoteCount,
+      mods,
+    } = this._beatmap.difficulty as IOsuDifficulty;
+
     const prefix = super._getDifficultyDetails();
+    const tooltipURL = this._message?.url;
 
     const stars = [
-      `**Aim:** ${formatStarRating(difficulty.aimDifficulty)}`,
-      `**Speed:** ${formatStarRating(difficulty.speedDifficulty)}`,
+      `**Aim:** ${formatStarRating(aimDifficulty, tooltipURL)}`,
+      `**Speed:** ${formatStarRating(speedDifficulty, tooltipURL)}`,
     ];
 
     // This is a very simple way to split mod combination by two characters.
-    if (difficulty.mods.indexOf('FL') % 2 === 0) {
-      stars.push(`**FL:** \`${formatStarRating(difficulty.flashlightDifficulty)}\``);
+    if (mods.indexOf('FL') % 2 === 0) {
+      stars.push(`**FL:** \`${formatStarRating(flashlightDifficulty, tooltipURL)}\``);
     }
 
     const additional = [
-      `**Slider Factor:** ${formatNumber(difficulty.sliderFactor, 4)}`,
-      `**Speed Note Count:** ${formatNumber(difficulty.speedNoteCount, 2)}`,
+      `**Slider Factor:** ${formatNumber(sliderFactor, 4)}`,
+      `**Speed Note Count:** ${formatNumber(speedNoteCount, 2)}`,
     ];
 
     return [

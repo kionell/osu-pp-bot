@@ -126,9 +126,10 @@ export abstract class BeatmapEmbed extends ExtendedEmbed {
   }
 
   protected _getDifficultyDetails(): string {
-    const difficulty = this._beatmap.difficulty;
+    const starRating = this._beatmap.difficulty.starRating;
+    const tooltipURL = this._message?.url;
 
-    return `**Stars:** ${formatStarRating(difficulty.starRating)}`;
+    return `**Stars:** ${formatStarRating(starRating, tooltipURL)}`;
   }
 
   protected _getPerformanceTable(): string {

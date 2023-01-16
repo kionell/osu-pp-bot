@@ -15,14 +15,21 @@ export class TaikoBeatmapEmbed extends BeatmapEmbed {
   }
 
   protected _getDifficultyDetails(): string {
-    const difficulty = this._beatmap.difficulty as ITaikoDifficulty;
+    const {
+      colourDifficulty,
+      staminaDifficulty,
+      rhythmDifficulty,
+      peakDifficulty,
+    } = this._beatmap.difficulty as ITaikoDifficulty;
+
     const prefix = super._getDifficultyDetails();
+    const tooltipURL = this._message?.url;
 
     const stars = [
-      `**Colour:** ${formatStarRating(difficulty.colourDifficulty)}`,
-      `**Stamina:** ${formatStarRating(difficulty.staminaDifficulty)}`,
-      `**Rhythm:** ${formatStarRating(difficulty.rhythmDifficulty)}`,
-      `**Peaks:** ${formatStarRating(difficulty.peakDifficulty)}`,
+      `**Colour:** ${formatStarRating(colourDifficulty, tooltipURL)}`,
+      `**Stamina:** ${formatStarRating(staminaDifficulty, tooltipURL)}`,
+      `**Rhythm:** ${formatStarRating(rhythmDifficulty, tooltipURL)}`,
+      `**Peaks:** ${formatStarRating(peakDifficulty, tooltipURL)}`,
     ];
 
     return `${prefix} (${stars.join(', ')})`;
