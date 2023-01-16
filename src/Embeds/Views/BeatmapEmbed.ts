@@ -4,6 +4,7 @@ import { GameMode, URLGenerator } from '@kionell/osu-api';
 
 import {
   HexColorString,
+  Message,
   MessageEmbedAuthor,
   MessageEmbedFooter,
 } from 'discord.js';
@@ -26,6 +27,7 @@ export abstract class BeatmapEmbed extends ExtendedEmbed {
   constructor(
     protected _beatmap: IBeatmapResponse,
     protected _urlGenerator: URLGenerator,
+    protected _message?: Message,
   ) {
     super();
   }

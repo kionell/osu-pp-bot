@@ -1,3 +1,4 @@
+import type { Message } from 'discord.js';
 import type { CommandData } from 'cli-processor';
 import { GameMode, URLGenerator } from '@kionell/osu-api';
 import { IBeatmapResponse, IScoreResponse } from '@Core/REST';
@@ -67,19 +68,23 @@ export class EmbedFactory {
     return new CommandHelpEmbed(data);
   }
 
-  createBeatmapEmbed(data: IBeatmapResponse, urlGenerator: URLGenerator): BeatmapEmbed {
+  createBeatmapEmbed(
+    data: IBeatmapResponse,
+    urlGenerator: URLGenerator,
+    msg?: Message,
+  ): BeatmapEmbed {
     switch (data.rulesetId) {
       case GameMode.Taiko:
-        return new TaikoBeatmapEmbed(data, urlGenerator);
+        return new TaikoBeatmapEmbed(data, urlGenerator, msg);
 
       case GameMode.Fruits:
-        return new CatchBeatmapEmbed(data, urlGenerator);
+        return new CatchBeatmapEmbed(data, urlGenerator, msg);
 
       case GameMode.Mania:
-        return new ManiaBeatmapEmbed(data, urlGenerator);
+        return new ManiaBeatmapEmbed(data, urlGenerator, msg);
     }
 
-    return new OsuBeatmapEmbed(data, urlGenerator);
+    return new OsuBeatmapEmbed(data, urlGenerator, msg);
   }
 
   createScoreEmbed(data: IScoreResponse, urlGenerator: URLGenerator): ScoreEmbed {

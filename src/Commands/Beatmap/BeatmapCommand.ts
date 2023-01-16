@@ -63,11 +63,12 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
   async execute(options: ICommandOptions): Promise<void> {
     const generator = APIFactory.createURLGenerator();
 
+    const message = options.msg;
     const dto = this._getBeatmapDto(options);
     const beatmap = await RESTClient.calculateBeatmap(dto);
     const strainGraph = await RESTClient.getBeatmapGraph(beatmap.graphFile);
 
-    const embed = EmbedFactory.createBeatmapEmbed(beatmap, generator);
+    const embed = EmbedFactory.createBeatmapEmbed(beatmap, generator, message);
     const embedShipment = this._getEmbedShipment(options);
 
     if (strainGraph) {
