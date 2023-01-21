@@ -107,7 +107,7 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
 
     if (replayAttachment !== null) dto.replayURL = replayAttachment.url;
 
-    if (!dto.beatmapId && !dto.fileURL && !dto.replayURL && !dto.search) {
+    if (!dto.beatmapId && !dto.hash && !dto.fileURL && !dto.replayURL && !dto.search) {
       const cached = options.cachedChannel;
 
       if (cached.beatmapId) dto.beatmapId = cached.beatmapId;
