@@ -39,6 +39,35 @@ export function getServerNameFromMessage(msg: Message, reference = true): Return
   return null;
 }
 
+export function getMD5FromMessage(msg: Message, reference = true): string {
+  const MD5Regex = /[0-9a-f]{32}/i;
+
+  const getMD5FromString = (input?: string | null): string | null => {
+    return input?.split(' ').find((arg) => MD5Regex.test(arg)) ?? null;
+  };
+
+  const contentHash = getMD5FromString(msg.content);
+
+  if (contentHash) return contentHash;
+
+  const descriptionHash = getMD5FromString(msg.embeds[0]?.description);
+
+  if (descriptionHash) return descriptionHash;
+
+  const footerHash = getMD5FromString(msg.embeds[0]?.footer?.text);
+
+  if (footerHash) return footerHash;
+
+  if (reference && msg.reference?.messageId) {
+    const messageId = msg.reference?.messageId;
+    const ref = msg.channel.messages.cache.get(messageId);
+
+    if (ref) return getMD5FromMessage(ref, false);
+  }
+
+  return '';
+}
+
 /**
  * Searches for beatmap ID in message content and embeds.
  * @param scanner URL scanner.

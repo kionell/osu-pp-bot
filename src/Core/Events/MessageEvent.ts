@@ -11,6 +11,7 @@ import {
 import {
   getBeatmapIdFromMessage,
   getServerNameFromMessage,
+  getMD5FromMessage,
 } from '../Utils';
 
 /**
@@ -51,12 +52,25 @@ export abstract class MessageEvent extends BotEvent {
 
     const scanner = APIFactory.createURLScanner(serverName);
     const beatmapId = getBeatmapIdFromMessage(scanner, msg, false);
+    const beatmapMD5 = getMD5FromMessage(msg, false);
 
-    if (!beatmapId || cachedChannel.beatmapId === beatmapId) return false;
+    // osu-pp-bot uses beatmap MD5 as unique key to work with unsubmitted beatmaps.
+    if (beatmapMD5) {
+      cachedChannel.beatmapId = null;
+      cachedChannel.beatmapMD5 = beatmapMD5;
+    }
+    // Other bots have only beatmap ID.
+    else if (beatmapId) {
+      cachedChannel.beatmapId = beatmapId;
+      cachedChannel.beatmapMD5 = null;
+    }
 
-    cachedChannel.beatmapId = beatmapId;
+    const differentId = cachedChannel.beatmapId !== beatmapId;
+    const differentMD5 = cachedChannel.beatmapMD5 !== beatmapMD5;
 
-    await RESTClient.upsertChatChannel(cachedChannel);
+    if (differentId || differentMD5) {
+      await RESTClient.upsertChatChannel(cachedChannel);
+    }
 
     return true;
   }
