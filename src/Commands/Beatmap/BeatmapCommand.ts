@@ -2,7 +2,7 @@ import { MessageAttachment } from 'discord.js';
 import { APIFactory, getRulesetId, URLScanner } from '@kionell/osu-api';
 import { BotCommand, CommandAttachments, AttachmentType, ICommandOptions, IHasAttachments, Category } from '@Core/Commands';
 import { IBeatmapOptionsDto, RESTClient } from '@Core/REST';
-import { getBeatmapIdFromMessage } from '@Core/Utils';
+import { getBeatmapIdFromMessage, getMD5FromMessage } from '@Core/Utils';
 import { EmbedFactory } from '@Embeds';
 import {
   ApproachRateFlag,
@@ -92,7 +92,8 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
 
     const scanner = APIFactory.createURLScanner();
 
-    dto.beatmapId = this._getTargetBeatmap(scanner, options) ?? dto.beatmapId;
+    dto.beatmapId = this._getTargetBeatmapId(scanner, options) ?? dto.beatmapId;
+    dto.hash = this._getTargetBeatmapMD5(options) ?? dto.hash;
     dto.rulesetId = this._getTargetRuleset(scanner) ?? dto.rulesetId;
     dto.search = this.getValue(SearchFlag) ?? dto.search;
 
@@ -121,7 +122,7 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     return dto;
   }
 
-  protected _getTargetBeatmap(scanner: URLScanner, options: ICommandOptions): number {
+  protected _getTargetBeatmapId(scanner: URLScanner, options: ICommandOptions): number {
     const targetBeatmap = this.getValue(BeatmapArgument);
 
     const raw = Number(targetBeatmap);
@@ -129,6 +130,10 @@ export class BeatmapCommand extends BotCommand implements IHasAttachments {
     const reference = options.msg ? getBeatmapIdFromMessage(scanner, options.msg) : 0;
 
     return raw || url || reference;
+  }
+
+  protected _getTargetBeatmapMD5(options: ICommandOptions): string | null {
+    return options.msg ? getMD5FromMessage(options.msg) : null;
   }
 
   protected _getTargetRuleset(scanner: URLScanner): number | null {

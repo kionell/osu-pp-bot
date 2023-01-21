@@ -1,7 +1,7 @@
 import { APIFactory, GameMode, URLScanner } from '@kionell/osu-api';
 import { AttachmentType, BotCommand, CommandAttachments, ICommandOptions, IHasAttachments } from '@Core/Commands';
 import { IScoreOptionsDto, RESTClient } from '@Core/REST';
-import { getBeatmapIdFromMessage } from '@Core/Utils';
+import { getBeatmapIdFromMessage, getMD5FromMessage } from '@Core/Utils';
 import { EmbedFactory } from '@Embeds';
 import {
   BeatmapArgument,
@@ -65,7 +65,8 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
     const dto: IScoreOptionsDto = {};
     const scanner = APIFactory.createURLScanner();
 
-    dto.beatmapId = this._getTargetBeatmap(scanner, options) ?? dto.beatmapId;
+    dto.beatmapId = this._getTargetBeatmapId(scanner, options) ?? dto.beatmapId;
+    dto.hash = this._getTargetBeatmapMD5(options) ?? dto.hash;
     dto.rulesetId = this._getTargetRuleset() ?? dto.rulesetId;
     dto.search = this.getValue(SearchFlag) ?? dto.search;
     dto.totalHits = this.getValue(TotalHitsFlag) ?? dto.totalHits;
@@ -95,7 +96,7 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
     return dto;
   }
 
-  protected _getTargetBeatmap(scanner: URLScanner, options: ICommandOptions): number | null {
+  protected _getTargetBeatmapId(scanner: URLScanner, options: ICommandOptions): number | null {
     const targetBeatmap = this.getValue(BeatmapArgument);
 
     const raw = Number(targetBeatmap);
@@ -103,6 +104,10 @@ export abstract class SimulateCommand extends BotCommand implements IHasAttachme
     const reference = options.msg ? getBeatmapIdFromMessage(scanner, options.msg) : 0;
 
     return raw || url || reference;
+  }
+
+  protected _getTargetBeatmapMD5(options: ICommandOptions): string | null {
+    return options.msg ? getMD5FromMessage(options.msg) : null;
   }
 
   protected abstract _getTargetRuleset(): GameMode | null;
