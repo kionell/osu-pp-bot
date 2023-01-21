@@ -1,4 +1,4 @@
-import { MessageEmbedAuthor } from 'discord.js';
+import { MessageEmbedAuthor, MessageEmbedFooter } from 'discord.js';
 import { URLGenerator } from '@kionell/osu-api';
 
 import {
@@ -66,6 +66,14 @@ export abstract class ScoreEmbed extends ExtendedEmbed {
     result.push(`**Date:** ${timestamp}`);
 
     return result.join('\n');
+  }
+
+  protected _createEmbedFooter(): MessageEmbedFooter {
+    const footer: MessageEmbedFooter = {
+      text: `${this._score.beatmap.hash}`,
+    };
+
+    return footer;
   }
 
   protected _getGradeDetails(): string {

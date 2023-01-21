@@ -47,7 +47,7 @@ export abstract class BeatmapEmbed extends ExtendedEmbed {
     const { creator, creatorId } = this._beatmap.metadata;
 
     const footer: MessageEmbedFooter = {
-      text: `Created by ${creator}`,
+      text: `Created by ${creator}, ${this._beatmap.hash}`,
     };
 
     footer.iconURL = creatorId !== 0
