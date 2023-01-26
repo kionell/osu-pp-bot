@@ -15,9 +15,9 @@ export function formatCategoryName(category: Category): string {
 }
 
 export function formatTooltip(title: unknown, tooltip: unknown, url?: string): string {
-  // Replace last URL param with # to prevent message jumps
   if (!url) return String(title);
-
+  
+  // Replace last URL param with # to prevent message jumps
   const abstractURL = url
     .split('/')
     .map((arg, i, args) => i + 1 === args.length ? '#' : arg)
