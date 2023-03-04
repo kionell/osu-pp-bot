@@ -43,6 +43,12 @@ export abstract class MessageEvent extends BotEvent {
       channelData.server = { id: msg.guildId };
     }
 
+    /**
+     * We can skip upsert request if REST API is not available 
+     * after {@link RESTClient.findChatChannel} request.
+     */
+    if (!RESTClient.isAvailable) return null;
+
     return await RESTClient.upsertChatChannel(channelData);
   }
 

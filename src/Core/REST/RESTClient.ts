@@ -143,7 +143,9 @@ class RESTClient extends APIClient {
 
     this._handleError(response);
 
-    if (!this.isOnline) this.isOnline = true;
+    if (!response.error && !this.isOnline) {
+      this.isOnline = true;
+    }
 
     return response;
   }
@@ -155,14 +157,24 @@ class RESTClient extends APIClient {
   private _handleError(response: IAPIResponse): void {
     if (!response.error) return;
 
+    const wasOnline = this.isOnline;
+
     switch (response.error) {
       case 'read ECONNRESET':
       case 'Can\'t connect to API!':
         this.isOnline = false;
         this.lastAttempt = Date.now();
-    }
 
-    throw new Error(this._getErrorDisplayMessage(response));
+        // Throw error only when status switches from online to offline.
+        if (wasOnline && !this.isOnline) {
+          throw new Error(this._getErrorDisplayMessage(response));
+        }
+
+        break;
+
+      default:
+        throw new Error(this._getErrorDisplayMessage(response));
+    }
   }
 
   private _getErrorDisplayMessage(response: IAPIResponse): string {
