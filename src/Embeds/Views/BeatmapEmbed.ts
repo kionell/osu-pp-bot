@@ -104,12 +104,12 @@ export abstract class BeatmapEmbed extends ExtendedEmbed {
       values.push(`${Emoji.Slidable}: \`${general.slidable}\``);
       values.push(`${Emoji.Spinnable}: \`${general.spinnable}\``);
 
-      return `${values.join(' ⦁ ')}`;
+      return `${values.join(' ')}`;
     }
 
     values.push(`${Emoji.Holdable}: \`${general.holdable}\``);
 
-    return `${values.join(' ⦁ ')}`;
+    return `${values.join(' ')}`;
   }
 
   protected _getStatsDetails(): string {
