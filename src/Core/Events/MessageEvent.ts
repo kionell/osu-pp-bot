@@ -26,9 +26,10 @@ export abstract class MessageEvent extends BotEvent {
   static async getDatabaseChatChannel(msg: Message): Promise<IChatChannelResponse | null> {
     /**
      * If REST API is currently unavailable then we should 
-     * disable all bot messages until it became available again.
+     * return immediately to not throw error afterwards.
+     * This is done to prevent bot spam on each message.
      */
-    if (!RESTClient.isAvailable && msg.author.bot) return null;
+    if (!RESTClient.isAvailable) return null;
 
     const found = await RESTClient.findChatChannel(msg.channelId);
 

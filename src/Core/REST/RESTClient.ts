@@ -26,8 +26,6 @@ class RESTClient extends APIClient {
       url,
     });
 
-    this._handleError(response);
-
     return response.data;
   }
 
@@ -88,8 +86,6 @@ class RESTClient extends APIClient {
       url,
     });
 
-    this._handleError(response);
-
     return response.data;
   }
 
@@ -105,8 +101,6 @@ class RESTClient extends APIClient {
       data: options,
       url,
     });
-
-    this._handleError(response);
 
     return response.data;
   }
@@ -145,25 +139,9 @@ class RESTClient extends APIClient {
   }
 
   protected async _request(config: RequestConfig): Promise<IAPIResponse> {
-    /**
-     * If this REST API is not available we will allow 
-     * to retry connection only once every 30 seconds. 
-     */
-    if (!this.isAvailable) {
-      throw new Error('Bot API is currently offline or not available!');
-    }
-
     const response = await super._request(config);
 
-    const lostConnection = response.error === 'read ECONNRESET';
-    const notAvailable = response.error === 'Can\'t connect to API!';
-
-    if (lostConnection || notAvailable) {
-      this.isOnline = false;
-      this.lastAttempt = Date.now();
-
-      this._handleError(response);
-    }
+    this._handleError(response);
 
     if (!this.isOnline) this.isOnline = true;
 
@@ -175,13 +153,28 @@ class RESTClient extends APIClient {
   }
 
   private _handleError(response: IAPIResponse): void {
-    if (response.error === 'read ECONNRESET') {
-      throw new Error('Lost connection to the Bot API!');
+    if (!response.error) return;
+
+    switch (response.error) {
+      case 'read ECONNRESET':
+      case 'Can\'t connect to API!':
+        this.isOnline = false;
+        this.lastAttempt = Date.now();
     }
 
-    if (response.error) {
-      throw new Error(response.error);
+    throw new Error(this._getErrorDisplayMessage(response));
+  }
+
+  private _getErrorDisplayMessage(response: IAPIResponse): string {
+    switch (response.error) {
+      case 'read ECONNRESET':
+        return 'Lost connection to the Bot API!';
+
+      case 'Can\'t connect to API!':
+        return 'Bot API is currently offline or not available!';
     }
+
+    return response.error ?? 'Something went wrong...';
   }
 }
 
