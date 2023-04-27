@@ -26,6 +26,11 @@ class RESTClient extends APIClient {
       url,
     });
 
+    // TODO: Remove this later
+    if (response.data === null) {
+      throw new Error('Failed to calculate beatmap!');
+    }
+
     return response.data;
   }
 
@@ -85,6 +90,11 @@ class RESTClient extends APIClient {
       data: options,
       url,
     });
+
+    // TODO: Remove this later
+    if (response.data === null) {
+      throw new Error('Failed to calculate score!');
+    }
 
     return response.data;
   }
