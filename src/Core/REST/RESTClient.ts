@@ -19,7 +19,7 @@ class RESTClient extends APIClient {
    * @returns Beatmap response from REST API.
    */
   async calculateBeatmap(options: IBeatmapOptionsDto): Promise<IBeatmapResponse> {
-    const url = `${process.env.API_ROOT as string}/beatmaps`;
+    const url = `${process.env.API_ROOT}/beatmaps`;
     const response = await this._request({
       method: 'POST',
       data: options,
@@ -37,7 +37,7 @@ class RESTClient extends APIClient {
   async getBeatmapGraph(fileName?: string): Promise<Buffer | null> {
     if (!fileName) return null;
 
-    const url = `${process.env.SERVER_ROOT as string}/strains/${fileName}`;
+    const url = `${process.env.SERVER_ROOT}/strains/${fileName}`;
     const response = await this._request({
       responseType: 'arraybuffer',
       headers: {
@@ -59,7 +59,7 @@ class RESTClient extends APIClient {
   async getReplayGraph(fileName?: string): Promise<Buffer | null> {
     if (!fileName) return null;
 
-    const url = `${process.env.SERVER_ROOT as string}/lifebars/${fileName}`;
+    const url = `${process.env.SERVER_ROOT}/lifebars/${fileName}`;
     const response = await this._request({
       responseType: 'arraybuffer',
       headers: {
@@ -79,7 +79,7 @@ class RESTClient extends APIClient {
    * @returns Score response from REST API.
    */
   async calculateScore(options: IScoreOptionsDto): Promise<IScoreResponse> {
-    const url = `${process.env.API_ROOT as string}/scores`;
+    const url = `${process.env.API_ROOT}/scores`;
     const response = await this._request({
       method: 'POST',
       data: options,
@@ -95,7 +95,7 @@ class RESTClient extends APIClient {
    * @returns Score response from REST API.
    */
   async simulateScore(options: IScoreOptionsDto): Promise<IScoreResponse> {
-    const url = `${process.env.API_ROOT as string}/scores/simulate`;
+    const url = `${process.env.API_ROOT}/scores/simulate`;
     const response = await this._request({
       method: 'POST',
       data: options,
@@ -111,7 +111,7 @@ class RESTClient extends APIClient {
    * @returns Chat channel response or null.
    */
   async findChatChannel(channelId: string | number): Promise<IChatChannelResponse | null> {
-    const url = `${process.env.API_ROOT as string}/chat/channels/${channelId}`;
+    const url = `${process.env.API_ROOT}/chat/channels/${channelId}`;
     const response = await this._request({
       method: 'GET',
       url,
@@ -128,7 +128,7 @@ class RESTClient extends APIClient {
    * @returns Chat channel response.
    */
   async upsertChatChannel(options: Partial<IChatChannelDto>): Promise<IChatChannelResponse> {
-    const url = `${process.env.API_ROOT as string}/chat/channels`;
+    const url = `${process.env.API_ROOT}/chat/channels`;
     const response = await this._request({
       method: 'POST',
       data: options,

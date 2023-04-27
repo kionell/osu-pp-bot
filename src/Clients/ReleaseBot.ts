@@ -7,7 +7,7 @@ export class ReleaseBot extends Bot {
   /**
    * A token of the release bot. 
    */
-  token = process.env.PRODUCTION_DISCORD ?? '';
+  token = process.env.PRODUCTION_DISCORD;
 
   /**
    * Relative path to the commands of release bot.

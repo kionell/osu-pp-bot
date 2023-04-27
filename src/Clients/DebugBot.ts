@@ -7,7 +7,7 @@ export class DebugBot extends Bot {
   /**
    * A token of the debug bot. 
    */
-  token = process.env.DEBUG_DISCORD ?? '';
+  token = process.env.DEBUG_DISCORD;
 
   /**
    * Relative path to the commands of debug bot.

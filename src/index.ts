@@ -7,6 +7,20 @@ import { ClientOptions, Intents } from 'discord.js';
 import { DebugBot, ReleaseBot } from './Clients';
 import 'dotenv/config';
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace NodeJS {
+    interface ProcessEnv {
+      NODE_ENV: string;
+      DEBUG_DISCORD: string;
+      PRODUCTION_DISCORD: string;
+      SERVER_ROOT: string;
+      API_ROOT: string;
+      DEFAULT_PREFIX: string;
+    }
+  }
+}
+
 /* Create a new discord bot */
 const options: ClientOptions = {
   intents: new Intents(
