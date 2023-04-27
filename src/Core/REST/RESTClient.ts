@@ -167,13 +167,13 @@ class RESTClient extends APIClient {
 
         // Throw error only when status switches from online to offline.
         if (wasOnline && !this.isOnline) {
-          throw new Error(this._getErrorDisplayMessage(response));
+          console.error(this._getErrorDisplayMessage(response));
         }
 
         break;
 
       default:
-        throw new Error(this._getErrorDisplayMessage(response));
+        console.error(this._getErrorDisplayMessage(response));
     }
   }
 
