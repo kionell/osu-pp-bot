@@ -19,8 +19,13 @@ import {
  */
 export abstract class MessageEvent extends BotEvent {
   static validateMessage(msg: Message): boolean {
-    // If the message is from a bot or empty.
-    return !(msg.author.bot || (!msg.content && !msg.embeds && !msg.attachments));
+    const isBotMessage = msg.author.bot;
+    const isEmptyMessage = !msg.content && !msg.embeds && !msg.attachments;
+
+    // TODO: This is temporary measure until a better prefix management system is implemented.    
+    const hasPrefix = msg.content.startsWith(process.env.DEFAULT_PREFIX);
+
+    return !isBotMessage && !isEmptyMessage && hasPrefix;
   }
 
   static async getDatabaseChatChannel(msg: Message): Promise<IChatChannelResponse | null> {
